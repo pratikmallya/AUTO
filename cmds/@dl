@@ -1,0 +1,13 @@
+if ( test -r b.$1 ) then
+	BIFURCATION=b
+	SOLUTIONS=s
+else
+	BIFURCATION=p
+	SOLUTIONS=q
+fi
+rm -r $BIFURCATION.$1 
+rm -r $SOLUTIONS.$1 
+rm -r d.$1
+echo "Deleting $BIFURCATION.$1 ... done"
+echo "Deleting $SOLUTIONS.$1 ... done"
+echo "Deleting d.$1 ... done"

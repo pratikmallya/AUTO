@@ -1,0 +1,6 @@
+#!/bin/sh
+if ( test -r c.$1 ) then
+	cp c.$1 c.$1.$2
+else
+	cp r.$1 r.$1.$2
+fi	

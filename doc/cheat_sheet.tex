@@ -1,0 +1,793 @@
+
+\documentclass[12pt]{report}
+
+\usepackage{epsf}
+\usepackage{include/harvard}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{xr}
+\externaldocument{auto}
+\pagestyle{plain}
+\topmargin=-45pt
+\textwidth=6.85in
+\textheight=9in
+\evensidemargin=-15pt
+\oddsidemargin=-15pt
+%
+\input{macros}
+
+\begin{document}
+{\footnotesize
+\begin{tabular}{|l|p{5in}|}
+\hline 
+A0 & 
+ The lower bound on the principal solution measure.
+\\ \hline 
+A1 & 
+ The upper bound on the principal solution measure.
+\\ \hline 
+DS & 
+ The constant DS defines the pseudoarclength stepsize to be 
+ used for the first attempted step along any branch.
+\\ \hline 
+DSMAX & 
+ The maximum allowable absolute value of the pseudoarclength stepsize.
+\\ \hline 
+DSMIN & 
+ This is minimum allowable absolute value of the pseudoarclength step
+ size. 
+\\ \hline 
+EPSL & 
+ Relative convergence criterion for equations parameters in 
+ the Newton/Chord method.
+\\ \hline 
+EPSS & 
+ Relative arclength convergence criterion for the detection of special 
+ solutions. 
+\\ \hline 
+EPSU & 
+ Relative convergence criterion for solution components in the 
+ Newton/Chord method.
+\\ \hline 
+IAD & 
+ This constant controls the mesh adaption.
+\\ \hline 
+IADS & 
+ This constant controls the frequency of adaption of the pseudoarclength
+ stepsize.
+\\ \hline 
+ICP & 
+ ICP designates the free parameters.
+\\ \hline 
+IID & 
+ This constant controls the amount of diagnostic output printed in fort.9.
+\\ \hline 
+ILP & 
+ This constant controls the detection of fold.
+\\ \hline 
+IPLT & 
+ This constant allows redefinition of the principal solution measure.
+\\ \hline 
+IPS & 
+ This constant defines the problem type.
+\\ \hline 
+IRS & 
+ This constant sets the label of the solution where the computation is to
+ be restarted.
+\\ \hline 
+ISP & 
+ This constant controls the detection of branch points, perioddoubling
+ bifurcations, and torus bifurcations.
+\\ \hline 
+ISW & 
+ This constant controls branch switching at branch points for the case of
+ differential equations.
+\\ \hline 
+ITMX & 
+ The maximum number of iterations allowed in the accurate location of
+ special solutions.
+\\ \hline 
+ITNW & 
+ The maximum number of combined NewtonChord iterations. 
+\\ \hline 
+JAC & 
+ Used to indicate whether derivatives are supplied by the user or to be
+ obtained by differencing.
+\\ \hline 
+MXBF & 
+ This constant, which is effective for algebraic problems only, sets the
+ maximum number of bifurcations to be treated.
+\\ \hline 
+NBC & 
+ The number of boundary conditions as specified in the user-supplied 
+ subroutine bcnd.
+\\ \hline 
+NCOL & 
+ The number of Gauss collocation points per mesh interval, (2 < NCOL < 7).
+\\ \hline 
+NDIM & 
+ Dimension of the system of equations as specified in the user-supplied
+ subroutine func.
+\\ \hline 
+NICP & 
+ The constant NICP indicates how many free parameters have been specified.
+\\ \hline 
+NINT & 
+ The number of integral conditions as specified in the user-supplied sub
+ routine icnd.
+\\ \hline 
+NMX & 
+ The maximum number of steps to be taken along any branch.
+\\ \hline 
+NPR & 
+ This constant can be used to regularly write fort.8 plotting and restart
+ data. 
+\\ \hline 
+NTHL & 
+ NTHL defines the number of parameters whose weight is to be modified.
+\\ \hline 
+NTHU & 
+ NTHU defines the number of states whose weight is to be modified.
+\\ \hline 
+NTST & 
+ The number of mesh intervals used for discretization. 
+\\ \hline 
+NUZR & 
+
+\\ \hline 
+NWTN & 
+ After NWTN Newton iterations the Jacobian is frozen.
+\\ \hline 
+RL0 & 
+ The lower bound on the principal continuation parameter.
+\\ \hline 
+RL1 & 
+ The upper bound on the principal continuation parameter.
+\\ \hline 
+\end{tabular}
+
+
+\pagebreak
+
+\begin{longtable}{|l|p{5in}|}
+\hline 
+A0 & 
+
+ The lower bound on the principal solution measure.
+ (By default, if \parf{ IPLT}=0, the principal solution measure
+ is the $L_2$-norm of the state vector or state vector function.
+ See the \AUTO-constant \parf{ IPLT} in Section~\ref{sec:IPLT} 
+ for choosing another principal solution measure.)
+\\ \hline 
+A1 & 
+
+ The upper bound on the principal solution measure.
+\\ \hline 
+DS & 
+
+ \AUTO uses pseudo-arclength continuation for following solution branches.
+ The pseudo-arclength stepsize is the distance between
+ the current solution and the next solution on a branch.
+ By default, this distance includes all state variables
+ (or state functions) and all free parameters.
+ The constant \parf{ DS} defines the pseudo-arclength stepsize to be used for the
+ first attempted step along any branch. 
+ (Note that if \parf{ IADS}$>$0 then \parf{ DS} will automatically be adapted
+ for subsequent steps and for failed steps.)
+ \parf{ DS} may be chosen positive or negative; changing its sign 
+ reverses the direction of computation.
+ The relation \parf{ DSMIN} $\le$ $\abs \parf{ DS}$ $\le$ \parf{ DSMAX} must be satisfied.
+ The precise choice of \parf{ DS} is problem-dependent; the demos use a value 
+ that was found appropriate after some experimentation.
+\\ \hline 
+DSMAX & 
+
+ The maximum allowable absolute value of the pseudo-arclength stepsize.
+ \parf{ DSMAX} must be positive.
+ It is only effective if the pseudo-arclength step is adaptive,
+ i.e., if \parf{ IADS}$>$0.
+ The choice of \parf{ DSMAX} is highly problem-dependent; 
+ most demos use a value that was found appropriate after some
+ experimentation.
+ See also the discussion in Section~\ref{sec:Efficiency}.
+\\ \hline 
+DSMIN & 
+
+ This is minimum allowable absolute value of the pseudo-arclength 
+ stepsize. \parf{ DSMIN} must be positive.
+ It is only effective if the pseudo-arclength step is adaptive,
+ i.e., if \parf{ IADS}$>$0.
+ The choice of \parf{ DSMIN} is highly problem-dependent;
+ most demos use a value that was found appropriate after some
+ experimentation.
+ See also the discussion in Section~\ref{sec:Efficiency}.
+\\ \hline 
+EPSL & 
+
+ Relative convergence criterion for equation parameters in the Newton/Chord 
+ method. Most demos use \parf{ EPSL}=$10^{-6}$ or \parf{ EPSL}=$10^{-7}$,
+ which is the recommended value range.
+\\ \hline 
+EPSS & 
+
+ Relative arclength convergence criterion for the detection of special solutions. 
+ Most demos use \parf{ EPSS}=$10^{-4}$ or  \parf{ EPSS}=$10^{-5}$,
+ which is the recommended value range.
+ Generally, \parf{ EPSS} should be approximately 100 to 1000 times the value
+ of \parf{ EPSL}, \parf{ EPSU}.
+\\ \hline 
+EPSU & 
+
+ Relative convergence criterion for solution components in the Newton/Chord 
+ method. Most demos use \parf{ EPSU}=$10^{-6}$ or \parf{ EPSU}=$10^{-7}$,
+ which is the recommended value range.
+\\ \hline 
+IAD & 
+
+This constant controls the mesh adaption~: 
+\begin{itemize}
+\item[-] \parf{ IAD=0}~:
+  Fixed mesh. Normally, this choice should never be used, as it may result
+  in spurious solutions. (Demo \parf{ ext}.)
+\item[-] \parf{ IAD$>$0}~:  
+  Adapt the mesh every \parf{ IAD} steps along the branch.
+  Most demos use \parf{ IAD=3}, which is the strongly recommended value.
+\end{itemize}
+\\ \hline 
+IADS & 
+
+This constant controls the frequency of adaption of the 
+pseudo-arclength stepsize.
+\begin{itemize}
+\item[-] \parf{ IADS=0}~: 
+  Use fixed pseudo-arclength stepsize, i.e., the stepsize will
+  be equal to the specified value of \parf{ DS} for every step.
+  The computation of a branch will be discontinued as soon as
+  the maximum number of iterations \parf{ ITNW} is reached.
+  This choice is not recommended. 
+
+(Demo \filef{ tim}.)
+\item[-] \parf{ IADS$>$0}~:  
+ Adapt the pseudo-arclength stepsize after every \parf{ IADS} steps.
+  If the Newton/Chord iteration converges rapidly then 
+  $\abs\parf{ DS}$ will be increased, but never beyond \parf{ DSMAX}.
+  If a step fails then it will be retried with half
+  the stepsize. This will be done repeatedly until the
+  step is successful or until $\abs\parf{ DS}$ reaches \parf{ DSMIN}. 
+  In the latter case nonconvergence will be signalled.
+  The strongly recommended value is \parf{ IADS}=1, which is used in 
+  almost all demos.
+\end{itemize}
+\\ \hline 
+ICP & 
+
+For each equation type and for each continuation calculation there is
+a typical (``generic'') number of problem parameters that must be 
+allowed to vary, in order for the calculations to be properly posed.
+The constant \parf{ NICP} indicates how many free parameters have been specified,
+while the array \parf{ ICP} actually designates these free parameters.
+The parameter that appears first in the \parf{ ICP} list is called the 
+``principal continuation parameter''.
+Specific examples and special cases are described below.
+\\ \hline 
+IID & 
+
+ This constant controls the amount of diagnostic output printed in \filef{ fort.9}~:
+ the greater \parf{ IID} the more detailed the diagnostic output.
+\begin{itemize}
+\item[-] \parf{ IID=0}~:  
+  Minimal diagnostic output. This setting is not recommended.
+\item[-] \parf{ IID=2}~: 
+  Regular diagnostic output. This is the recommended value of \parf{ IID}.
+\item[-] \parf{ IID=3}~: 
+  This setting gives additional diagnostic output for algebraic equations,
+  namely the Jacobian and the residual vector at the starting point.
+  This information, which is printed at the beginning of \filef{ fort.9},
+  is useful for verifying whether the starting solution in \funcf{ stpnt} is indeed 
+  a solution.
+\item[-] \parf{ IID=4}~: 
+  This setting gives additional diagnostic output for differential equations,
+  namely the reduced system and the associated residual vector. 
+  This information is printed for every step and for every Newton iteration,
+  and should normally be suppressed.
+  In particular it can be used to verify whether the starting solution
+  is indeed a solution. For this purpose, the stepsize \parf{ DS} should
+  be small, and one should look at the residuals printed in the \filef{ fort.9}
+  output-file. (Note that the first residual vector printed in \filef{ fort.9} may
+  be identically zero, as it may correspond to the computation of the starting
+  direction. Look at the second residual vector in such case.)
+  This residual vector has dimension 
+  \parf{ NDIM}+\parf{ NBC}+\parf{ NINT}+1, which accounts for the \parf{ NDIM}
+  differential equations, the \parf{ NBC} boundary conditions, the \parf{ NINT} user-defined
+  integral constraints, and the pseudo-arclength equation.
+  For proper interpretations of these data one may want to refer to the solution
+  algorithm for solving the collocation system, as described in
+  \citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+\item[-] \parf{ IID=5}~:
+  This setting gives very extensive diagnostic output for differential equations,
+  namely, debug output from the linear equation solver.
+  This setting should not normally be used as it may result
+  in a huge \filef{ fort.9} file. 
+\end{itemize}
+\\ \hline 
+ILP & 
+
+\begin{itemize}
+\item[-] \parf{ ILP=0}~: 
+  No detection of folds. This choice is recommended.
+\item[-] \parf{ ILP=1}~: 
+  Detection of folds. To be used if subsequent fold continuation is intended.
+\end{itemize}2
+\\ \hline 
+IPLT & 
+
+ This constant allows redefinition of the principal solution measure, which is
+ printed as the second (real) column in the screen output and in the \filef{ fort.7}
+ output-file~:
+ 
+\begin{itemize}
+\item[-]
+  If \parf{ IPLT} = 0 then the $L_2$-norm is printed. Most demos use this setting.
+  For algebraic problems, the standard definition of $L_2$-norm is used.
+  For differential equations, the $L_2$-norm is defined as 
+  $$ \sqrt{ \int_0^1 \sum_{k=1}^{NDIM} U_k(x)^2 ~ dx}~.$$
+  Note that the interval of integration is $[0,1]$, the standard interval
+ used by AUTO. For periodic solutions the independent variable is transformed
+ to range from 0 to 1, before the norm is computed. The AUTO-constants THL(*) 
+ and THU(*) (see Section~\ref{sec:NTHL} and Section~\ref{sec:NTHU})
+ affect the definition of the $L_2$-norm.
+\item[-]
+  If 0 $<$ \parf{ IPLT} $\le$ \parf{ NDIM} then the maximum of the \parf{ IPLT}'th solution component 
+  is printed.
+\item[-]
+  If $-$\parf{ NDIM} $\le$ \parf{ IPLT} $<$0 then the minimum of the \parf{ IPLT}'th solution component
+  is printed.  (Demo \filef{ fsh}.)
+\item[-]
+  If \parf{ NDIM} $<$ \parf{ IPLT} $\le$ 2*\parf{ NDIM} then the integral 
+  of the (\parf{ IPLT}$-$\parf{ NDIM})'th 
+  solution component is printed. (Demos \filef{ exp}, \filef{ lor}.)
+\item[-]
+  If 2*\parf{ NDIM} $<$ \parf{ IPLT} $\le$ 3*\parf{ NDIM} 
+  then the $L_2$-norm of the (\parf{ IPLT}$-$\parf{ NDIM})'th 
+  solution component is printed. (Demo \filef{ frc}.)
+\end{itemize}
+
+Note that for algebraic problems the maximum and the minimum are identical.
+Also, for ODEs the maximum and the minimum of a solution component are generally
+much less accurate than the $L_2$-norm and component integrals.
+Note also that the subroutine \funcf{ pvls} provides a second, more general way
+of defining solution measures; see Section~\ref{sec:Parameter_over_specification}.
+\\ \hline 
+IPS & {\tiny 
+
+This constant defines the problem type~:
+\begin{itemize}
+%=====================================================================
+\item[-] \parf{ IPS=0}~: 
+  An algebraic bifurcation problem.
+  Hopf bifurcations will not be detected and stability
+  properties will not be indicated in the \filef{ fort.7} output-file.
+%=====================================================================
+\item[-] \parf{ IPS=1}~: 
+  Stationary solutions of ODEs with detection of Hopf bifurcations.
+  The sign of PT, the point number, in \filef{ fort.7} is used 
+  to indicate stability~: $-$ is stable , + is unstable.
+
+ (Demo \filef{ ab}.)
+%=====================================================================
+\item[-] \parf{ IPS=$-$1}~:  
+  Fixed points of the discrete dynamical system
+  $u^{(k+1)}=f(u^{(k)},p ),$ with detection of Hopf bifurcations.
+  The sign of PT in \filef{ fort.7} indicates stability~: 
+  $-$ is stable , + is unstable.  
+ (Demo \filef{ dd2}.)
+%=====================================================================
+\item[-] \parf{ IPS=$-$2}~: 
+  Time integration using implicit Euler. 
+  The \AUTO-constants \parf{ DS}, \parf{ DSMIN}, \parf{ DSMAX}, and \parf{ ITNW}, \parf{ NWTN} control 
+  the stepsize.
+  In fact, pseudo-arclength is used for ``continuation in time''. 
+  Note that the time discretization is only first order accurate, 
+  so that results should be carefully interpreted. 
+  Indeed, this option has been included primarily for the detection 
+  of stationary solutions, which can then be entered in the user-supplied
+  subroutine \funcf{ stpnt}.  
+
+ (Demo \filef{ ivp}.)
+%=====================================================================
+\item[-]  \parf{ IPS=2}~:
+  Computation of periodic solutions. Starting data can be
+  a Hopf bifurcation point (Run~2 of demo \filef{ ab}),
+  a periodic orbit from a previous run (Run~4 of demo \filef{ pp2}),
+  an analytically known periodic orbit (Run~1 of demo \filef{ frc}),
+  or a numerically known periodic orbit (Demo \filef{ lor}).
+  The sign of PT in \filef{ fort.7} is used to indicate
+  stability~: $-$ is stable , + is unstable or unknown.
+%=====================================================================
+\item[-] \parf{ IPS=4}~: 
+  A boundary value problem. Boundary conditions must be
+  specified in the user-supplied subroutine \funcf{ bcnd}
+  and integral constraints in \funcf{ icnd}. The \AUTO-constants
+  \parf{ NBC} and \parf{ NINT} must be given correct values.
+ (Demos \filef{ exp}, \filef{ int}, \filef{ kar}.)
+%=====================================================================
+\item[-] \parf{ IPS=5}~:
+  Algebraic optimization problems. The objective function
+  must be specified in the user-supplied subroutine \funcf{ fopt}. 
+ (Demo \filef{ opt}.)
+%=====================================================================
+\item[-] \parf{ IPS=7}~:
+  A boundary value problem with computation of Floquet multipliers. 
+  This is a very special option; for most boundary value problems 
+  one should use \parf{ IPS=4}.
+  Boundary conditions must be
+  specified in the user-supplied subroutine \funcf{ bcnd}
+  and integral constraints in \funcf{ icnd}. The \AUTO-constants
+  \parf{ NBC} and \parf{ NINT} must be given correct values.
+%=====================================================================
+\item[-] \parf{ IPS=9}~:
+  This option is used in connection with the {\cal HomCont} algorithms
+  described in 
+  Chapters~\ref{ch:HomCont}-\ref{ch:HomCont_rev}
+  for the  detection and continuation of homoclinic bifurcations.
+  
+ (Demos \filef{ san}, \filef{ mtn}, \filef{ kpr}, \filef{ cir}, \filef{ she},
+  \filef{ rev}.)
+%=====================================================================
+\item[-] \parf{ IPS=11}~: 
+  Spatially uniform solutions of a system of parabolic PDEs,
+  with detection of traveling wave bifurcations.
+  The user need only define the nonlinearity (in subroutine \funcf{ func}),
+  initialize the wave speed in \parf{ PAR(10)}, initialize the diffusion 
+  constants in \parf{ PAR(15,16,$\cdots$)}, and set a free equation parameter 
+  in \parf{ ICP}(1).
+  (Run~2 of demo \filef{ wav}.)
+%=====================================================================
+\item[-] \parf{ IPS=12}~: 
+  Continuation of traveling wave solutions to a system of parabolic PDEs.
+  Starting data can be a Hopf bifurcation point from a previous run 
+  with \parf{ IPS}=11, or a traveling wave from a previous run with \parf{ IPS}=12.
+  (Run~3  and Run~4 of demo \filef{ wav}.)
+%=====================================================================
+\item[-] \parf{ IPS=14}~:  
+  Time evolution for a system of parabolic PDEs subject to periodic 
+  boundary conditions. 
+  Starting data may be solutions from a previous run with \parf{ IPS}=12 or 14. 
+  Starting data can also be specified in \funcf{ stpnt}, in which case
+  the wave length must be specified in \parf{ PAR(11)}, and the diffusion
+  constants in \parf{ PAR(15,16,$\cdots$)}.
+  \AUTO uses \parf{ PAR(14)} for the time variable.
+  \parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX} govern the pseudo-arclength continuation 
+  in the space-time variables.
+  Note that the time discretization is only first order accurate, 
+  so that results should be carefully interpreted. 
+  Indeed, this option is mainly intended for the detection of stationary 
+  waves.
+  (Run~5 of demo \filef{ wav}.)
+%=====================================================================
+\item[-] \parf{ IPS=15}~:   
+  Optimization of periodic solutions. The integrand of the
+  objective functional must be specified in the user-supplied
+  subroutine \funcf{ fopt}. Only \parf{ PAR(1-9)} should be used for
+  problem parameters. \parf{ PAR(10)} is the value of the objective
+  functional, \parf{ PAR(11)} the period, \parf{ PAR(12)} the norm of the
+  adjoint variables, \parf{ PAR(14)} and \parf{ PAR(15)} are internal optimality
+  variables. \parf{ PAR(21-29)} and \parf{ PAR(31)} are used to monitor the 
+  optimality functionals associated with the problem parameters 
+  and the period. 
+  Computations can be started at a solution computed with \parf{ IPS}=2
+  or \parf{ IPS}=15.
+  For a detailed example see demo \filef{ ops}.
+%=====================================================================
+\item[-] \parf{ IPS=16}~:
+  This option is similar to \parf{ IPS}=14, except that the user supplies the
+  boundary conditions. Thus this option can be used for 
+  time-integration of parabolic systems subject to 
+  user-defined boundary conditions. For examples see the first runs
+  of demos \filef{ pd1}, \filef{ pd2}, and \filef{ bru}. Note that
+  the space-derivatives of the initial conditions must
+  also be supplied in the user-supplied subroutine \funcf{ stpnt}. 
+  The initial conditions must satisfy the boundary conditions.
+  This option is mainly intended for the detecting stationary solutions.
+%=====================================================================
+ \item[-] \parf{ IPS=17}~: 
+  This option can be used to continue stationary solutions
+  of parabolic systems obtained from an evolution run with \parf{ IPS}=16.
+  For examples see the second runs of demos \filef{ pd1} and \filef{ pd2}.
+\end{itemize}
+%=====================================================================
+ }\\ \hline 
+IRS & 
+
+This constant sets the label of the solution where the computation
+is to be restarted.
+\begin{itemize}
+\item[-] \parf{ IRS=0}~:  
+  This setting is typically used in the first run of a new problem.
+  In this case a starting solution must be defined in the user-supplied
+  subroutine \filef{ stpnt}; see also Section~\ref{sec:Arguments_of_STPNT}.
+  For representative examples of analytical starting solutions 
+  see demos \filef{ ab} and \filef{ frc}.
+  For starting from unlabeled numerical data see the {\it @fc} command
+  (Section~\ref{sec:command_mode}) and demos \filef{ lor} and \filef{ pen}.
+  
+\item[-] \parf{ IRS$>$0}~: 
+  Restart the computation at the previously computed solution with label \parf{ IRS}. 
+  This solution is normally expected to be in the current data-file 
+ \filef{ q.xxx}; see also the {\it @r} and {\it @R} commands in 
+ Section~\ref{sec:command_mode}.
+ Various \AUTO-constants can be modified when restarting.
+\end{itemize}
+\\ \hline 
+ISP & 
+
+This constant controls the detection of branch points,
+period-doubling bifurcations, and torus bifurcations. 
+\begin{itemize}
+\item[-] \parf{ ISP=0}~:  
+  This setting disables the detection of branch points, period-doubling 
+  bifurcations, and torus bifurcations and the computation of 
+  Floquet multipliers.
+\item[-] \parf{ ISP=1}~:  
+  Branch points are detected for algebraic equations, but not for
+  periodic solutions and boundary value problems.
+  Period-doubling bifurcations and torus bifurcations are not located either.
+  However, Floquet multipliers are computed.
+\item[-] \parf{ ISP=2}~: This setting enables the detection of all special 
+ solutions.
+ For periodic solutions and rotations, the choice \parf{ ISP}=2 should be used with
+ care, due to potential inaccuracy in the computation of the
+ linearized Poincar\'e map and possible rapid variation of the
+ Floquet multipliers.
+ The linearized Poincar\'e map always has a multiplier $z=1$.
+ If this multiplier becomes inaccurate
+ then the automatic detection of secondary periodic
+ bifurcations will be discontinued and a
+ warning message will be printed in \filef{ fort.9}.
+ See also Section~\ref{sec:Bifurcations}.
+\item[-] \parf{ ISP=3}~:  
+  Branch points will be detected, but \AUTO will not monitor the 
+  Floquet multipliers. Period-doubling and torus bifurcations will go undetected. 
+  This option is useful for certain problems with non-generic Floquet behavior.
+  The Floquet multipliers will be output to the diagnostic file.
+\end{itemize}
+\\ \hline 
+ISW & 
+
+ This constant controls branch switching at branch points for the case
+ of differential equations.
+ Note that branch switching is automatic for algebraic equations.
+\begin{itemize}
+\item[-] \parf{ ISW=1}~: This is the normal value of \parf{ ISW}.
+\item[-] \parf{ ISW=$-$1}~:
+  If \parf{ IRS} is the label of a branch point or a period-doubling
+  bifurcation then branch switching will be done.
+  For period doubling bifurcations it is recommended that \parf{ NTST} be increased.
+  For examples see Run~2 and Run~3 of demo \filef{ lor}, where branch switching
+  is done at period-doubling bifurcations, and Run~2 and Run~3 of demo \filef{ bvp},
+  where branch switching is done at a transcritical branch point.
+\item[-] \parf{ ISW=2}~:
+  If \parf{ IRS} is the label of a fold, a Hopf bifurcation point, 
+  or a period-doubling or torus bifurcation then a locus of such points will be
+  computed. An additional free parameter must be specified for such 
+  continuations; 
+  see also Section~\ref{sec:Free_parameters}.
+\end{itemize}
+\\ \hline 
+ITMX & 
+
+ The maximum number of iterations allowed in the accurate
+ location of special solutions, such as bifurcations, folds, 
+ and user output points, by M\"uller's method with bracketing.
+ The recommended value is \parf{ ITMX}=8, used in most demos.
+\\ \hline 
+ITNW & 
+
+ The maximum number of combined Newton-Chord iterations.
+ When this maximum is reached, the step will be retried with 
+ half the stepsize.
+ This is repeated until convergence, or until the minimum
+ stepsize is reached. In the latter case the computation of
+ the branch is discontinued and a message printed in \filef{ fort.9}.
+ The recommended value is \parf{ ITNW}=5, but \parf{ ITNW}=7 may be used for 
+ ``difficult'' problems, for example, 
+ demos \filef{ spb}, \filef{ chu}, \filef{ plp}, etc.
+\\ \hline 
+JAC & 
+
+ Used to indicate whether derivatives are supplied by the user
+ or to be obtained by differencing~:
+\begin{itemize}
+\item[-] \parf{ JAC=0}~: 
+  No derivatives are given by the user. (Most demos use \parf{ JAC}=0.)
+\item[-] \parf{ JAC=1}~:  
+  Derivatives with respect to state- and problem-parameters are given 
+  in the user-supplied subroutines 
+  \funcf{ func}, \funcf{ bcnd}, \funcf{ icnd} and \funcf{ fopt}, where 
+  applicable.  This may be necessary for sensitive problems. 
+  It is also recommended for computations in which \AUTO generates 
+  an extended system, for example, when \parf{ ISW}=2.
+
+  (Demos \filef{ int}, \filef{ dd2}, \filef{ obt}, \filef{ plp}, \filef{ ops}.)
+
+  (For \parf{ ISW} see Section~\ref{sec:ISW}.) 
+\end{itemize}
+\\ \hline 
+MXBF & 
+
+ This constant, which is effective for algebraic problems only,
+ sets the maximum number of bifurcations to be treated.
+ Additional branch points will be noted, but the corresponding bifurcating
+ branches will not be computed.
+ If \parf{ MXBF} is positive then the bifurcating branches of the first \parf{ MXBF}
+  branch points will be traced out in both directions.
+ If \parf{ MXBF} is negative then the bifurcating branches of the first 
+ $\abs{\parf{ MXBF}}$ branch points will be traced out in only one direction. 
+\\ \hline 
+NBC & 
+
+ The number of boundary conditions as specified in the user-supplied
+ subroutine \funcf{ bcnd}. 
+
+ (Demos \filef{ exp}, \filef{ kar}.)
+\\ \hline 
+NCOL & 
+
+ The number of Gauss collocation points per mesh interval,
+ (2 $\le$ \parf{ NCOL} $\le$ 7).
+ \parf{ NCOL} remains fixed during any given run, but can be changed
+ when restarting at a previously computed solution.
+ The choice \parf{ NCOL}=4, used in most demos, is recommended.
+ If \parf{ NDIM} is ``large'' and the solutions ``very smooth'' then
+ \parf{ NCOL}=2 may be appropriate.
+\\ \hline 
+NDIM & 
+
+ Dimension of the system of equations as specified in the user-supplied
+ subroutine \funcf{ func}.
+\\ \hline 
+NICP & 
+
+
+%AUTODOC ICP START
+%AUTODOC ICP SHORT
+% ICP designates the free parameters.
+%AUTODOC ICP FULL
+% For each equation type and for each continuation calculation there is a
+% typical (generic) number of problem parameters that must be allowed to
+% vary, in order for the calculations to be properly posed. The constant NICP
+% indicates how many free parameters have been specified, while the array ICP
+% actually designates these free parameters. The parameter that appears first
+% in the ICP list is called the principal continuation parameter.  Specific
+% examples and special cases are described in the manual.
+%AUTODOC ICP TEX
+
+For each equation type and for each continuation calculation there is
+a typical (``generic'') number of problem parameters that must be 
+allowed to vary, in order for the calculations to be properly posed.
+The constant \parf{ NICP} indicates how many free parameters have been specified,
+while the array \parf{ ICP} actually designates these free parameters.
+The parameter that appears first in the \parf{ ICP} list is called the 
+``principal continuation parameter''.
+Specific examples and special cases are described below.
+%AUTODOC ICP END
+\\ \hline 
+NINT & 
+
+ The number of integral conditions as specified in the user-supplied
+ subroutine \funcf{ icnd}. 
+
+(Demos \filef{ int}, \filef{ lin}, \filef{ obv}.)
+\\ \hline 
+NMX & 
+
+The maximum number of steps to be taken along any branch.
+\\ \hline 
+NPR & 
+
+ This constant can be used to regularly write \filef{ fort.8} plotting and restart 
+ data.  
+ IF \parf{ NPR}$>$0 then such output is written every \parf{ NPR} steps.
+ IF \parf{ NPR}$=$0 or if \parf{ NPR}$\ge$\parf{ NMX} then no such output is written.
+ Note that special solutions, such as branch points, folds, end points, etc., 
+ are always written in \filef{ fort.8}.
+ Furthermore, one can specify parameter values where plotting and restart 
+ data is to be written; see Section~\ref{sec:NUZR}.
+ For these reasons, and to limit the output volume, it is recommended that
+ \parf{ NPR} output be kept to a minimum.
+\\ \hline 
+NTHL & 
+
+By default, the pseudo-arclength stepsize includes all state variables
+(or state functions) and all free parameters.
+Under certain circumstances one may want to modify the weight accorded 
+to individual parameters in the definition of stepsize.
+For this purpose, \parf{ NTHL} defines the number of parameters whose weight 
+is to be modified.
+If \parf{ NTHL}=0 then all weights will have default value 1.0~.
+If \parf{ NTHL}$>$0 then one must enter \parf{ NTHL} pairs,
+             ~{\it Parameter Index} ~ {\it Weight}~,
+with each pair on a separate line.
+
+For example, for the computation of periodic solutions it is 
+recommended that the period not be included in the pseudo-arclength 
+continuation stepsize, in order to avoid period-induced limitations 
+on the stepsize near orbits of infinite period. 
+This exclusion can be accomplished by setting \parf{ NTHL=1}, with, 
+on a separate line, the pair ~ 11 ~ 0.0 ~.
+Most demos that compute periodic solutions use this option;
+see for example demo \filef{ ab}.
+\\ \hline 
+NTHU & 
+
+Under certain circumstances one may want to modify the weight accorded 
+to individual state variables (or state functions) in the definition 
+of stepsize.
+For this purpose, \parf{ NTHU} defines the number of states whose weight 
+is to be modified.
+If \parf{ NTHU}=0 then all weights will have default value 1.0~.
+If \parf{ NTHU}$>$0 then one must enter \parf{ NTHU} pairs,
+             ~{\it State Index} ~ {\it Weight}~,
+with each pair on a separate line.
+At present none of the demos use this option.
+\\ \hline 
+NTST & 
+
+ The number of mesh intervals used for discretization.
+ \parf{ NTST} remains fixed during any particular run, but can be changed
+ when restarting. 
+ Recommended value of \parf{ NTST} : As small as possible to maintain convergence. 
+ 
+ (Demos \filef{ exp}, \filef{ ab}, \filef{ spb}.)
+
+ (For mesh adaption see \parf{IAD} in Section~\ref{sec:IAD}.)
+\\ \hline 
+NUZR & 
+
+ This constant allows the setting of parameter values at which labeled plotting 
+ and restart information is to be written in the \filef{ fort.8} output-file.
+ Optionally, it also allows the computation to terminate at such a point.
+
+\begin{itemize}
+\item[-]
+ Set \parf{ NUZR}=0 if no such output is needed. Many demos use this setting.
+\item[-]
+ If \parf{ NUZR}$>$0 then one must enter \parf{ NUZR} pairs,
+            ~{\it Parameter-Index} ~ {\it Parameter-Value}~,
+ with each pair on a separate line, to designate the parameters and the parameter
+ values at which output is to be written.
+ For examples see demos \filef{ exp}, \filef{ int}, and \filef{ fsh}.
+\item[-]
+ If such a parameter index is preceded by a minus sign then the computation will
+ terminate at such a solution point.
+ (Demos \filef{ pen} and \filef{ bru}.)
+\end{itemize}
+
+Note that \filef{ fort.8} output can also be written at selected values of 
+overspecified parameters. For an example see demo \filef{ pvl}.
+For details on overspecified parameters see 
+Section~\ref{sec:Parameter_over_specification}.
+\\ \hline 
+NWTN & 
+
+ After \parf{ NWTN} Newton iterations the Jacobian is frozen, i.e.,
+ \AUTO uses full Newton for the first \parf{ NWTN} iterations
+ and the Chord method for iterations \parf{ NWTN}+1 to \parf{ ITNW}.
+ The choice \parf{ NWTN}=3 is strongly recommended and used in most demos.
+ Note that this constant is only effective for ODEs, i.e., for solving
+ the piecewise polynomial collocation equations.
+ For algebraic systems \AUTO always uses full Newton.
+\\ \hline 
+RL0 & 
+
+ The lower bound on the principal continuation parameter.
+ (This is the parameter which appears first in the \parf{ ICP} list;
+ see Section~\ref{sec:ICP}.). 
+\\ \hline 
+RL1 & 
+
+ The upper bound on the principal continuation parameter. 
+\\ \hline 
+\end{longtable}
+}
+\end{document}

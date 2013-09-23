@@ -1,0 +1,137 @@
+%==============================================================================
+%==============================================================================
+\chapter{ The Graphics Program PLAUT.} \label{ch:PLAUT}
+%==============================================================================
+%==============================================================================
+{\cal PLAUT} can be used to extract graphical
+information from the \AUTO output-files \filef{ fort.7} and \filef{ fort.8},
+or from the corresponding data-files \filef{ b.xxx} and \filef{ s.xxx}.
+To invoke {\cal PLAUT}, use the the {\it @p} command defined in 
+Section~\ref{sec:command_mode}.
+The {\cal PLAUT} window (a Tektronix window) will appear, in which {\cal PLAUT}
+commands can be entered.
+FIXME:  This is not correct anymore
+For examples of using {\cal PLAUT} see the tutorial demo \filef{ ab}, in particular,
+Sections~\ref{sec:Tutorial_plotting} and \ref{sec:Tutorial_plotting_2p}.
+See also demo \filef{ pp2} in Section~\ref{sec:Demos_pp2}.
+
+
+\section{ Basic {\cal PLAUT}-Commands.} \label{sec:main_PLAUT_commands}
+The principal {\cal PLAUT}-commands are 
+\begin{itemize}
+\item[\commandf{ bd0}]~:
+  This command is useful for an initial overview of the bifurcation
+  diagram as stored in \filef{ fort.7}.
+  If you have not previously selected one of the default options 
+  {\it d0, d1, d2, d3}, or {\it d4} described below then you will be asked
+  whether you want solution labels, grid lines, titles, or labeled axes.
+
+\item[\commandf{ bd}]~:
+  This command is the same as the {\it bd0} command, except that you will be
+  asked to enter the minimum and the maximum of the horizontal and 
+  vertical axes.
+  This is useful for blowing up portions of a previously displayed
+  bifurcation diagram.
+
+\item[\commandf{ ax}]~:
+  With the {\it ax} command you can select any pair of columns of real
+  numbers from \filef{ fort.7} as horizontal and vertical axis in the
+  bifurcation diagram. (The default is columns 1 and 2).
+  To determine what these columns represent, one can look at the
+  screen ouput of the corresponding \AUTO run, or one can inspect the
+  column headings in \filef{ fort.7}.
+  
+\item[\commandf{ 2d}]~:
+  Upon entering the {\it 2d} command, the labels of all solutions stored 
+  in \filef{ fort.8} will be listed and you can select one or more of these 
+  for display. The number of solution components is also listed
+  and you will be prompted to select two of these as horizontal and
+  vertical axis in the display.
+  Note that the first component is typically the independent 
+  time or space variable scaled to the interval [0,1].
+
+\item[\commandf{ sav}]~:
+  To save the displayed plot in a file. You will be asked to enter
+  a file name. Each plot must be stored in a separate new file.
+  The plot is stored in compact {\cal PLOT10} format, which can be converted to 
+  {\cal PostScript} format with the \AUTO-commands \filef{ @ps} and \filef{ @pr};
+  see Section~\ref{sec:Printing_PLAUT_files}.
+
+\item[\commandf{ cl}]~:  To clear the graphics window.
+
+\item[\commandf{ lab}]~:
+  To list the labels of all solutions stored in \filef{ fort.8}.
+  Note that {\cal PLAUT} requires all labels to be distinct.
+  In case of multiple labels you can use the \AUTO
+  command {\it @lb} to relabel solutions in
+  \filef{ fort.7} and \filef{ fort.8}.
+
+\item[\commandf{ end}]~:  To end execution of {\cal PLAUT}.
+\end{itemize}
+
+
+\section{ Default Options.} \label{sec:PLAUT_default}
+After entering the commands {\it bd0, bd}, or {\it 2d}, you will be asked whether you 
+want solution labels, grid lines, titles, or axes labels.
+For quick plotting it is convenient to bypass these selections.
+This can be done by the default commands {\it d0, d1, d2, d3}, or {\it d4} below.
+These can be entered as a single command 
+or they can be entered as prefixes in the {\it bd0} and {\it bd} commands. 
+Thus, for example, one can enter the command {\it d1bd0}.  
+
+\begin{itemize}
+\item[\commandf{ d0}]~:  Use solid curves, showing solution labels and symbols.  
+\item[\commandf{ d1}]~:  Use solid curves, except use dashed curves for unstable
+  solutions and for solutions of unknown stability.
+  Show solution labels and symbols.
+\item[\commandf{ d2}]~:  As {\it d1}, but with grid lines.  
+\item[\commandf{ d3}]~:  As {\it d1}, except for periodic solutions use 
+  solid circles if stable,
+  and open circles if unstable or if the stability
+  is unknown.
+\item[\commandf{ d4}]~:  Use solid curves, without labels and symbols.  
+\end{itemize}
+
+If no default option {\it d0, d1, d2, d3}, or {\it d4} has been selected 
+or if you want to override a default feature,
+then the the following commands can be used.
+These can be entered as individual commands or as prefixes.
+For example, one can enter the command {\it sydpbd0}.
+
+\begin{itemize}
+\item[\commandf{ sy}]~:  Use symbols for special solution points, for example,
+  open square = branch point,
+  solid square = Hopf bifurcation.
+\item[\commandf{ dp}]~:  ``Differential Plot'', i.e., show stability of the 
+  solutions. Solid curves represent stable solutions.
+  Dashed curves are used for unstable
+  solutions and for solutions of unknown stability.
+  For periodic solutions use solid/open circles
+  to indicate stability/instability (or unknown
+  stability).
+\item[\commandf{ st}]~:  Set up titles and axes labels. 
+\item[\commandf{ nu}]~:  Normal usage (reset special options). 
+\end{itemize}
+
+
+\section{ Other {\cal PLAUT}-Commands.} \label{sec:Other_PLAUT_commands}
+The full {\cal PLAUT} program has several other capabilities, for example,
+
+\begin{itemize}
+\item[\commandf{ scr}]~:  To change the diagram size.
+\item[\commandf{ rss}]~:  To change the size of special solution point symbols.
+\end{itemize}
+
+
+\section{ Printing {\cal PLAUT} Files.} \label{sec:Printing_PLAUT_files}
+\begin{itemize}
+\item[\commandf{ @ps}]~:
+  Type {\it @ps fig.1} to convert a saved {\cal PLAUT} file \filef{ fig.1} 
+  to {\cal PostScript} format
+  in \filef{ fig.1.ps}.
+\item[\commandf{ @pr}]~:
+  Type {\it @pr fig.1} to convert a {\cal PLAUT} file \filef{ fig.1} to 
+  {\cal PostScript} format and to
+  print the resulting file \filef{ fig.1.ps}.
+\end{itemize}
+

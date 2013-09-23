@@ -1,0 +1,16 @@
+#!/bin/sh
+CONSTANTS=`echo c.*`
+RCONSTANTS=`echo r.*`
+if ( test "$CONSTANTS" = "c.*" -a "$RCONSTANTS" != "r.*" ) then
+	BIFURCATION=p
+	SOLUTIONS=q
+else
+	BIFURCATION=b
+	SOLUTIONS=s
+fi
+cat fort.7 > $BIFURCATION.$1
+cat fort.8 > $SOLUTIONS.$1
+cat fort.9 > d.$1
+echo "Saving fort.7 as $BIFURCATION.$1 ... done" 
+echo "Saving fort.8 as $SOLUTIONS.$1 ... done" 
+echo "Saving fort.9 as d.$1 ... done" 

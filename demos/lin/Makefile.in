@@ -1,0 +1,66 @@
+#
+#   Makefile		3/1994		Xianjun WANG
+#
+PGM    = lin
+CC     = @CC@
+OPT    = @OPT_FLAG@
+CFLAGS = @CFLAGS@ $(OPT) -I$(AUTO_DIR)/include 
+SRC    = $(PGM).c
+EXE    = $(PGM).exe
+LIBS   = $(AUTO_DIR)/lib/*.o -L$(AUTO_DIR)/lib -lauto_f2c @LIBS@ -lm
+RM     = rm -f
+#
+all: clean $(EXE) run
+#
+$(EXE): $(SRC:.c=.o)
+	$(CC) $(CFLAGS) $(SRC:.c=.o) -o $@ $(LIBS)
+#
+run: first second third
+#
+first:	$(EXE)
+	@echo " "
+	@echo "Demo $(PGM) is started"
+	@echo " "
+	@echo "$(PGM) : first run :  compute trivial solutions and locate eigenvalues"
+	@cp c.$(PGM).1 fort.2
+	@touch fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cp fort.7 b.$(PGM)
+	@cp fort.8 s.$(PGM)
+	@cp fort.9 d.$(PGM)
+	@echo " Saved as *.$(PGM)"
+	@$(RM) fort.*
+#
+second:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : second run : compute a few steps on the bifurcating branch"
+	@cp c.$(PGM).2 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 >> b.$(PGM)
+	@cat fort.8 >> s.$(PGM)
+	@cat fort.9 >> d.$(PGM)
+	@echo " Appended to *.$(PGM)"
+	@$(RM) fort.*
+third:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : third run : compute a 2-parameter curve of eigenvalues"
+	@cp c.$(PGM).3 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 > b.2p
+	@cat fort.8 > s.2p
+	@cat fort.9 > d.2p
+	@echo " Saved as *.2p"
+	@$(RM) fort.*
+	@echo " "
+	@echo "Demo $(PGM) is done"
+ 
+ 
+clean:
+	@echo "Cleaning $(PGM) ..."
+	@cp $(SRC) $(EXE)
+	@$(RM) *.exe *.o b.* s.* d.* fort.* *~ core
+	@cp c.$(PGM).1 c.$(PGM)
+	@echo "Cleaning ... done"
+ 

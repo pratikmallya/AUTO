@@ -1,0 +1,846 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Periodic solutions.} \label{ch:Demos_Periodic}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=lrz======================================================================
+%==============================================================================
+\newpage
+\section{ lrz : The Lorenz Equations.} \label{sec:Demos_lrz}
+This demo computes two symmetric homoclinic orbits in the Lorenz equations
+\begin{equation} \begin{array}{cl}
+  u_1' &=  p_3 (u_2 - u_1), \\
+  u_2' &=  p_1 u_1 - u_2 - u_1 u_3,  \\
+  u_3' &=  u_1 u_2 - p_2 u_3. \\ \end{array} \end{equation}
+Here $p_1$ is the free parameter, and $p_2=8/3$, $p_3=10$.
+The two homoclinic orbits correspond to the final, large period orbits 
+on the two periodic solution branches.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+
+  \commandf{ ! mkdir lrz} & create an empty work directory \\ 
+  \commandf{ cd lrz} & change directory \\
+  \commandf{ demo('lrz')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('lrz')} & load the problem definition \\ 
+  \commandf{ run(c='lrz.1')} & compute stationary solutions \\ 
+  \commandf{ sv('lrz')} & save output-files as \filef{ b.lrz, s.lrz, d.lrz} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lrz.2',s='lrz')} & \parbox[t]{3in}{ compute periodic solutions; the final orbit is near-homoclinic.  Constants changed : {\tt IPS, IRS, NICP, ICP, NMX, NPR, DS} \vspace{0.2cm}} \\ 
+  \commandf{ ap('lrz')} & append the output-files to \filef{ b.lrz, s.lrz, d.lrz} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lrz.3',s='lrz')} & \parbox[t]{3in}{ compute the symmetric periodic solution branch.  Constants changed : {\tt IRS} \vspace{0.2cm}} \\ 
+  \commandf{ ap('lrz')} & append the output-files to \filef{ b.lrz, s.lrz, d.lrz} \\ 
+\hline
+\end{tabular}
+\caption{Commands for running demo \filef{ lrz}.}
+\label{tbl:demo_lrz}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=abc======================================================================
+%==============================================================================
+\section{ abc : The A $\to$ B $\to$ C Reaction.} \label{sec:Demos_abc}
+This demo illustrates the computation of 
+stationary solutions,
+Hopf bifurcations 
+and
+periodic solutions
+in the A $\to$ B $\to$ C reaction 
+(\citename{DoHe:83} \citeyear{DoHe:83}).
+\begin{equation} \begin{array}{cl}
+  u_1 ' &=  -u_1 + p_1 (1-u_1) e^{u_3}, \\
+  u_2 ' &=  -u_2 +  p_1 e^{u_3} ( 1-u_1 - p_5 u_2 ),\\
+  u_3 ' &=  -u_3 - p_3 u_3 + p_1 p_4 e^{u_3}  
+  ( 1-u_1 + p_2 p_5 u_2 ),\\ \end{array} \end{equation}
+with $p_2=1$, $p_3=1.55$, $p_4=8$, and $p_5=0.04$. 
+The free parameter is $p_1$.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\ 
+\hline
+%==============================================================================
+  \commandf{ ! mkdir abc} & create an empty work directory \\ 
+  \commandf{ cd abc} & change directory \\
+  \commandf{ demo('abc')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('abc')} & load the problem definition \\ 
+  \commandf{ run(c='abc.1')} & compute the stationary solution branch with Hopf bifurcations \\ 
+  \commandf{ sv('abc')} & save output-files as \filef{ b.abc, s.abc, d.abc} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='abc.2',s='abc')} & \parbox[t]{3in}{ compute a branch of periodic solutions from the first Hopf point.  Constants changed : {\tt IRS, IPS, NICP, ICP} \vspace{0.2cm}} \\ 
+  \commandf{ ap('abc')} & append the output-files to \filef{ b.abc, s.abc, d.abc} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='abc.3',s='abc')} & \parbox[t]{3in}{  compute a branch of periodic solutions from the second Hopf point.  Constants changed : {\tt IRS, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ ap('abc')} & append the output-files to \filef{ b.abc, s.abc, d.abc} \\ 
+\hline
+\end{tabular}
+\caption{Commands for running demo \filef{ abc}.}
+\label{tbl:demo_abc}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=pp2======================================================================
+%==============================================================================
+\section{ pp2 : A 2D Predator-Prey Model.} \label{sec:Demos_pp2}
+This demo illustrates a variety of calculations.
+The equations, which model a predator-prey system with harvesting, are
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= p_2 u_1 (1 - u_1 ) - u_1 u_2 - p_1 (1-e^{-p_3 u_1}) ,\\
+  u_2 ' &= -u_2  + p_4 u_1 u_2  .\end{array} \end{equation}
+Here $p_1$ is the principal continuation parameter,
+$p_3=5$, $p_4=3$, and, initially,  $p_2=3$.
+For two-parameter computations $p_2$ is also free.
+%The use of {\cal PLAUT} is also illustrated. The saved plots are shown
+%in Figure~\ref{fig:pp2_1} and  Figure~\ref{fig:pp2_2}.
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pp2} & create an empty work directory \\ 
+  \commandf{ cd pp2} & change directory \\ 
+  \commandf{ demo('pp2')} & copy the demo files to the work directory \\ 
+\hline
+%============================================================================== 
+  \commandf{ ld('pp2')} & load the problem definition \\ 
+  \commandf{ run(c='pp2.1')} & 1st run; stationary solutions \\ 
+  \commandf{ sv('pp2')} & save output-files as \filef{ b.pp2, s.pp2, d.pp2} \\ 
+\hline
+%============================================================================== 
+  \commandf{ run(c='pp2.2',s='pp2')} & \parbox[t]{3in}{ 2nd run; restart at a labeled solution.   Constants changed : {\tt IRS, RL1} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pp2')} & append output-files to \filef{ b.pp2, s.pp2, d.pp2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp2.3',s='pp2')} & \parbox[t]{3in}{ 3rd run; periodic solutions.  Constants changed : {\tt IRS, IPS, ILP} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pp2')} & append output-files to \filef{ b.pp2, s.pp2, d.pp2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp2.4',s='pp2')} & \parbox[t]{3in}{ 4th run; restart at a labeled periodic solution.  Constants changed : {\tt IRS, NTST } \vspace{0.2cm}} \\ 
+  \commandf{ ap('pp2')} & append output-files to \filef{ b.pp2, s.pp2, d.pp2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp2.5',s='pp2')} & \parbox[t]{3in}{ 5th run; continuation of folds.  Constants changed : {\tt IRS, IPS, ISW, ICP } \vspace{0.2cm}} \\ 
+  \commandf{ sv('lp')} & save output-files as \filef{ b.lp, s.lp, d.lp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp2.6',s='pp2')} & \parbox[t]{3in}{ 6th run; continuation of Hopf bifurcations.  Constants changed : {\tt IRS} \vspace{0.2cm}} \\ 
+  \commandf{ sv('hb')} & save output-files as \filef{ b.hb, s.hb, d.hb} \\ 
+\hline
+%============================================================================== 
+  \commandf{ run(c='pp2.7',s='pp2')} & \parbox[t]{3in}{ 7th run; continuation of homoclinic orbits.  Constants changed : {\tt IRS, IPS, ISP} \vspace{0.2cm}} \\ 
+  \commandf{ sv('hom')} & save output-files as \filef{ b.hom, s.hom, d.hom} \\
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pp2}.}
+\label{tbl:demo_pp2_1}
+\end{center}
+\end{table}
+
+
+% \begin{table}[htbp]
+% \begin{center}
+% \begin{tabular}{| l | l |}
+% \hline
+%   \AUTO-COMMAND  & ACTION \\
+% \hline
+%   \commandf{ @p pp2} & run {\cal PLAUT} to graph the contents of \filef{ b.pp2} and \filef{ s.pp2}; \\ 
+% \hline
+%   {\cal PLAUT}-COMMAND  & ACTION \\
+% \hline
+%   \commandf{ d1}  & set convenient defaults\\ 
+%   \commandf{ bd0}  & plot the default bifurcation diagram; $L_2$-norm versus $p_1$ \\ 
+%   \commandf{ cl}  & clear the screen  \\
+% \hline
+%   \commandf{ ax}  & select axes \\ 
+%   \commandf{ 1 3}  & select real columns 1 and 3 in \filef{ b.pp2} \\ 
+%   \commandf{ bd0}  & plot the bifurcation diagram; $max~u_1$ versus $p_1$ \\
+%   \commandf{ cl}  & clear the screen  \\
+% \hline
+%   \commandf{ d3}  & choose other default settings \\ 
+%   \commandf{ bd0}  & bifurcation diagram \\ 
+% \hline
+%   \commandf{ bd}  & get blow-up of current bifurcation diagram \\ 
+%   \commandf{ 0~ 1 ~-0.25~ 1} & enter diagram limits  \\
+%   \commandf{ sav}  & save plot (see Figure~\ref{fig:pp2_1})\\
+%   \commandf{ fig.1}  & upon prompt, enter a new file name, e.g., \filef{ fig.1} \\
+%   \commandf{ cl}  & clear the screen  \\
+% \hline
+%   \commandf{ 2d}  & enter 2D mode, for plotting labeled solutions\\ 
+%   \commandf{ 12 13 14}  & select labeled orbits 12, 13, and 14 in \filef{ s.pp2}\\ 
+%   \commandf{ d}  & default orbit display; $u_1$ versus time\\
+% \hline
+%   \commandf{ 1 3}  & select columns 1 and 3 in \filef{ s.pp2} \\
+%   \commandf{ d}  & display the orbits; $u_2$ versus time\\
+% \hline
+%   \commandf{ 2 3}  & select columns 2 and 3 in \filef{ s.pp2} \\
+%   \commandf{ d}  & phase plane display; $u_2$ versus $u_1$\\
+%   \commandf{ sav}  & save plot  (see Figure~\ref{fig:pp2_2})\\
+%   \commandf{ fig.2}  & upon prompt, enter a new file name \\
+%   \commandf{ ex}  & exit from 2D mode  \\
+% \hline
+%   \commandf{ end}  & exit from {\cal PLAUT} \\
+% \hline
+% %==============================================================================
+% \end{tabular}
+% \caption{Plotting commands for demo \filef{ pp2}.}
+% \label{tbl:demo_pp2_2}
+% \end{center}
+% \end{table}
+
+% \begin{figure}[p]
+% \epsfysize 9.0cm
+% \centerline{\epsffile{include/pp21.ps}}
+% \caption{The bifurcation diagram of demo \filef{ pp2}.}
+% \label{fig:pp2_1}
+% \end{figure}
+
+% \begin{figure}[p]
+% \epsfysize 9.0cm
+% \centerline{\epsffile{include/pp22.ps}}
+% \caption{The phase plot of solutions 12, 13, and 14 in demo \filef{ pp2}.}
+% \label{fig:pp2_2}
+% \end{figure}
+
+
+\newpage
+%==============================================================================
+%DEMO=lor======================================================================
+%==============================================================================
+\section{ lor : Starting an Orbit from Numerical Data.} \label{sec:Demos_lor}
+This demo illustrates how to start the computation of a branch of
+periodic solutions from numerical data obtained, for example, from an
+initial value solver.
+As an illustrative application we consider the Lorenz equations
+\begin{equation} \begin{array}{cl}
+  u_1' &=  p_3 (u_2 - u_1), \\
+  u_2' &=  p_1 u_1 - u_2 - u_1 u_3,  \\
+  u_3' &=  u_1 u_2 - p_2 u_3. \\\end{array} \end{equation}
+Numerical simulations with a simple initial value solver show the
+existence of a stable periodic orbit when $p_1=280$, $p_2=8/3$, $p_3=10$.
+Numerical data representing one complete periodic oscillation are
+contained in the file \filef{ lor.dat}. 
+Each row in \filef{ lor.dat} contains four real numbers, namely,
+the time variable $t$, $u_1$, $u_2$ and $u_3$.
+The correponding parameter values are defined in the user-supplied subroutine
+\filef{ stpnt}.
+The \AUTO-command \commandf{us('lor')} then converts the data in \filef{ lor.dat}
+to a labeled
+\AUTO solution (with label~1) in a new file \filef{ s.dat}.
+The mesh will be suitably adapted to the solution, using the number of
+mesh intervals \parf{ NTST} and the number of collocation point per mesh
+interval \parf{ NCOL} specified in the constants-file \filef{ c.lor}.
+(Note that the file \filef{ s.dat} should be used for restart only.
+Do not append new output-files to \filef{ s.dat}, as the command \commandf{us('lor')}
+only creates \filef{ s.dat}, with no corresponding \filef{ b.dat}.)
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir lor} & create an empty work directory \\ 
+  \commandf{ cd lor} & change directory \\
+  \commandf{ demo('lor')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('lor')} & load the problem definition \\ 
+  \commandf{ us('lor')} & convert \filef{ lor.dat} to \AUTO format in \filef{ s.dat} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lor.1',s='dat')} & compute a solution branch, restart from \filef{ s.dat} \\ 
+  \commandf{ sv('lor')} & save output-files as \filef{ b.lor, s.lor, d.lor} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lor.2',s='lor')} & \parbox[t]{3in}{ switch branches at a period-doubling detected in the first run.  Constants changed : {\tt IRS, ISW, NTST} \vspace{0.2cm}} \\ 
+  \commandf{ ap('lor')} & append the output-files to \filef{ b.lor, s.lor, d.lor} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ lor}.}
+\label{tbl:demo_lor}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=frc======================================================================
+%==============================================================================
+\section{ frc : A Periodically Forced System.} \label{sec:Demos_frc}
+This demo illustrates the computation of periodic solutions
+to a periodically forced system.
+In \AUTO this can be done by adding a nonlinear oscillator with
+the desired periodic forcing as one of the solution components.
+An example of such an oscillator is
+\begin{equation} \begin{array}{cl}
+ x'&=x + \beta y - x (x^{2} + y^{2}),  \\
+ y'&=-\beta x + y - y (x^{2} + y^{2}), \\\end{array} \end{equation}
+which has the asymptotically stable solution $x=sin (\beta t)$,
+$y=cos (\beta t)$.
+We couple this oscillator to the Fitzhugh-Nagumo equations~:
+\begin{equation} \begin{array}{cl}
+ v'&=\bigl( F(v) - w \bigr) / \eps,  \\
+ w'&=v - dw - \bigl( b + r \sin(\beta t) \bigr) ,
+\end{array} \end{equation}
+by replacing $\sin(\beta t)$ by $x$.
+Above, $F(v) = v (v-a) (1-v)$ and $a,b,\eps$ and $d$ are fixed.
+The first run is a homotopy from $r=0$, where a solution is known analytically,
+to $r=0.2$.
+Part of the solution branch with $r=0.2$ and varying $\beta$ 
+is computed in the second run.
+For detailed results see 
+\citename{AlDoOt:90} \citeyear{AlDoOt:90}.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir frc} & create an empty work directory \\ 
+  \commandf{ cd frc} & change directory \\
+  \commandf{ demo('frc')} & copy the demo files to the work directory \\
+\hline
+%============================================================================== 
+  \commandf{ ld('frc')} & load the problem definition \\ 
+  \commandf{ run(c='frc.1')} & homotopy to $r=0.2$ \\ 
+  \commandf{ sv('0')} & save output-files as \filef{ b.0, s.0, d.0} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='frc.2',s='0')} & \parbox[t]{3in}{ compute solution branch; restart from \filef{ s.0}.  Constants changed : {\tt IRS, ICP(1), NTST, NMX, DS, DSMAX} \vspace{0.2cm}} \\ 
+  \commandf{ sv('frc')} & save output-files as \filef{ b.frc, s.frc, d.frc} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ frc}.}
+\label{tbl:demo_frc}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=ppp======================================================================
+%==============================================================================
+\section{ ppp :  Continuation of Hopf Bifurcations.} \label{sec:Demos_ppp}
+This demo illustrates the continuation of Hopf bifurcations in a 3-dimensional 
+predator prey model (\citename{Do:84} \citeyear{Do:84}).
+This curve contain branch points, where one locus of Hopf points
+bifurcates from another locus of Hopf points.
+The equations are
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_1(1-u_1) - p_4 u_1 u_2  ,  \\
+  u_2 ' &= -p_2 u_2 + p_4 u_1 u_2 - p_5 u_2 u_3
+  -p_1(1-e^{-p_6 u_2}) \\
+  u_3 ' &= -p_3 u_3  + p_5 u_2 u_3  .  \\  
+\end{array} \end{equation}
+Here $p_2=1/4$,  $p_3=1/2$,  $p_4=3$,  $p_5=3$,  $p_6=5$,
+and $p_1$ is the free parameter.
+In the continuation of Hopf points the parameter $p_4$
+is also free.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir ppp} & create an empty work directory \\ 
+  \commandf{ cd ppp} & change directory \\
+  \commandf{ demo('ppp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('ppp')} & load the problem definition \\ 
+  \commandf{ run(c='ppp.1')} & compute stationary solutions; detect Hopf bifurcations \\ 
+  \commandf{ sv('ppp')} & save output-files as \filef{ b.ppp, s.ppp, d.ppp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ppp.2',s='ppp')} & \parbox[t]{3in}{ compute a branch of periodic solutions.  Constants changed : {\tt IPS, IRS, ICP} \vspace{0.2cm}} \\ 
+  \commandf{ ap('ppp')} & append the output-files to \filef{ b.ppp, s.ppp, d.ppp} \\ 
+\hline
+%==============================================================================
+
+  \commandf{ run(c='ppp.3',s='ppp')} & compute Hopf bifurcation curves \\ 
+  \commandf{ sv('hb')} & save the output-files as \filef{ b.hb, s.hb, d.hb} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ ppp}.}
+\label{tbl:demo_ppp_1}
+\end{center}
+\end{table}
+
+
+\newpage
+%==============================================================================
+%DEMO=plp======================================================================
+%==============================================================================
+\section{ plp : Fold Continuation for Periodic Solutions.} \label{sec:Demos_plp}
+This demo, which corresponds to computations in 
+\citename{DoKeKe:91a} \citeyear{DoKeKe:91a}, shows how one can
+continue a fold on a branch of periodic solution in two parameters.
+The calculation of a locus of Hopf bifurcations is also included.
+The equations, that model a one-compartment activator-inhibitor system 
+(\citename{JPK:80} \citeyear{JPK:80}),
+are given by
+\begin{equation} \begin{array}{cl}
+ s' &= (s_{0} - s) - \rho R (s,a), \\
+ a' &=\alpha (a_{0} - a) - \rho R (s,a), \\
+\end{array} \end{equation}
+where
+$$ R(s,a)={s a \over 1+s+ \kappa s^{2} },
+\qquad \kappa  > 0. $$
+The free parameter is $\rho$.
+In the fold continuation $s_0$ is also free.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir plp} & create an empty work directory \\ 
+  \commandf{ cd plp} & change directory \\
+  \commandf{ demo('plp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('plp')} & load the problem definition \\ 
+  \commandf{ run(c='plp.1')} & 1st run; compute a stationary solution branch and locate HBs \\ 
+  \commandf{ sv('plp')} & save output-files as \filef{ b.plp, s.plp, d.plp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='plp.2',s='plp')} & \parbox[t]{3in}{ compute a branch of periodic solutions and locate a fold.  Constants changed : \parf{ IPS, IRS, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ ap('plp')} & append output-files to \filef{ b.plp, s.plp, d.plp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='plp.3',s='plp')} & \parbox[t]{3in}{ Compute a locus of Hopf bifurcation points.  Constants changed : \parf{ IPS, ICP, ISW, NMX, RL1} \vspace{0.2cm}} \\ 
+  \commandf{ sv('2p')} & save output-files as \filef{ b.2p, s.2p, d.2p} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='plp.4',s='plp')} & \parbox[t]{3in}{ generate starting data for the fold continuation.  Constants changed : \parf{ IPS, IRS, ICP, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ sv('tmp')} & save output-files as \filef{ b.tmp, s.tmp, d.tmp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='plp.5',s='tmp')} & \parbox[t]{3in}{  fold continuation; restart data from \filef{ s.tmp}.  Constants changed : \parf{ IRS, NUZR} \vspace{0.2cm}} \\ 
+  \commandf{ ap('2p')} & append output-files to \filef{ b.2p, s.2p, d.2p} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='plp.6',s='2p')} & \parbox[t]{3in}{ compute an isola of periodic solutions; restart data from \filef{ s.2p}.  Constants changed : \parf{ IRS, ISW, NMX, NUZR } \vspace{0.2cm}} \\ 
+  \commandf{ sv('iso')} & save output-files as \filef{ b.iso, s.iso, d.iso} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ plp}.}
+\label{tbl:demo_plp}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=pp3======================================================================
+%==============================================================================
+\section{ pp3 : Period-Doubling Continuation.} \label{sec:Demos_pp3}
+This demo illustrates the computation of stationary solutions,
+Hopf bifurcations, and periodic solutions, branch switching at a period-doubling
+bifurcation, and the computation of a locus of period-doubling bifurcations.
+The equations model a 3D predator-prey system with harvesting 
+(\citename{Do:84} \citeyear{Do:84}).
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_1(1-u_1) - p_4 u_1 u_2  ,  \\
+  u_2 ' &= -p_2 u_2 + p_4 u_1 u_2 - p_5 u_2 u_3
+  -p_1(1-e^{-p_6 u_2}) \\
+  u_3 ' &= -p_3 u_3  + p_5 u_2 u_3  .  \\\end{array} \end{equation}
+The free parameter is $p_1$, except in the period-doubling 
+continuation, where both $p_1$ and $p_2$ are free.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pp3} & create an empty work directory \\ 
+  \commandf{ cd pp3} & change directory \\
+  \commandf{ demo('pp3')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('pp3')} & load the problem definition \\ 
+  \commandf{ run(c='pp3.1')} & 1st run; stationary solutions \\ 
+  \commandf{ sv('pp3')} & save output-files as \filef{ b.pp3, s.pp3, d.pp3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp3.2',s='pp3')} & \parbox[t]{3in}{ compute a branch of periodic solutions.  Constants changed : \parf{ IRS, IPS, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pp3} & append output-files to \filef{ b.pp3, s.pp3, d.pp3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp3.3',s='pp3')} & \parbox[t]{3in}{ compute the branch bifurcating at the period-doubling.   Constants changed : \parf{ IRS, ISW, NTST} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pp3')} & append output-files to \filef{ b.pp3, s.pp3, d.pp3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp3.4',s='pp3')} & \parbox[t]{3in}{ generate starting data for the period-doubling continuation. Constants changed : \parf{ ISW} \vspace{0.2cm}} \\ 
+  \commandf{ sv('tmp')} & save output-files as \filef{ b.tmp, s.tmp, d.tmp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pp3.5',s='tmp')} & \parbox[t]{3in}{  period-doubling continuation; restart from \filef{ s.tmp}.  Constants changed : \parf{ IRS} \vspace{0.2cm}} \\ 
+  \commandf{ sv('2p')} & save output-files as \filef{ b.2p, s.2p, d.2p} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pp3}.}
+\label{tbl:demo_pp3}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=tor======================================================================
+%==============================================================================
+\section{ tor : Detection of Torus Bifurcations.} \label{sec:Demos_tor}
+This demo uses a model in 
+\citename{FrRLuGaPo:93} \citeyear{FrRLuGaPo:93}
+ to illustrate the detection of a torus bifurcation. 
+It also illustrates branch switching at a secondary periodic bifurcation
+with double Floquet multiplier at $z=1$.
+The computational results also include folds, homoclinic orbits,
+and period-doubling bifurcations.
+Their continuation is not illustrated here;
+see instead the demos \filef{ plp}, \filef{ pp2}, and \filef{ pp3}, respectively.  
+The equations are
+\begin{equation} \begin{array}{cl}
+  x'(t) & = \bigr[ -(\beta+\nu)x + \beta y - a_3 x^3 + b_3 (y-x)^3 \bigr] / r,\\
+  y'(t) &= \beta x - (\beta + \gamma) y - z - b_3 (y-x)^3, \\
+  z'(t) &= y,\end{array} \end{equation}
+where $\gamma=-0.6$, $r=0.6$, $a_3=0.328578$, and $b_3=0.933578$.
+Initially $\nu=-0.9$ and $\beta=0.5$.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir tor} & create an empty work directory \\ 
+  \commandf{ cd tor} & change directory \\
+  \commandf{ demo('tor')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('tor')} & load the problem definition \\ 
+  \commandf{ run(c='tor.1')} & 1st run; compute a stationary solution branch with Hopf bifurcation \\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='tor.2',s='1')} & \parbox[t]{3in}{ compute a branch of periodic solutions; restart from \filef{ s.1}.   Constants changed : \parf{ IPS, IRS } \vspace{0.2cm}} \\ 
+  \commandf{ ap('1')} & append output-files to \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='tor.3',s='1')} & \parbox[t]{3in}{ compute a bifurcating branch of periodic solutions; restart from \filef{ s.1}.  Constants changed : \parf{ IRS, ISW, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ ap('1')} & append output-files to \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ tor}.}
+\label{tbl:demo_tor}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=pen======================================================================
+%==============================================================================
+\section{ pen : Rotations of Coupled Pendula.} \label{sec:Demos_pen}
+This demo illustrates the computation of rotations, i.e., solutions that
+are periodic, modulo a phase gain of an even multiple of $\pi$.
+\AUTO checks the starting data for components with such a phase gain
+and, if present, it will automatically adjust the computations accordingly.
+The model equations, a system of two coupled  pendula, 
+(\citename{DoArOt:91} \citeyear{DoArOt:91}),
+are given by
+\begin{equation} \begin{array}{cl}
+ & \phi_1'' + \eps \phi_1' + \sin \phi_1 
+  = I + \gamma(\phi_2-\phi_1), \\
+ & \phi_2'' + \eps \phi_2' + \sin \phi_2 
+  = I + \gamma(\phi_1-\phi_2) ,\\
+\end{array} \end{equation}
+or, in equivalent first order form,
+\begin{equation} \begin{array}{cl}
+ & \phi_1'  =  \psi_1, \\
+ & \phi_2'  =  \psi_2, \\
+ & \psi_1'  = - \eps \psi_1 - \sin \phi_1 + I + \gamma(\phi_2-\phi_1), \\
+ & \psi_2'  = - \eps \psi_2 - \sin \phi_2 + I + \gamma(\phi_1-\phi_2).\\
+\end{array} \end{equation}
+Throughout $\gamma=0.175$. Initially, $\eps=0.1$ and $I=0.4$.
+
+Numerical data representing one complete rotation are
+contained in the file \filef{ pen.dat}. 
+Each row in \filef{ pen.dat} contains five real numbers, namely,
+the time variable $t$, $\phi_1$, $\phi_2$, $\psi_1$ and $\psi_2$.
+The correponding parameter values are defined in the user-supplied subroutine
+\funcf{ stpnt}.
+
+Actually, in this example, a scaled time variable $t$ is given in \filef{ pen.dat}. 
+For this reason the period (\parf{ PAR(11)}) is also set in \funcf{ stpnt}.
+Normally \AUTO would automatically set the period according to
+the data in \filef{ pen.dat}.
+
+The \AUTO-command \commandf{us('pen')} converts the data in \filef{ pen.dat}
+to a labeled
+\AUTO solution (with label~1) in a new file \filef{ s.dat}.
+The mesh will be suitably adapted to the solution, using the number of
+mesh intervals \parf{ NTST} and the number of collocation point per mesh
+interval \parf{ NCOL} specified in the constants-file \filef{ c.pen}.
+(Note that the file \filef{ s.dat} should be used for restart only.
+Do not append new output-files to \filef{ s.dat}, as the command \commandf{us('pen')}
+only creates \filef{ s.dat}, with no corresponding \filef{ b.dat}.)
+
+The first run, with $I$ as free problem parameter,
+starts from the converted solution with label~1 in \filef{ pen.dat}.
+A period-doubling bifurcation is located, and the period-doubled branch
+is computed in the second run.
+Two branch points are located, and the bifurcating
+branches are traced out in the third and fourth run, respectively.
+The fifth run generates starting data for the subsequent computation of
+a locus of period-doubling bifurcations.
+The actual computation is done in the sixth run, with $\eps$ and $I$
+as free problem parameters.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pen} & create an empty work directory \\ 
+  \commandf{ cd pen} & change directory \\
+  \commandf{ demo('pen')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('pen')} & load the problem definition \\ 
+  \commandf{ us('pen')} & convert \filef{ pen.dat} to \AUTO format in \filef{ s.dat} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pen.1',s='dat')} & locate a period doubling bifurcation; restart from \filef{ s.dat} \\ 
+  \commandf{ sv('pen')} & save output-files as \filef{ b.pen, s.pen, d.pen} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pen.2',s='pen')} & \parbox[t]{3in}{ a branch of  period-doubled (and out-of-phase) rotations.   Constants changed : \parf{ IPS, NTST, ISW, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pen')} & append output-files tp \filef{ b.pen, s.pen, d.pen} \\ 
+\hline
+%============================================================================== 
+  \commandf{ run(c='pen.3',s='pen')} & \parbox[t]{3in}{  a secondary bifurcating branch (without bifurcation detection).  Constants changed : \parf{ IRS, ISP} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pen')} & append output-files to \filef{ b.pen, s.pen, d.pen} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pen.4',s='pen')} & \parbox[t]{3in}{  another secondary bifurcating branch (without bifurcation detection).  Constants changed : \parf{ IRS} \vspace{0.2cm}} \\ 
+  \commandf{ ap('pen')} & append output-files to \filef{ b.pen, s.pen, d.pen} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pen.5',s='pen')} & \parbox[t]{3in}{  generate starting data for period doubling continuation.  Constants changed : \parf{ IRS, ICP, ICP, ISW, NMX} \vspace{0.2cm}} \\ 
+  \commandf{ sv('t')} & save output-files as \filef{ b.t, s.t, d.t} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pen.6',s='t')} & \parbox[t]{3in}{  compute a locus of period doubling bifurcations; restart from \filef{ s.t}.  Constants changed : \parf{ IRS} \vspace{0.2cm}} \\ 
+  \commandf{ sv('pd')} & save output-files as \filef{ b.pd, s.pd, d.pd} \\ 
+%\hline
+%==============================================================================
+%%  \commandf{ @pn pen} & run an animation program to view the solutions in \filef{ s.pen} \\ 
+%%  & (on SGI machines only; see also the file \filef{ auto/2000/pendula/README}).
+%  \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pen}.}
+\label{tbl:demo_pen}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=chu======================================================================
+%==============================================================================
+\section{ chu :  A Non-Smooth System (Chua's Circuit).} \label{sec:Demos_chu}
+Chua's circuit 
+is one of the simplest electronic devices to exhibit complex behavior. 
+For related calculations see
+\citename{KhRoCh:93} \citeyear{KhRoCh:93}.
+The equations modeling the circuit are
+\begin{equation} \begin{array}{cl}
+ u_1' &=  \alpha \bigl[~ u_2 - h(u_1) ~\bigr]~,\\ 
+ u_2' &=  u_1 - u_2 + u_3~, \\  
+ u_3' &=  - \beta~ u_2~,  
+\end{array} \end{equation}
+where
+$$ h(x) = a_1 x + {1 \over 2}~ (a_0 - a_1) ~
+  \bigl\{ \abs{x+1} -  \abs{x-1} \bigr\}~,$$
+and where we take
+$\beta = 14.3$, $a_0 = - 1/7$, $a_1 = 2/7$.
+
+Note that $h(x)$ is not a smooth function, and hence the solution 
+to the equations  may have non-smooth derivatives.
+However, for the orthogonal collocation method to attain its optimal accuracy,
+it is necessary that the solution be sufficiently smooth.
+Moreover, the adaptive mesh selection strategy will fail
+if the solution or one of its lower order derivatives has discontinuities.
+For these reasons  we use the smooth approximation
+$$ \abs{x} ~\approx~ {2 x \over \pi } ~ {\rm arctan}(Kx),$$
+which get better as $K$ increases.
+In the numerical calculations below we use $K = 10$.
+The free parameter is $\alpha$.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir chu} & create an empty work directory \\ 
+  \commandf{ cd chu} & change directory \\
+  \commandf{ demo('chu')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('chu')} & load the problem definition \\ 
+  \commandf{ run(c='chu.1')} & 1st run; stationary solutions \\ 
+  \commandf{ sv('chu')} & save output-files as \filef{ b.chu, s.chu, d.chu} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='chu.2',s='chu')} & \parbox[t]{3in}{ 2nd run; periodic solutions, with detection of period-doubling.  constants changed : \parf{ IPS, IRS, ICP, ICP} \vspace{0.2cm}} \\ 
+  \commandf{ ap('chu')} & append the output-files to \filef{ b.chu, s.chu, d.chu} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ chu}.}
+\label{tbl:demo_chu}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=phs======================================================================
+%==============================================================================
+\section{ phs : Effect of the Phase Condition.} \label{sec:Demos_phs}
+This demo illustrates the effect of the phase condition 
+on the computation of periodic solutions.
+We consider the differential equation
+\begin{equation} \begin{array}{cl}
+ u_1'&= \lambda u_1 - u_2,  \\
+ u_2'&= u_1 (1-u_1) .  \\
+\end{array} \end{equation}
+This equation has a Hopf bifurcation from the trivial solution at $\lambda=0$. 
+The bifurcating branch of periodic solutions
+is vertical and along it the period increases monotonically.
+The branch terminates in a homoclinic orbit containing the
+saddle point $(u_1,u_2)=(1,0)$.
+Graphical inspection of the computed periodic orbits,
+for example $u_1$ versus the scaled time variable $t$,
+shows how the phase condition has the effect of keeping the ``peak'' 
+in the solution in the same location.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir phs} & create an empty work directory \\ 
+  \commandf{ cd phs} & change directory \\
+  \commandf{ demo('phs')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('phs')} & load the problem definition \\ 
+  \commandf{ run(c='phs.1')} & detect Hopf bifurcation \\ 
+  \commandf{ sv('phs')} & save output-files as \filef{ b.phs, s.phs, d.phs} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='phs.2',s='phs')} & \parbox[t]{3in}{ compute periodic solutions. Constants changed : \parf{ IRS, IPS, NPR} \vspace{0.2cm}} \\ 
+  \commandf{ ap('phs')} & append output-files to \filef{ b.phs, s.phs, d.phs} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ phs}.}
+\label{tbl:demo_phs}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=ivp======================================================================
+%==============================================================================
+\section{ ivp :  Time Integration with Euler's Method.} \label{sec:Demos_ivp}
+This demo uses Euler's method to locate a stationary solution of the
+following predator-prey system with harvesting~:
+
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= p_2 u_1 (1 - u_1 ) - u_1 u_2 - p_1 (1-e^{-p_3 u_1}) ,\\
+  u_2 ' &= -u_2  + p_4 u_1 u_2  ,\\\end{array} \end{equation}
+where all problem parameters have a fixed value.
+The equations are the same as those in demo \filef{ pp2}.
+The continuation parameter is the independent time variable, namely \parf{ PAR(14)}.
+
+Note that Euler time integration is only first order accurate, so that
+the time step must be sufficiently small to ensure correct results.
+Indeed, this option has been added only as a convenience, and should 
+generally be used only to locate stationary states.
+Note that the \AUTO-constants \parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX}
+control the step size
+in the space consisting of time, here \parf{ PAR(14)}, and the state vector,
+here $(u_1,u_2)$.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir ivp} & create an empty work directory \\ 
+  \commandf{ cd ivp} & change directory \\
+  \commandf{ demo('ivp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('ivp')} & load the problem definition \\ 
+  \commandf{ run(c='ivp.1')} & time integration \\ 
+  \commandf{ sv('ivp')} & save output-files as \filef{ b.ivp, s.ivp, d.ivp} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ ivp}.}
+\label{tbl:demo_ivp}
+\end{center}
+\end{table}
+

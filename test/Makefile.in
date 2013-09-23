@@ -1,0 +1,93 @@
+#
+#   Makefile   3/1994		Xianjun WANG
+#
+SHELL=/bin/sh
+#
+DemoDir=../demos
+#
+DIR1=               \
+     $(DemoDir)/pp2 \
+     $(DemoDir)/exp \
+     $(DemoDir)/int \
+     $(DemoDir)/dd2 \
+     $(DemoDir)/opt \
+     $(DemoDir)/lin \
+     $(DemoDir)/bvp \
+     $(DemoDir)/pp3 \
+     $(DemoDir)/wav \
+     $(DemoDir)/plp
+#
+DIR2=               \
+     $(DemoDir)/ab  \
+     $(DemoDir)/abc \
+     $(DemoDir)/brc \
+     $(DemoDir)/brf \
+     $(DemoDir)/bru \
+     $(DemoDir)/bvp \
+     $(DemoDir)/chu \
+     $(DemoDir)/cir \
+     $(DemoDir)/dd2 \
+     $(DemoDir)/enz \
+     $(DemoDir)/exp \
+     $(DemoDir)/ext \
+     $(DemoDir)/ezp \
+     $(DemoDir)/frc \
+     $(DemoDir)/fsh \
+     $(DemoDir)/int \
+     $(DemoDir)/ivp \
+     $(DemoDir)/kar \
+     $(DemoDir)/kpr \
+     $(DemoDir)/lin \
+     $(DemoDir)/lor \
+     $(DemoDir)/lrz \
+     $(DemoDir)/mtn \
+     $(DemoDir)/nag \
+     $(DemoDir)/non \
+     $(DemoDir)/obv \
+     $(DemoDir)/ops \
+     $(DemoDir)/opt \
+     $(DemoDir)/pd1 \
+     $(DemoDir)/pd2 \
+     $(DemoDir)/pen \
+     $(DemoDir)/phs \
+     $(DemoDir)/plp \
+     $(DemoDir)/pp2 \
+     $(DemoDir)/pp3 \
+     $(DemoDir)/ppp \
+     $(DemoDir)/pvl \
+     $(DemoDir)/rev \
+     $(DemoDir)/san \
+     $(DemoDir)/she \
+     $(DemoDir)/spb \
+     $(DemoDir)/stw \
+     $(DemoDir)/tim \
+     $(DemoDir)/tor \
+     $(DemoDir)/wav
+#
+DIR3=               \
+     $(DemoDir)/san \
+     $(DemoDir)/mtn \
+     $(DemoDir)/kpr \
+     $(DemoDir)/cir \
+     $(DemoDir)/she \
+     $(DemoDir)/rev 
+#
+selec:
+	@for d in ${DIR1}; do \
+	cd $$d; make; make clean; cd ..; \
+	done
+#
+all:
+	@for d in ${DIR2}; do \
+	cd $$d; make; make clean; cd ..; \
+	done
+#
+hom:
+	@for d in ${DIR3}; do \
+	cd $$d; make; make clean; cd ..; \
+	done
+#
+clean:
+	@for d in ${DIR2}; do \
+	cd $$d; echo `pwd`; $(MAKE) clean; cd ..; \
+	done

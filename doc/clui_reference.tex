@@ -1,0 +1,336 @@
+\subsection{commandAppend} \label{sec:clui_ref_commandAppend}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Append data files.\section*{Description}
+
+    Type commandAppend('xxx') to append the output-files fort.7, fort.8,
+    fort.9, to existing data-files s.xxx, b.xxx, and d.xxx (if you are
+    using the default filename templates).
+
+    Type commandAppend('xxx','yyy') to append existing data-files s.xxx, b.xxx,
+    and d.xxx to data-files s.yyy, b.yyy, and d.yyy (if you are using
+    the default filename templates).
+    \section*{Aliases}
+ap append \medskip\hrule\end{minipage}\subsection{commandCat} \label{sec:clui_ref_commandCat}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the contents of a file\section*{Description}
+
+    Type 'commandCat xxx' to list the contents of the file 'xxx'.  This calls the
+    Unix function 'cat' for reading the file.  
+    \section*{Aliases}
+cat \medskip\hrule\end{minipage}\subsection{commandCd} \label{sec:clui_ref_commandCd}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Change directories.\section*{Description}
+    
+    Type 'commandCd xxx' to change to the directory 'xxx'.  This command
+    understands both shell variables and home directory expansion.
+    \section*{Aliases}
+cd \medskip\hrule\end{minipage}\subsection{commandClean} \label{sec:clui_ref_commandClean}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Clean the current directory.\section*{Description}
+
+    Type commandClean() to clean the current directory.  This command will
+    delete all files of the form fort.*, *.o, and *.exe.
+    \section*{Aliases}
+clean cl \medskip\hrule\end{minipage}\subsection{commandCopyAndLoadDemo} \label{sec:clui_ref_commandCopyAndLoadDemo}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Copy a demo into the current directory and load it.\section*{Description}
+
+    Type commandCopyAndLoadDemo('xxx') to copy all files from auto/2000/demos/xxx to the
+    current user directory.  Here 'xxx' denotes a demo name; e.g.,
+    'abc'.  Note that the 'dm' command also copies a Makefile to the
+    current user directory. To avoid the overwriting of existing
+    files, always run demos in a clean work directory.  NOTE: This
+    command automatically performs the commandRunnerLoadName command
+    as well.
+    \section*{Aliases}
+dm demo \medskip\hrule\end{minipage}\subsection{commandCopyDataFiles} \label{sec:clui_ref_commandCopyDataFiles}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Copy data files.\section*{Description}
+
+    Type commandCopyDataFiles('xxx','yyy') to copy the data-files c.xxx, d.xxx, b.xxx,
+    and h.xxx to c.yyy, d.yyy, b.yyy, and h.yyy (if you are using the
+    default filename templates).
+    \section*{Aliases}
+copy cp \medskip\hrule\end{minipage}\subsection{commandCopyDemo} \label{sec:clui_ref_commandCopyDemo}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Copy a demo into the current directory.\section*{Description}
+
+    Type commandCopyDemo('xxx') to copy all files from auto/2000/demos/xxx to the
+    current user directory.  Here 'xxx' denotes a demo name; e.g.,
+    'abc'.  Note that the 'dm' command also copies a Makefile to the
+    current user directory. To avoid the overwriting of existing
+    files, always run demos in a clean work directory.
+    \section*{Aliases}
+copydemo \medskip\hrule\end{minipage}\subsection{commandCopyFortFiles} \label{sec:clui_ref_commandCopyFortFiles}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Save data files.\section*{Description}
+
+    Type commandCopyFortFiles('xxx') to save the output-files fort.7, fort.8, fort.9,
+    to b.xxx, s.xxx, d.xxx (if you are using the default filename
+    templates).  Existing files with these names will be overwritten.
+    \section*{Aliases}
+sv save \medskip\hrule\end{minipage}\subsection{commandCreateGUI} \label{sec:clui_ref_commandCreateGUI}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Show AUTOs graphical user interface.\section*{Description}
+
+    Type commandCreateGUI() to start AUTOs graphical user interface.
+    
+    NOTE: This command is not implemented yet.
+    \section*{Aliases}
+gui \medskip\hrule\end{minipage}\subsection{commandDeleteDataFiles} \label{sec:clui_ref_commandDeleteDataFiles}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Delete data files.\section*{Description}
+
+    Type commandDeleteDataFiles('xxx') to delete the data-files d.xxx, b.xxx, and s.xxx
+    (if you are using the default filename templates).
+    \section*{Aliases}
+delete dl \medskip\hrule\end{minipage}\subsection{commandDeleteFortFiles} \label{sec:clui_ref_commandDeleteFortFiles}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Clear the current directory of fort files.\section*{Description}
+
+    Type commandDeleteFortFiles() to clean the current directory.  This command will
+    delete all files of the form fort.*.
+    \section*{Aliases}
+df deletefort \medskip\hrule\end{minipage}\subsection{commandDouble} \label{sec:clui_ref_commandDouble}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Double a solution.\section*{Description}
+
+    Type commandDouble() to double the solution in 'fort.7' and 'fort.8'.
+
+    Type commandDouble('xxx') to double the solution in b.xxx and s.xxx (if you
+    are using the default filename templates).
+    \section*{Aliases}
+double db \medskip\hrule\end{minipage}\subsection{commandInteractiveHelp} \label{sec:clui_ref_commandInteractiveHelp}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Get help on the AUTO commands.\section*{Description}
+    
+    Type 'help' to list all commands with a online help.
+    Type 'help xxx' to get help for command 'xxx'.
+    \section*{Aliases}
+man help \medskip\hrule\end{minipage}\subsection{commandLs} \label{sec:clui_ref_commandLs}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+List the current directory.\section*{Description}
+    
+    Type 'commandLs' to run the system 'ls' command in the current directory.  This
+    command will accept whatever arguments are accepted by the Unix command
+    'ls'.
+    \section*{Aliases}
+ls \medskip\hrule\end{minipage}\subsection{commandMoveFiles} \label{sec:clui_ref_commandMoveFiles}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Move data-files to a new name.\section*{Description}
+
+    Type commandMoveFiles('xxx','yyy') to move the data-files b.xxx, s.xxx, d.xxx,
+    and c.xxx to b.yyy, s.yyy, d.yyy, and c.yyy (if you are using the
+    default filename templates).  \section*{Aliases}
+move mv \medskip\hrule\end{minipage}\subsection{commandParseConstantsFile} \label{sec:clui_ref_commandParseConstantsFile}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Get the current continuation constants.\section*{Description}
+
+    Type commandParseConstantsFile('xxx') to get a parsed version of the constants file
+    c.xxx (if you are using the default filename templates).
+    \section*{Aliases}
+cn constantsget \medskip\hrule\end{minipage}\subsection{commandParseDiagramAndSolutionFile} \label{sec:clui_ref_commandParseDiagramAndSolutionFile}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Parse both bifurcation diagram and solution.\section*{Description}
+
+    Type commandParseDiagramAndSolutionFile('xxx') to get a parsed version of the diagram file b.xxx
+    and solution file s.xxx (if you are using the default filename
+    templates).
+    \section*{Aliases}
+bt diagramandsolutionget \medskip\hrule\end{minipage}\subsection{commandParseDiagramFile} \label{sec:clui_ref_commandParseDiagramFile}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Parse a bifurcation diagram.\section*{Description}
+
+    Type commandParseDiagramFile('xxx') to get a parsed version of the diagram file b.xxx
+    (if you are using the default filename templates).
+    \section*{Aliases}
+dg diagramget \medskip\hrule\end{minipage}\subsection{commandParseSolutionFile} \label{sec:clui_ref_commandParseSolutionFile}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Parse solution file:\section*{Description}
+
+    Type commandParseSolutionFile('xxx') to get a parsed version of the solution file
+    s.xxx (if you are using the default filename templates).
+    \section*{Aliases}
+sl solutionget \medskip\hrule\end{minipage}\subsection{commandPlotter} \label{sec:clui_ref_commandPlotter}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+2D plotting of data.\section*{Description}
+
+    Type commandPlotter('xxx') to run the graphics program for the graphical
+    inspection of the data-files b.xxx and s.xxx (if you are using the
+    default filename templates).  The return value will be the handle
+    for the graphics window.
+
+    Type commandPlotter() to run the graphics program for the graphical
+    inspection of the output-files 'fort.7' and 'fort.8'.  The return
+    value will be the handle for the graphics window.
+    \section*{Aliases}
+p2 pl plot \medskip\hrule\end{minipage}\subsection{commandPlotter3D} \label{sec:clui_ref_commandPlotter3D}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+3D plotting of data.\section*{Description}
+
+    Type commandPlotter3D('xxx') to run the graphics program for the graphical
+    inspection of the data-files b.xxx and s.xxx (if you are using the
+    default filename templates).  The return value will be the handle
+    for the graphics window.
+
+    Type commandPlotter3D() to run the graphics program for the graphical
+    inspection of the output-files 'fort.7' and 'fort.8'.  The return
+    value will be the handle for the graphics window.
+    \section*{Aliases}
+plot3 p3 \medskip\hrule\end{minipage}\subsection{commandQueryBranchPoint} \label{sec:clui_ref_commandQueryBranchPoint}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the ``branch-point function''.\section*{Description}
+    
+    Type commandQueryBranchPoint() to list the value of the ``branch-point function'' 
+    in the output-file fort.9. This function vanishes at a branch point.
+    
+    Type commandQueryBranchPoint('xxx') to list the value of the ``branch-point function''
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+br bp branchpoint \medskip\hrule\end{minipage}\subsection{commandQueryEigenvalue} \label{sec:clui_ref_commandQueryEigenvalue}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print eigenvalues of Jacobian (algebraic case).\section*{Description}
+
+    Type commandQueryEigenvalue() to list the eigenvalues of the Jacobian 
+    in fort.9. 
+    (Algebraic problems.)
+
+    Type commandQueryEigenvalue('xxx') to list the eigenvalues of the Jacobian 
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+eigenvalue ev eg \medskip\hrule\end{minipage}\subsection{commandQueryFloquet} \label{sec:clui_ref_commandQueryFloquet}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the Floquet multipliers.\section*{Description}
+
+    Type commandQueryFloquet() to list the Floquet multipliers
+    in the output-file fort.9. 
+    (Differential equations.)
+
+    Type commandQueryFloquet('xxx') to list the Floquet multipliers 
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+fl floquet \medskip\hrule\end{minipage}\subsection{commandQueryHopf} \label{sec:clui_ref_commandQueryHopf}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the value of the ``Hopf function''.\section*{Description}
+
+    Type commandQueryHopf() to list the value of the ``Hopf function'' 
+    in the output-file fort.9. This function
+    vanishes at a Hopf bifurcation point.
+
+    Type commandQueryHopf('xxx') to list the value of the ``Hopf function''
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+hb hp hopf lp \medskip\hrule\end{minipage}\subsection{commandQueryIterations} \label{sec:clui_ref_commandQueryIterations}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the number of Newton interations.\section*{Description}
+
+    Type commandQueryIterations() to list the number of Newton iterations per
+    continuation step in fort.9. 
+
+    Type commandQueryIterations('xxx') to list the number of Newton iterations per
+    continuation step in the info file 'd.xxx'.
+    \section*{Aliases}
+iterations it \medskip\hrule\end{minipage}\subsection{commandQueryLimitpoint} \label{sec:clui_ref_commandQueryLimitpoint}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print the value of the ``limit point function''.\section*{Description}
+
+    Type commandQueryLimitpoint() to list the value of the ``limit point function'' 
+    in the output-file fort.9. This function
+    vanishes at a limit point (fold).
+
+    Type commandQueryLimitpoint('xxx') to list the value of the ``limit point function'' 
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+lm limitpoint \medskip\hrule\end{minipage}\subsection{commandQueryNote} \label{sec:clui_ref_commandQueryNote}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print notes in info file.\section*{Description}
+
+    Type commandQueryNote() to show any notes 
+    in the output-file fort.9.
+
+    Type commandQueryNote('xxx') to show any notes 
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+nt note \medskip\hrule\end{minipage}\subsection{commandQuerySecondaryPeriod} \label{sec:clui_ref_commandQuerySecondaryPeriod}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print value of ``secondary-periodic bif. fcn''.\section*{Description}
+
+    Type commandQuerySecondaryPeriod()  to list the value of the 
+    ``secondary-periodic bifurcation function'' 
+    in the output-file 'fort.9. This function
+    vanishes at period-doubling and torus bifurcations.
+
+    Type commandQuerySecondaryPeriod('xxx') to list the value of the
+    ``secondary-periodic bifurcation function''
+    in the info file 'd.xxx'.
+    \section*{Aliases}
+sc secondaryperiod sp \medskip\hrule\end{minipage}\subsection{commandQueryStepsize} \label{sec:clui_ref_commandQueryStepsize}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print continuation step sizes.\section*{Description}
+
+    Type commandQueryStepsize() to list the continuation step size for each
+    continuation step in  'fort.9. 
+
+    Type commandQueryStepsize('xxx') to list the continuation step size for each
+    continuation step in the info file 'd.xxx'.
+    \section*{Aliases}
+ss stepsize st \medskip\hrule\end{minipage}\subsection{commandRun} \label{sec:clui_ref_commandRun}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Run AUTO.\section*{Description}
+
+    Type commandRun([options]) to run AUTO with the given options.
+    There are four possible options:
+    \begin{verbatim}
+    Long name   Short name    Description
+    -------------------------------------------
+    equation    e             The equations file
+    constants   c             The AUTO constants file
+    solution    s             The restart solution file
+    homcont     h             The Homcont parameter file
+    \end{verbatim}
+    Options which are not explicitly set retain their previous value.
+    For example one may type: commandRun(e='ab',c='ab.1') to use 'ab.c' as
+    the equations file and c.ab.1 as the constants file (if you are
+    using the default filename templates).
+
+    Type commandRun('name') load all files with base 'name'.
+    This does the same thing as running
+    commandRun(e='name',c='name,s='name',h='name').
+    \section*{Aliases}
+r run rn \medskip\hrule\end{minipage}\subsection{commandRunnerConfigFort2} \label{sec:clui_ref_commandRunnerConfigFort2}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Modify continuation constants.\section*{Description}
+
+    Type commandRunnerConfigFort2('xxx',yyy) to change the constant 'xxx' to have
+    value yyy.
+    \section*{Aliases}
+changeconstant cc ch \medskip\hrule\end{minipage}\subsection{commandRunnerLoadName} \label{sec:clui_ref_commandRunnerLoadName}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Load files into the AUTO runner.\section*{Description}
+
+    Type commandRunnerLoadName([options]) to modify AUTO runner.
+    There are four possible options:
+    \begin{verbatim}
+    Long name   Short name    Description
+    -------------------------------------------
+    equation    e             The equations file
+    constants   c             The AUTO constants file
+    solution    s             The restart solution file
+    homcont     h             The Homcont parameter file
+    \end{verbatim}
+    Options which are not explicitly set retain their previous value.
+    For example one may type: commandRunnerLoadName(e='ab',c='ab.1') to use 'ab.c' as
+    the equations file and c.ab.1 as the constants file (if you are
+    using the default filename templates).
+
+    Type commandRunnerLoadName('name') load all files with base 'name'.
+    This does the same thing as running
+    commandRunnerLoadName(e='name',c='name,s='name',h='name').
+    \section*{Aliases}
+ld load \medskip\hrule\end{minipage}\subsection{commandRunnerPrintFort2} \label{sec:clui_ref_commandRunnerPrintFort2}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Print continuation parameters.\section*{Description}
+
+    Type commandRunnerPrintFort2() to print all the parameters.
+    Type commandRunnerPrintFort2('xxx') to return the parameter 'xxx'.
+    \section*{Aliases}
+pc pr printconstant \medskip\hrule\end{minipage}\subsection{commandShell} \label{sec:clui_ref_commandShell}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Run a shell command.\section*{Description}
+        
+    Type 'shell xxx' to run the command 'xxx' in the Unix shell and display
+    the results in the AUTO command line user interface.
+    \section*{Aliases}
+shell \medskip\hrule\end{minipage}\subsection{commandTriple} \label{sec:clui_ref_commandTriple}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Triple a solution.\section*{Description}
+
+    Type commandTriple() to triple the solution in 'fort.7' and 'fort.8'.
+
+    Type commandTriple('xxx') to triple the solution in b.xxx and s.xxx (if you
+    are using the default filename templates).
+    \section*{Aliases}
+tr triple \medskip\hrule\end{minipage}\subsection{commandUserData} \label{sec:clui_ref_commandUserData}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Covert user-supplied data files.\section*{Description}
+
+    Type commandUserData('xxx') to convert a user-supplied data file 'xxx.dat' to
+    AUTO format. The converted file is called 's.dat'.  The original
+    file is left unchanged.  AUTO automatically sets the period in
+    PAR(10).  Other parameter values must be set in 'stpnt'. (When
+    necessary, PAR(10) may also be redefined there.)  The
+    constants-file file 'c.xxx' must be present, as the AUTO-constants
+    'NTST' and 'NCOL' are used to define the new mesh.  For examples
+    of using the 'userData' command see demos 'lor' and 'pen' (where
+    it has the old name 'fc').
+    \section*{Aliases}
+us userdata \medskip\hrule\end{minipage}\subsection{commandWait} \label{sec:clui_ref_commandWait}\begin{minipage}{6in}\hrule\medskip\section*{Purpose}
+Wait for the user to enter a key.\section*{Description}
+
+    Type 'commandWait' to have the AUTO interface wait
+    until the user hits any key (mainly used in scripts).
+    \section*{Aliases}
+wait \medskip\hrule\end{minipage}

@@ -1,0 +1,306 @@
+\chapter{ Running \AUTO using Command Mode.} \label{sec:command_mode}
+\AUTO can be run with the interface described in Chapter~\ref{ch:CLUI} 
+or with the commands described below.
+The \AUTO aliases must have been activated; see Section~\ref{sec:Installation}; 
+and an equations-file \filef{ xxx.c} 
+and a corresponding constants-file \filef{ c.xxx} 
+(see Section~\ref{sec: User_supplied_files})
+must be in the current user directory.
+\\
+\emp{ Do not run \AUTO in the directory \filef{ auto/2000} 
+or in any of its subdirectories.}
+
+\subsection{ Basic commands.} 
+
+\begin{itemize}
+\item[\commandf{@r}]:
+  Type \commandf{ @r xxx} to run \AUTO.
+  Restart data, if needed, are expected in \filef{ s.xxx},
+  and \AUTO-constants in \filef{ c.xxx}.
+  This is the simplest way to run \AUTO.
+\item[-]
+  Type \commandf{ @r xxx yyy} to run \AUTO
+  with equations-file \filef{ xxx.c} and restart data-file \filef{ s.yyy}.
+  \AUTO-constants must be in \filef{ c.xxx}.
+\item[-]
+  Type \commandf{ @r xxx yyy zzz} to run \AUTO
+  with equations-file \filef{ xxx.c}, restart data-file \filef{ s.yyy}
+  and constants-file \filef{ c.zzz}.
+
+\item[\commandf{@R}]~:
+  The command \commandf{ @R xxx} is equivalent to the command \commandf{ @r xxx} above.
+\item[-]
+  Type \commandf{ @R xxx i}  to run \AUTO with equations-file \filef{ xxx.c},
+  constants-file \filef{ c.xxx.i}
+  and, if needed, restart data-file \filef{ s.xxx}. 
+\item[-]
+  Type \commandf{ @R xxx i yyy} to run \AUTO
+  with equations-file \filef{ xxx.c}, 
+  constants-file \filef{ c.xxx.i}
+  and restart data-file \filef{ s.yyy}.
+
+\item[\commandf{@sv}]~:
+  Type \commandf{ @sv xxx} to save the output-files 
+  \filef{ fort.7}, \filef{ fort.8}, \filef{ fort.9},
+  as \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, respectively.
+  Existing files by these names will be deleted.
+
+\item[\commandf{@ap}]~:
+  Type \commandf{ @ap xxx} to append the output-files 
+  \filef{ fort.7}, \filef{ fort.8}, \filef{ fort.9}, 
+  to existing data-files 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, resp.
+\item[-]
+  Type \commandf{ @ap xxx yyy} 
+  to append 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, resp.
+\end{itemize}
+
+\subsection{ Plotting commands.} 
+
+\begin{itemize}
+
+\item[\commandf{@p}]~:
+  Type \commandf{ @p xxx} to run the graphics program {\cal PLAUT}
+  (See Chapter~\ref{ch:PLAUT})
+  for the graphical inspection of the data-files 
+  \filef{ b.xxx} and \filef{ s.xxx}. 
+\item[-]
+  Type \commandf{ @p} to run the graphics program {\cal PLAUT}
+  for the graphical inspection of the output-files 
+  \filef{ fort.7} and \filef{ fort.8}.
+
+\item[\commandf{@ps}]~:
+  Type \commandf{ @ps fig.x} to convert a saved {\cal PLAUT} figure \filef{ fig.x}
+  from compact {\cal PLOT10} format to {\cal PostScript} format.
+  The converted file is called \filef{ fig.x.ps}. 
+  The original file is left unchanged.
+
+\item[\commandf{@pr}]~:
+  Type \commandf{ @pr fig.x} to convert a saved {\cal PLAUT} figure \filef{ fig.x}
+  from compact {\cal PLOT10} format to {\cal PostScript} format and send it to the
+  printer.
+  The converted file is called \filef{ fig.x.ps}. 
+  The original file is left unchanged.
+\end{itemize}
+
+\subsection{ File-manipulation.} 
+
+\begin{itemize}
+
+\item[\commandf{@cp}]~:
+  Type \commandf{ @cp xxx yyy} 
+  to copy the data-files 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, \filef{ c.xxx} to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, \filef{ c.yyy}, respectively.
+
+\item[\commandf{@mv}]~:
+  Type \commandf{ @mv xxx yyy} 
+  to move the data-files 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, \filef{ c.xxx}, to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, \filef{ c.yyy}, respectively.
+
+\item[\commandf{@df}]~:
+  Type \commandf{ @df} 
+  to delete the output-files 
+  \filef{ fort.7}, \filef{ fort.8}, \filef{ fort.9}.
+
+\item[\commandf{@cl}]~:
+  Type \commandf{ @cl} 
+  to clean the current directory.
+  This command will delete  all files of the form
+  \filef{ fort.*}, \filef{ *.o}, and \filef{ *.exe}.
+
+\item[\commandf{@dl}]~:
+  Type \commandf{ @dl xxx} 
+ to delete the data-files 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}.
+\end{itemize}
+
+\subsection{ Diagnostics.} 
+
+\begin{itemize}
+\item[\commandf{@lp}]~:
+  Type \commandf{ @lp} to list the value of the ``limit point function'' 
+  in the output-file \filef{ fort.9}. This function
+  vanishes at a limit point (fold).
+  \item[-]
+  Type \commandf{ @lp xxx} to list the value of the ``limit point function'' 
+  in the data-file \filef{ d.xxx}. This function
+  vanishes at a limit point (fold).
+\item[\commandf{@bp}]~:
+  Type \commandf{ @bp} to list the value of the ``branch-point function'' 
+  in the output-file \filef{ fort.9}. This function
+  vanishes at a branch point.
+  \item[-]
+  Type \commandf{ @bp xxx} to list the value of the ``branch-point function''
+  in the data-file \filef{ d.xxx}. This function
+  vanishes at a branch point.
+\item[\commandf{@hb}]~:
+  Type \commandf{ @hb} to list the value of the ``Hopf function'' 
+  in the output-file \filef{ fort.9}. This function
+  vanishes at a Hopf bifurcation point.
+  \item[-]
+  Type \commandf{ @hb xxx} to list the value of the ``Hopf function''
+  in the data-file \filef{ d.xxx}. This function
+  vanishes at a  Hopf bifurcation point.
+\item[\commandf{@sp}]~:
+  Type \commandf{ @sp} to list the value of the 
+  ``secondary-periodic bifurcation function'' 
+  in the output-file \filef{ fort.9}. This function
+  vanishes at period-doubling and torus bifurcations.
+  \item[-]
+  Type \commandf{ @sp xxx} to list the value of the
+   ``secondary-periodic bifurcation function''
+  in the data-file \filef{ d.xxx}. This function
+  vanishes at period-doubling and torus bifurcations.
+\item[\commandf{@it}]~:
+  Type \commandf{ @it} to list the number of Newton iterations per
+  continuation step in \filef{ fort.9}. 
+  \item[-]
+   Type \commandf{ @it xxx} to list the number of Newton iterations per
+  continuation step in \filef{ d.xxx}. 
+\item[\commandf{@st}]~:
+  Type \commandf{ @st} to list the continuation step size for each
+  continuation step in  \filef{ fort.9}. 
+  \item[-]
+   Type \commandf{ @st xxx} to list the continuation step size for each
+  continuation step in \filef{ d.xxx}. 
+\item[\commandf{@ev}]~:
+  Type \commandf{ @ev} to list the eigenvalues of the Jacobian 
+  in \filef{ fort.9}. 
+  (Algebraic problems.)
+  \item[-]
+   Type \commandf{ @ev xxx} to list the eigenvalues of the Jacobian 
+  in \filef{ d.xxx}. 
+  (Algebraic problems.)
+\item[\commandf{@fl}]~:
+  Type \commandf{ @fl} to list the Floquet multipliers
+  in the output-file \filef{ fort.9}. 
+  (Differential equations.)
+  \item[-]
+   Type \commandf{ @fl xxx} to list the Floquet multipliers 
+  in the data-file \filef{ d.xxx}. 
+  (Differential equations.)
+\end{itemize}
+
+\subsection{ File-editing.} 
+
+\begin{itemize}
+
+\item[\commandf{@e7}]~:
+  To use the vi editor to edit the output-file \filef{ fort.7}.
+\item[\commandf{@e8}]~:
+  To use the vi editor to edit the output-file \filef{ fort.8}.
+\item[\commandf{@e9}]~:
+  To use the vi editor to edit the output-file \filef{ fort.9}.
+\item[\commandf{@j7}]~:
+  To use the SGI jot editor to edit the output-file \filef{ fort.7}.
+\item[\commandf{@j8}]~:
+  To use the SGI jot editor to edit the output-file \filef{ fort.8}.
+\item[\commandf{@j9}]~:
+  To use the SGI jot editor to edit the output-file \filef{ fort.9}.
+  
+\end{itemize}
+
+\subsection{ File-maintenance.} 
+
+\begin{itemize}
+\item[\commandf{@lb}]~:
+  Type \commandf{ @lb} to run an interactive utility program
+  for listing, deleting and relabeling solutions 
+  in the output-files \filef{ fort.7} and \filef{ fort.8}.
+  The original files are backed up as
+\filef{ $\sim$fort.7} and \filef{ $\sim$fort.8}. 
+  \item[-]
+  Type \commandf{ @lb xxx} to list, delete and relabel solutions
+  in the data-files \filef{ b.xxx} and \filef{ s.xxx}.
+  The original files are backed up as \filef{ $\sim$b.xxx} and \filef{ $\sim$s.xxx}. 
+\item[-]
+  Type \commandf{ @lb xxx yyy} to list, delete and relabel solutions
+  in the data-files \filef{ b.xxx} and \filef{ s.xxx}.
+  The modified files are written as \filef{ b.yyy} and \filef{ s.yyy}. 
+
+\item[\commandf{@fc}]~:
+  Type \commandf{ @fc xxx} to convert a user-supplied data file \filef{ xxx.dat}
+  to \AUTO format. The converted file is called \filef{ s.dat}.
+  The original file is left unchanged.
+  \AUTO automatically sets the period in \filef{ PAR(11)}.
+  Other parameter values must be set in \filef{ stpnt}. (When necessary,
+  PAR(11) may also be redefined there.) 
+  The constants-file file \filef{ c.xxx} must be present, as the 
+  \AUTO-constants \filef{ NTST} and \filef{ NCOL} 
+  (Sections~\ref{sec:NTST} and \ref{sec:NCOL}) are used to define the new mesh.
+  For examples of using the \commandf{ @fc} command see demos \filef{ lor} and \filef{ pen}.
+
+\item[\commandf{@94to97}]~:
+  Type \commandf{ @94to97 xxx} to convert an old \AUTOolder data-file \filef{ s.xxx}
+  to new \AUTOold format. The original file is backed up as \filef{ $\sim$s.xxx}.
+  This conversion is only necessary for files from early versions 
+  of \AUTOolder.
+\end{itemize}
+
+\subsection{ HomCont commands.} 
+
+\begin{itemize}
+\item[\commandf{@h}]~:
+  Use \commandf{ @h} instead of \commandf{ @r} when using {\cal HomCont}, i.e., when \parf{ IPS}=9
+  (see Chapter~\ref{ch:HomCont}).
+  Type \commandf{ @h xxx} to run \AUTO/{\cal HomCont}.
+  Restart data, if needed, are expected in \filef{ s.xxx},
+  \AUTO-constants in \filef{ c.xxx} and {\cal HomCont}-constants in \filef{ h.xxx}.
+\item[-]
+  Type \commandf{ @h xxx yyy} to run \AUTO/{\cal HomCont}
+  with equations-file \filef{ xxx.c} and restart data-file \filef{ s.yyy}.
+  \AUTO-constants must be in \filef{ c.xxx} and {\cal HomCont}-constants in \filef{ h.xxx}.
+\item[-]
+  Type \commandf{ @h xxx yyy zzz} to run \AUTO/{\cal HomCont}
+  with equations-file \filef{ xxx.c}, restart data-file \filef{ s.yyy}
+  and constants-files \filef{ c.zzz} and \filef{ h.zzz}.
+
+\item[\commandf{@H}]~:
+  The command \commandf{ @H xxx} is equivalent to the command \commandf{ @h xxx} above.
+\item[-]
+  Type \commandf{ @H xxx i} in order to run \AUTO/{\cal HomCont} with equations-file \filef{ xxx.c}
+  and constants-files \filef{ c.xxx.i} and \filef{ h.xxx.i}
+  and, if needed, restart data-file \filef{ s.xxx}. 
+\item[-]
+  Type \commandf{ @H xxx i yyy} to run \AUTO/{\cal HomCont}
+  with equations-file \filef{ xxx.c}, 
+  constants-files \filef{ c.xxx.i} and \filef{ h.xxx.i},
+  and restart data-file \filef{ s.yyy}.
+\end{itemize}
+
+\subsection{ Copying a demo.} 
+
+\begin{itemize}
+
+\item[\commandf{@dm}]~:
+  Type \commandf{ @dm xxx} 
+  to copy all files 
+  from \filef{ auto/2000/demos/xxx}
+  to the current user directory.
+  Here \filef{ xxx} denotes a demo name; e.g., \filef{ abc}.
+  Note that the \commandf{@dm} command also copies a  \filef{Makefile}
+  to the current user directory. To avoid the overwriting of
+  existing files, always run demos in a clean work directory.
+\end{itemize}
+
+\subsection{ Pendula animation.} 
+
+\begin{itemize}
+\item[\commandf{@pn}]~:
+  Type \commandf{ @pn xxx} to run the pendula animation program
+  with data-file \filef{ s.xxx}. (On SGI machine only; see demo \filef{ pen}
+  in Section~\ref{sec:Demos_pen} and the file \filef{ auto/2000/pendula/README}.)
+\end{itemize}
+
+\subsection{ Viewing the manual.} 
+
+\begin{itemize}
+
+\item[\commandf{@mn}]~: Use {\cal Ghostview} to view the PostScript version of this manual.
+\end{itemize}
+
+\newpage

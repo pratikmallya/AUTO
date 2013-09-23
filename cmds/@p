@@ -1,0 +1,19 @@
+#!/bin/sh
+if ( test $# -eq 1 ) then
+	if ( test -r b.$1 ) then
+		BIFURCATION=b
+		SOLUTIONS=s
+	else
+		BIFURCATION=p
+		SOLUTIONS=q
+	fi
+	cp $BIFURCATION.$1 fort.17
+	cp $SOLUTIONS.$1 fort.18
+	echo "Plotting $BIFURCATION.$1 and $SOLUTIONS.$1 ..."
+	xterm -bg black -fg white -t -e $AUTO_DIR/bin/plaut &
+else
+	cp fort.7 fort.17
+	cp fort.8 fort.18
+	echo "Plotting fort.7 and fort.8 ..."
+	xterm -bg black -fg white -t -e $AUTO_DIR/bin/plaut &
+fi

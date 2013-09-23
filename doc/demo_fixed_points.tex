@@ -1,0 +1,96 @@
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Fixed points.} \label{ch:Demos_Fixed_points}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=enz======================================================================
+%==============================================================================
+\section{ enz : Stationary Solutions of an Enzyme Model.} \label{sec:Demos_enz}
+The equations, that model a two-compartment enzyme system 
+(\citename{JPK:80} \citeyear{JPK:80}),
+are given by
+\begin{equation} \label{2'} \begin{array}{cl}
+ s_1 '&=
+ (s_0 - s_1) + (s_2 - s_1) - \rho R (s_1), \\
+ s_2 '&=
+ (s_0 +\mu - s_2) + (s_1 - s_2) - \rho R (s_2), \\\end{array} \end{equation}
+where
+$$ R (s)={s \over 1+s+ \kappa s^{2} }.$$
+The free parameter is $s_0$. Other parameters are fixed.
+This equation is also considered in 
+\citename{DoKeKe:91a} \citeyear{DoKeKe:91a}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir enz} & create an empty work directory \\ 
+  \commandf{ cd enz} & change directory \\
+  \commandf{ demo('enz')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ ld('enz')} & load the problem definition \\
+  \commandf{ run(c='enz.1')} & compute stationary solution branches \\ 
+  \commandf{ sv('enz')} & save output-files as \filef{ b.enz, s.enz, d.enz} \\ 
+\hline
+\end{tabular}
+\caption{Commands for running demo \filef{ enz}.}
+\label{tbl:demo_enz}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=dd2======================================================================
+%==============================================================================
+\section{ dd2 : Fixed Points of a Discrete Dynamical System.} \label{sec:Demos_dd2}
+This demo illustrates the computation of a solution branch and
+its bifurcating branches for a discrete dynamical system.
+Also illustrated is the continuation of 
+Naimark-Sacker (or Hopf) bifurcations
+The equations, a discrete predator-prey system, are
+\begin{equation} \begin{array}{cl}
+ u_1^{k+1} &=p_1
+ u_1^{k}(1-u_1^{k})-p_2u_1^{k} u_2^{k},\\
+ u_2^{k+1}&=(1-p_3)u_2^{k}+p_2u_1^{k}u_2^{k}.\\
+\end{array} \end{equation}
+In the first run $p_1$ is free.
+In the second run, both $p_1$ and $p_2$ are free.
+The remaining equation parameter, $p_3$, is fixed in both runs.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir dd2 } & create an empty work directory \\ 
+  \commandf{ cd dd2 } & change directory \\
+  \commandf{ demo('dd2') } & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+ 
+  \commandf{ ld('dd2')} & load the problem definition \\ 
+  \commandf{ run(c='dd2.1')} & 1st run; fixed point solution branches \\ 
+  \commandf{ sv('dd2')} & save output-files as \filef{ b.dd2, s.dd2, d.dd2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='dd2.2',s='dd2')} & \parbox[t]{3in}{2nd run; a locus of Naimark-Sacker bifurcations.  Constants changed : {\tt IRS, ISW} \vspace{0.2cm}}\\ 
+  \commandf{ sv('ns')} & save output-files as \filef{ b.ns, s.ns, d.ns} \\ 
+\hline
+\end{tabular}
+\caption{Commands for running demo \filef{ dd2}.}
+\label{tbl:demo_dd2}
+\end{center}
+\end{table}
+
+
+
+
+

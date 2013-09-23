@@ -1,0 +1,26 @@
+For installation instructions see the AUTO 2000 manual, which can be
+found in the 'doc' subdirectory of all of the source code
+distributions below or downloaded as an independent PostScript file.
+
+The main download URL for AUTO2000 is:
+
+http://www.acm.caltech.edu/~redrod/auto2000/distribution
+
+This directory contains the following files:
+
+bzipped Postscript manual:            auto2000-$AUTOVERSION.ps.bz2
+gzipped Postscript manual:            auto2000-$AUTOVERSION.ps.gz
+compressed Postscript manual:         auto2000-$AUTOVERSION.ps.Z
+tarred and gzipped source code:       auto2000-$AUTOVERSION.tgz
+tarred and bzipped source code:       auto2000-$AUTOVERSION.tbz2
+tarred and compressed source code:    auto2000-$AUTOVERSION.tar.Z
+zipped source code:                   auto2000-$AUTOVERSION.zip
+
+where $AUTOVERSION is the current AUTO2000 version number.
+
+For a list of differences between versions see the CHANGELOG file.
+
+Occasionally 'test' versions are released and can be found in the directory:
+
+http://www.acm.caltech.edu/~redrod/auto2000/distribution/test
+

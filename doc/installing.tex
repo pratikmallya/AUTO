@@ -1,0 +1,279 @@
+%==============================================================================
+%==============================================================================
+\chapter{Installing \AUTO.} \label{ch:Installing_AUTO}
+%==============================================================================
+%==============================================================================
+\section{ Typographical Conventions }
+
+This manual uses the following conventions.
+
+\begin{tabular}{|l|l|}
+\hline 
+\commandf{command} & This font is used for commands which you can type in. \\ \hline
+\parf{PAR}         & This font is used for AUTO parameters. \\ \hline
+\filef{filename}   & This font is used for file and directory names. \\ \hline
+\envf{variable}    & This font is used for environment variable. \\ \hline
+\webf{site}        & This font is used for world wide web and ftp sites. \\ \hline
+\funcf{function}   & This font is used for function names. \\ \hline
+\end{tabular}
+
+
+\section{ Installation.} \label{sec:Installation}
+The \AUTO files 
+are available via HTTP from \\
+\webf{http://sourceforge.net/project/showfiles.php?group\_id=21781}.
+
+\medskip
+\begin{tabular}{|l|l|}
+\hline
+bzipped Postscript manual            &   \webf{auto2000-\autoversion.ps.bz2}\\ \hline
+gzipped Postscript manual            &   \webf{auto2000-\autoversion.ps.gz}\\ \hline
+compressed Postscript manual         &   \webf{auto2000-\autoversion.ps.Z}\\ \hline
+tarred and gzipped source code        &   \webf{auto2000-\autoversion.tar.gz}\\ \hline
+tarred and bzipped source code        &   \webf{auto2000-\autoversion.tar.bz2}\\ \hline
+tarred and compressed source code    &   \webf{auto2000-\autoversion.tar.Z}\\ \hline
+zipped source code                   &   \webf{auto2000-\autoversion.zip}\\ \hline
+\end{tabular}
+\medskip
+
+Below it is assumed that you are using the Unix shell \filef{ tcsh} or
+\filef{ bash}
+and that the file \filef{ auto2000-\autoversion.tar.Z} is in your main directory.
+
+While in your main directory, enter the commands
+\commandf{ uncompress auto2000-\autoversion.tar.Z},
+followed by
+\commandf{ tar xvfo auto2000-\autoversion.tar}.
+This will result in a directory \filef{ auto}, 
+with one subdirectory, \filef{ auto/2000}. 
+Type \commandf{ cd auto/2000}  
+to change directory to \filef{ auto/2000}.
+Then type 
+\commandf{ ./configure}~,
+to check your system for required compilers and libraries.
+Once the \filef{ configure} script has finished you 
+may then type \commandf{ make} to compile \AUTO
+and its ancillary software.
+The \filef{ configure} script is designed to detect the details
+of your system which \AUTO requires to compile successfully.
+If either the \filef{ configure} script or the \filef{ make} command
+should fail, you may assist the \filef{ configure} script by giving
+it various command line options.  Please type \commandf{ ./configure --help}
+for more details.
+Upon compilation, you may type 
+\commandf{ make clean}  
+to remove unnecessary files.
+
+There is a new CLUI under development
+which includes some of the capabilities of the old GUI and will
+eventually be the recommend way to run AUTO.  More information on the
+CLUI may be found in Chapter~\ref{ch:CLUI}.  The new CLUI does not
+require any additional options to be passed to the \commandf{configure}
+script.
+
+To run the new Command Line User Interface (CLUI) and the old command
+language you need to set your environment variables correctly.
+Assuming \AUTO is installed in your home directory, the following
+commands set your environment variables so that you will be able to
+run the \AUTO commands, and may be placed into your \filef{.login},
+\filef{.profile}, or \filef{.cshrc} file, as appropriate.  If you are
+using a \commandf{sh} compatible shell, such as \commandf{sh},
+\commandf{bash}, \commandf{ksh}, or \commandf{ash} enter the command
+\commandf{ source~ {\rm \$}HOME/auto/2000/cmds/auto.env.sh}.  On the
+other hand, if you are using a \commandf{csh} compatible shell, such
+as \commandf{csh} or \commandf{tcsh}, enter the command \commandf{
+source~ {\rm \$}HOME/auto/2000/cmds/auto.env.csh}.
+
+There is an old and unsupported Graphical User Interface (GUI)
+which requires the {\cal X-Window} system and {\cal Motif}, and it is not
+compiled by default.  Note that \AUTO can be very effectively run in
+Command Mode, i.e., the GUI is not strictly necessary.  To compile
+\AUTO with the old GUI, type \commandf{ ./configure --enable-gui} and then
+\filef{ make} in directory \filef{ auto/2000}.  
+
+The PostScript conversion command \filef{ @ps} will be enabled
+if the \filef{ configure} script detects the appropriate software,
+but
+you may have to enter the correct printer name in \filef{ auto/2000/cmds/@pr}.
+
+To generate the on-line manual, type \commandf{ make} in \filef{ auto/2000/doc}.
+
+To prepare \AUTO for transfer to another machine, type \commandf{ make superclean}
+in directory \filef{ auto/2000} before creating the \filef{ tar}-file. 
+This will remove all executable, object, and other non-essential files, and
+thereby reduce the size of the package.
+
+\AUTO can be tested by typing \commandf{ make $>$ TEST {\rm \&}} in 
+directory \filef{ auto/2000/test}.
+This will execute a selection of demos from \filef{ auto/2000/demos} and write a
+summary of the computations in the file \filef{ TEST}.
+The contents of \filef{ TEST} can then be compared to other test result files
+in directory \filef{ auto/2000/test}. Note that minor differences are
+to be expected due to architecture and compiler differences.
+
+Some {\cal EISPACK} routines used by \AUTO for computing eigenvalues and
+Floquet multipliers are included in the package
+(\citename{EISPACK:76} \citeyear{EISPACK:76}).
+
+\subsection{Installation on Mac OS X}
+\AUTO runs on Mac OS X using the above instructions provided that
+you have the development tools
+installed. You do not need to start an X server to run AUTO. To be able
+to plot, \AUTO uses \filef{ pythonw} instead of \filef{ python}. This
+should happen automatically.
+
+\subsection{Installation on Windows}
+\AUTO runs on Windows as above using the UNIX-like environment Cygwin
+(see \webf{http://www.cygwin.com}). You should have at least the
+default installation, \filef{  gcc}, \filef{ g77 } or \filef{ gfortran
+}, \filef{ make }, and \filef{ python } installed.
+An X server is not necessary.
+
+A more light-weight alternative is the combination of MinGW and MSYS
+(see \webf{http://www.mingw.org}), combined with a native Win32
+version of Python, obtained at \webf{http://www.python.org}. Note that
+the Python CLUI does not work in the default MSYS shell environment
+(the rxvt window), but you have to start MSYS using, for instance,
+\filef{ c:\textbackslash msys\textbackslash 1.0\textbackslash
+bin\textbackslash sh $--$login $-$i } in a \filef{ cmd.exe }
+window. Then \filef{ auto } can be started as usual, provided that
+\filef{ python.exe } can be found using the environment variable
+\filef{ \$PATH. }
+
+\section{ Restrictions on Problem Size.} \label{sec:Restrictions}
+There are size restrictions in the file \filef{ auto/2000/src/auto\_c.h}
+on the following \AUTO-constants~:
+the effective number of equation parameters \parf{ NPAR},
+and the number of stored branch points \parf{NBIF} for algebraic problems.
+See Chapter~\ref{ch:AUTO_constants} 
+for the significance these constants. 
+Their maxima are denoted by the  corresponding constant followed by an X.
+For example, \parf{ NPARX} in \filef{ auto\_c.h} denotes the maximum value 
+of \parf{ NPAR}.
+If the maxima of \parf{NBIF} is exceeded in an \AUTO-run then a message 
+will be printed.
+On the other hand, the maximum value of \parf{ NPAR}, 
+if exceeded, may lead to unreported errors.
+Upon installation \parf{ NPARX}=50; it should never be decreased below that value;
+see also Section~\ref{sec:Restrictions_on_PAR}.
+Size restrictions can be changed by editing \filef{ auto\_c.h}.
+This must be followed by recompilation by typing \commandf{ make} 
+in directory \filef{ auto/2000/src}.
+
+Note that in certain cases the \filef{ effective dimension} may be greater
+than the user dimension.
+For example, for the continuation of folds,
+the effective dimension is 2\parf{ NDIM}+1 for algebraic equations,
+and 2\parf{ NDIM} for ordinary differential equations, respectively.
+Similarly, for the continuation of Hopf bifurcations,
+the effective dimension is 3\parf{ NDIM}+2.
+ 
+ 
+\section{Compatibility with Older Versions.} \label{sec:Compatibility}
+There are two changes compared to early versions of \AUTOolder:
+The user-supplied equations-files must contain the subroutine \funcf{pvls}.
+For an example of use of \funcf{pvls} see the demo \filef{ pvl} 
+in Section~\ref{sec:Demos_pvl}.
+There is also a small change in the \filef{ q.xxx/s.xxx} data-file.
+If necessary, older \AUTOolder files can be converted using the 
+\filef{ @94to97} command; see Section~\ref{sec:command_mode}.
+Data files from \AUTOold are fully compatible
+with \AUTOc, but as \AUTOc is written in {\cal C}
+user defined function files from \AUTOold, which
+are generally in {\cal Fortran}, are ideally rewritten.
+This is not strictly necessary, however, as AUTO2000 has wrappers that
+can call {\cal Fortran} code.
+
+\section{Parallel Version.} \label{sec:Parallel}
+\AUTOc contains code which allows
+it to run in on various types of parallel computers.  Namely,
+it can use either the Pthreads library for running on
+shared-memory multi-processors, or the MPI message passing library.
+When the \filef{ configure} script is run it will try to
+find the above two libraries, and if it is successful
+it will include their functionality into \AUTOc.
+To force the \filef{ configure} script not to use either
+of the above libraries, one may type \commandf{ ./configure --without-mpi}
+or \commandf{ ./configure --without-pthreads}, and then type \commandf{ make}.
+One may even preclude both by typing 
+\commandf{ ./configure --without-mpi --without-pthreads} and then
+typing \commandf{ make}.  On the other hand, unless there is some
+particular difficulty, we recommend that that the 
+\filef{ configure} script be used without arguments, since the
+parallel version of \AUTOc may easily be controlled,
+and even run in a serial mode,  
+through the use of command line options at run time.
+The command line options are listed in Table~\ref{tbl:Command_line_args}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+-v&    Give verbose output.\\
+\hline
+-m&    Use the Message Passing Interface library for parallelization.\\
+\hline
+-t&    \begin{minipage}{4in}
+       Use the Pthreads library for parallelization.
+       This option takes one of three arguments.
+       \begin{description}
+       \item[conpar] parallelizes the condensation of parameters routine.
+       \item[setubv] parallelizes the Jacobian setup routine.
+       \item[both]   parallelizes both routines.
+       \end{description}
+       In general the recommended option is 'both'.
+       \end{minipage}\\
+\hline
+-\#&    \parbox{4in}{The number of processing units to use 
+                     (currently only used with the -t option).}\\
+\hline
+\end{tabular}
+\caption{Command line options.}
+\label{tbl:Command_line_args}
+\end{center}
+\end{table}
+ 
+For example, to run the \AUTOc executable \filef{ auto.exe}
+in serial mode you just type \filef{ auto.exe}.  To run the
+same command in parallel using the Pthreads library
+on 4 processors you type \filef{ auto.exe -t both -\# 4}.
+If you were to try and run the above command on a machine
+which did not have the Pthreads library, the command
+would exit with an error and inform you that the Pthreads
+library is not available.
+
+Running the MPI version is somewhat more complex because of the fact
+that MPI normally uses some external program for starting the
+computational processes.  The exact name and command line options of
+this external program depends on your MPI installation.  A common name
+for this MPI external program is \filef{ mpirun}, and a common command
+line option which defines the number of computational processes is \filef{
+-np}.  Accordingly, if you wanted to run the MPI version of \AUTOc 
+on four processors, with the above external program, you would
+type \filef{ mpirun -np 4 auto.exe -m}.  Please see your local MPI
+documentation for more detail.  As with the Pthreads library, if you
+were to try and run the above command on a machine which did not have
+MPI, the command would exit with an error and inform you that MPI is
+not available.
+
+The commands in the \filef{ auto/2000/cmds} directory and described
+in Chapter~\ref{ch:How_to_run_AUTO} may be used with the
+parallel version as well, by setting the \envf{ AUTO\_COMMAND\_PREFIX}
+and \envf{ AUTO\_COMMAND\_ARGS} environment variables.  For example, to
+the run \AUTOc in parallel using the Pthreads library on 4
+processors just type \commandf{ setenv AUTO\_COMMAND\_ARGS ``-t both -\#
+4''} and then use the commands in \filef{ auto/2000/cmds} normally.  To
+run \AUTOold in parallel using the MPI library on 4
+processors just type \commandf{ setenv AUTO\_COMMAND\_ARGS ``-m''} and 
+\commandf{setenv AUTO\_COMMAND\_PREFIX ``mpirun -np 4''}, and then use the
+commands in \filef{ auto/2000/cmds} normally.  The previous examples
+assumed you are using the \commandf{csh} shell or the \commandf{tcsh} shell, for
+other shells you should modify the commands appropriately.
+
+
+
+
+
+
+
+

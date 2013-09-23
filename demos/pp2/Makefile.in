@@ -1,0 +1,130 @@
+#
+#   Makefile		3/1994		Xianjun WANG
+#
+PGM    = pp2
+CC     = @CC@
+OPT    = @OPT_FLAG@
+CFLAGS = @CFLAGS@ $(OPT) -I$(AUTO_DIR)/include 
+SRC    = $(PGM).c
+EXE    = $(PGM).exe
+LIBS   = $(AUTO_DIR)/lib/*.o -L$(AUTO_DIR)/lib -lauto_f2c @LIBS@ -lm
+RM     = rm -f
+LP     = lp
+HB     = hb
+HOM    = hom
+#
+all: clean $(EXE) run
+#
+$(EXE): $(SRC:.c=.o)
+	$(CC) $(CFLAGS) $(SRC:.c=.o) -o $@ $(LIBS)
+#
+run: first second third fourth fifth sixth seventh eighth
+#run: first second third fourth fifth sixth seventh
+#
+first:	$(EXE)
+	@echo " "
+	@echo "Demo $(PGM) is started"
+	@echo " "
+	@echo "$(PGM) : first run : stationary solutions"
+	@cp c.$(PGM).1 fort.2
+	@touch fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cp fort.7 b.$(PGM)
+	@cp fort.8 s.$(PGM)
+	@cp fort.9 d.$(PGM)
+	@echo " Saved as *.$(PGM)"
+	@$(RM) fort.*
+#
+second:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : second run : restart at labelled solution"
+	@cp c.$(PGM).2 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 >> b.$(PGM)
+	@cat fort.8 >> s.$(PGM)
+	@cat fort.9 >> d.$(PGM)
+	@echo " Appended to *.$(PGM)"
+	@$(RM) fort.*
+#
+third:	$(EXE)
+	@echo " "	
+	@echo "$(PGM) : third run : periodic solutions"
+	@cp c.$(PGM).3 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 >> b.$(PGM)
+	@cat fort.8 >> s.$(PGM)
+	@cat fort.9 >> d.$(PGM)
+	@echo " Appended to *.$(PGM)"
+	@$(RM) fort.*
+#
+fourth:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : fourth run : restart at a labelled periodic solution"
+	@cp c.$(PGM).4 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 >> b.$(PGM)
+	@cat fort.8 >> s.$(PGM)
+	@cat fort.9 >> d.$(PGM)
+	@echo " Appended to *.$(PGM)"
+	@$(RM) fort.*
+#
+fifth:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : fifth run : 2-parameter continuation of folds "
+	@cp c.$(PGM).5 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 > b.$(LP)
+	@cat fort.8 > s.$(LP)
+	@cat fort.9 > d.$(LP)
+	@echo " Saved as *.$(LP)"
+	@$(RM) fort.*
+#
+sixth:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : sixth run : 2-parameter continuation of Hopf bifurcations"
+	@cp c.$(PGM).6 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 > b.$(HB)
+	@cat fort.8 > s.$(HB)
+	@cat fort.9 > d.$(HB)
+	@echo " Saved as *.$(HB)"
+	@$(RM) fort.*
+#
+seventh:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : seventh run : 2-parameter continuation of homoclinic orbits"
+	@cp c.$(PGM).7 fort.2
+	@cp s.$(PGM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 > b.$(HOM)
+	@cat fort.8 > s.$(HOM)
+	@cat fort.9 > d.$(HOM)
+	@echo " Saved as *.$(HOM)"
+	@$(RM) fort.*
+#
+eighth:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : eighth run : restart homoclinic orbits"
+	@cp c.$(PGM).8 fort.2
+	@cp s.$(HOM)   fort.3
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+	@cat fort.7 >> b.$(HOM)
+	@cat fort.8 >> s.$(HOM)
+	@cat fort.9 >> d.$(HOM)
+	@echo " Appended to *.$(HOM)"
+	@$(RM) fort.*
+	@echo " "
+	@echo "Demo $(PGM) is done"
+#
+clean:
+	@echo "Cleaning $(PGM) ..."
+	@cp $(SRC) $(EXE)
+	@$(RM) *.exe *.o b.* s.* d.* fort.* *~ core
+	@cp c.$(PGM).1 c.$(PGM)
+	@echo "Cleaning ... done"
+ 

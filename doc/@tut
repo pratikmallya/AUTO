@@ -1,0 +1,5 @@
+latex tutorial
+latex tutorial
+dvips -x 1500 -t landscape tutorial > tutorial.ps
+ghostview tutorial.ps
+

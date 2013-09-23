@@ -1,0 +1,171 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont} Demo : cir.} \label{ch:HomCont_cir}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=cir======================================================================
+%==============================================================================
+\section{ Electronic Circuit of Freire {\it et al}.}
+Consider the following model of a three-variable electronic circuit
+\cite{FrRLuGaPo:93}
+ \beq
+\left \{ 
+\begin{array}{rcl}
+\dot{x} & = & \left [-(\beta+\nu) x + \beta y -a_3 x^3 
++b_3(y-x)^3\right ]/r, \\
+\dot{y} & = & \beta x -(\beta+\gamma)y -z -b_3(y-x)^3, \\
+\dot{z} & = & y.
+\end{array}
+\right.  
+\label{5.fr1}
+\eeq
+These autonomous equations are also considered in the \AUTO demo \filef{ tor}.
+
+First, we copy the demo into a new directory and compile
+\begin{center}
+\commandf{ @dm cir} \\
+\end{center}
+The system is contained in 
+the equation-file \filef{ cir.c} and the initial run-time constants
+are stored in \filef{ c.cir.1} and \filef{ h.cir.1}. We begin by starting from
+the data from \filef{ cir.dat} for a saddle-focus homoclinic orbit 
+at 
+$\nu=-0.721309$, $\beta=0.6$, $\gamma=0$, $r=0.6$, $A_3=0.328578$ 
+and $B_3=0.933578$, which was obtained by shooting over 
+the time interval $2T=$\parf{ PAR(11)}$=36.13$.
+We wish to follow the branch in the $(\beta,\nu)$-plane, but 
+first we perform continuation in $(T,\nu)$ to obtain a better 
+approximation to a homoclinic orbit.
+\begin{center}
+\commandf{ make first}
+\end{center} 
+yields the output
+\begin{verbatim}
+ BR  PT  TY LAB     PERIOD       L2-NORM    ...   PAR(1)     
+  1  21  UZ   2  1.000000E+02  1.286637E-01 ... -7.213093E-01
+  1  42  UZ   3  2.000000E+02  9.097899E-02 ... -7.213093E-01
+  1  50  EP   4  2.400000E+02  8.305208E-02 ... -7.213093E-01
+\end{verbatim}
+Note that $\nu=$\parf{ PAR(1)} remains constant during the continuation
+as the parameter values do not change, only the the length of
+the interval over which the approximate homoclinic solution is computed.
+Note from the eigenvalues, stored in \filef{ d.1} that this is a homoclinic
+orbit to a saddle-focus with a one-dimensional unstable manifold.
+
+We now restart at \parf{ LAB=3}, corresponding to a time interval $2T=200$,
+and change the principal continuation parameters to be $(\nu,\beta)$.
+The new constants defining the continuation are given in \filef{ c.cir.2}
+and \filef{ h.cir.2}.
+We also activate the test functions pertinent to codimension-two
+singularities which may be encountered along a branch of saddle-focus
+homoclinic orbits, viz.\ $\psi_2$, $\psi_4$, $\psi_5$, $\psi_9$ and $\psi_{10}$.
+This must be specified in three ways: by choosing \parf{ NPSI=5} and appropriate
+\parf{ IPSI(I)} in \filef{ h.cir.2}, by adding the corresponding parameter labels
+to the list of continuation parameters \parf{ ICP(I)} in \filef{ c.cir.2}
+(recall that these parameter indices are 20 more than the corresponding
+$\psi$ indices), and finally adding USZR functions defining zeros of
+these parameters in \filef{ c.cir.2}. Running 
+\begin{center}  
+\commandf{ make second}
+\end{center} 
+results in
+\begin{verbatim}
+BR  PT  TY LAB    PAR(1)     ...    PAR(2)     ...    PAR(25)       PAR(29)    
+1   17  UZ   5 -7.256925E-01 ...  4.535645E-01 ... -1.765251E-05 -2.888436E-01
+1   75  UZ   6 -1.014704E+00 ...  9.998966E-03 ...  1.664509E+00 -5.035997E-03
+1   78  UZ   7 -1.026445E+00 ... -2.330391E-05 ...  1.710804E+00  1.165176E-05
+1   81  UZ   8 -1.038012E+00 ... -1.000144E-02 ...  1.756690E+00  4.964621E-03  
+1  100  EP   9 -1.164160E+00 ... -1.087732E-01 ...  2.230329E+00  5.042736E-02
+\end{verbatim}
+with results saved in \filef{ b.2, s.2, d.2}.
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/cir1.ps}}
+\caption{Solutions of the boundary value problem at labels 6 and 8, 
+either side of the Shil'nikov-Hopf bifurcation}
+\label{Fcircuit1}
+\end{figure}
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/cir2.ps}}
+\caption{Phase portraits of three homoclinic orbits 
+on the branch, showing the saddle-focus to saddle transition}
+\label{Fcircuit2}
+\end{figure}
+Upon inspection of the output, note that label 5, where \parf{ PAR(25)}$\approx 0$, 
+corresponds to a neutrally-divergent saddle-focus, $\psi_5=0$. 
+Label 7, where \parf{ PAR(29)}$\approx 0$ corresponds to a local bifurcation, $\psi_9=0$, 
+which we note from the eigenvalues stored in \filef{ d.2} corresponds to a \emp{
+Shil'nikov-Hopf} bifurcation. Note that \parf{ PAR(2)} is also approximately zero
+at label 7, which accords with the analytical observation that the origin of
+(\ref{5.fr1}) undergoes a Hopf bifurcation when $\beta=0$.
+Labels 6 and 8 are the user-defined output
+points, the solutions at which are plotted in Fig.\ \ref{Fcircuit1}.
+Note that solutions beyond label 7 (e.g., the plotted solution
+at label 8) do not correspond to homoclinic orbits, but to 
+\emp{ point-to-cycle} heteroclinic orbits (c.f.\ Section~2.2.1 of
+\citeasnoun{ChKuSa:95}).
+
+We now continue in the other direction along the branch. It turns out
+that starting from the initial point in the other direction results in
+missing a codim 2 point which is close to the starting point. Instead we
+start from the first saved point from the previous computation
+(label 5 in \filef{ s.2}):
+\begin{center}
+\it make third
+\end{center}
+The output
+\begin{verbatim}
+ BR  PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(22)       PAR(24)    
+  1   9  UZ  10 -7.204001E-01 ...  5.912315E-01 -1.725669E+00 -3.295862E-05
+  1  18  UZ  11 -7.590583E-01 ...  7.428734E-01  3.432139E-05 -2.822988E-01
+  1  26  UZ  12 -7.746686E-01 ...  7.746147E-01  5.833163E-01  1.637611E-07
+  1  28  EP  13 -7.746628E-01 ...  7.746453E-01  5.908902E-01  1.426214E-04
+\end{verbatim}
+contains a neutral saddle-focus (a \emp{ Belyakov} transition) 
+at \parf{ LAB=10} ($\psi_4=0$), a double real leading eigenvalue 
+(saddle-focus to saddle transition) at \parf{ LAB =11} ($\psi_2=0$) 
+and a neutral saddle at \parf{ LAB=12} ($\psi_4=0$). Data at several
+points on the complete branch are plotted in Fig.\ \ref{Fcircuit2}.
+If we had continued further (by increasing \parf{ NMX}), 
+the computation would end at a no convergence error \parf{ TY=MX} owing 
+to the homoclinic branch approaching a Bogdanov-Takens singularity 
+at small amplitude. To compute further towards the BT point 
+we would first need to continue to a higher value of \parf{ PAR(11)}.
+
+\section{ Detailed \AUTO-Commands.}
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir cir} & create an empty work directory \\ 
+  \commandf{ cd cir} & change directory \\
+  \commandf{ demo('cir')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ us('cir')} & use the starting data in \filef{ cir.dat} to create \filef{ s.dat} \\ 
+  \commandf{ run(c='cir.1',h='cir.1',s='dat')} &  increase the truncation interval; restart from \filef{ s.dat}\\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='cir.2',h='cir.2',s='1')} &  continue saddle-focus homoclinic orbit; restart from \filef{ s.1} \\ 
+  \commandf{ sv('2')} & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='cir.3',h='cir.3',s='2')} & generate adjoint variables  ; restart from \filef{ s.2} \\ 
+  \commandf{ ap('2')} & append output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{ cir}.}
+\label{tbl:demo_cir_1}
+\end{center}
+\end{table}
+
+

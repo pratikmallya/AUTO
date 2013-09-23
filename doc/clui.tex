@@ -1,0 +1,1324 @@
+%==============================================================================
+%==============================================================================
+\chapter{ Command Line User Interface.} \label{ch:CLUI}
+%==============================================================================
+%==============================================================================
+%\floatstyle{boxed}
+%\restylefloat{figure}
+
+\section{ Typographical Conventions }
+This chapter uses the following conventions.
+All code examples will be in in the following font.
+
+{\small \begin{center} \begin{boxedverbatim}
+AUTO> copydemo("ab")
+Copying demo ab ... done 
+\end{boxedverbatim} 
+\end{center}
+}
+
+To distinguish commands which are typed to the Unix
+shell from those which are typed to the \AUTOc
+command line user interface (CLUI) we will use the
+following two prompts.
+
+\begin{tabular}{|l|l|}
+\hline 
+\verb!>! & Commands which follow this prompt are for the Unix shell. \\ \hline
+\verb!AUTO>!   & Commands which follow this prompt are for the \AUTOc CLUI. \\ \hline
+\end{tabular}
+
+\section{ General Overview.} \label{sec:CLUI_Overview}
+The \AUTOc command line user interface (CLUI) is similar
+to the command language described in Section~\ref{sec:command_mode}
+in that it facilitates the interactive creating and editing of 
+equations-files and constants-files.
+It differs from the other command language in that it is based 
+on the object-oriented scripting language \python~ (see \citename{Lut:96} \citeyear{Lut:96})
+and provides extensive programming capabilities.
+This chapter will provide documentation for the \AUTOc CLUI commands,
+but is not intended as a tutorial for the \python~ language.
+We will attempt to make this chapter self contained by describing
+all \python~ constructs that we use in the examples, but
+for more extensive documentation on the \python~ language,
+including tutorials and pointers to further documentation,
+please see \citename{Lut:96} \citeyear{Lut:96} or the
+web page \webf{http://www.python.org} which contains
+an excellent tutorial at 
+\webf{http://www.python.org/doc/current/tut/tut.html}.
+
+To use the CLUI for a new equation, change to an empty directory.
+For an existing equations-file, change to its directory.
+(\emp{Do not activate the CLUI in the directory \filef{auto/2000} 
+or in any of its subdirectories.})
+Then type 
+
+\centerline {\commandf{auto}.}
+
+If your command search path has been correctly set (see
+Section~\ref{sec:Installation}), this command will start the \AUTOc CLUI
+interactive interpretor and provide you with the \AUTOc CLUI prompt.
+
+\begin{figure}[htbp]
+{\small 
+\begin{center} \begin{boxedverbatim}
+> auto
+Initializing
+Python 1.5.2 (1, Feb  1 2000, 16:32:16)  [GCC egcs-2.91.66 19990314/Linux 
+Copyright 1991-1995 Stichting Mathematisch Centrum, Amsterdam
+(AUTOInteractiveConsole)
+AUTO> 
+\end{boxedverbatim}
+\end{center}
+}
+\caption[Starting the \AUTOc CLUI.]
+{Typing \commandf{auto} at the Unix shell prompt starts the
+\AUTOc CLUI.  }
+\label{exa:clui_starting}
+\end{figure}
+
+In addition to the examples in the following sections there are
+several example scripts which can be found in
+\filef{auto/2000/demos/python} and are listed in
+Table~\ref{tbl:demo_scripts}.  These scripts are fully annotated and
+provide good examples of how \AUTOc CLUI scripts are written.  The
+scripts in \filef{auto/2000/demos/python/n-body} are espcially lucid
+examples and preform various related parts of a calculation involving
+the gravitional N-body problem.  
+Scripts which end in the
+suffix \filef{.auto} are called ``basic'' scripts and can
+be run by typing \commandf{auto scriptname.auto}.
+The scripts show in Section~\ref{sec:clui_first_example}
+and Section~\ref{sec:clui_complex_example} are examples
+of basic scripts.
+Scripts which end in the
+suffix \filef{.xauto} are called ``expert'' scripts and can
+be run by typing \commandf{autox scriptname.xauto}.
+More information on expert scripts can be 
+found in Section~\ref{sec:clui_extending}.
+See the \filef{README} file in that
+directory for more information.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+Script & Description \\
+\hline
+demo1.auto & \begin{minipage}{3in}\smallskip The demo script from Section~\ref{sec:clui_first_example}.\smallskip\end{minipage} \\
+\hline
+demo2.auto & \begin{minipage}{3in}\smallskip The demo script from Section~\ref{sec:clui_complex_example}.\smallskip\end{minipage} \\
+\hline
+userScript.xauto & \begin{minipage}{3in}\smallskip The expert demo script from Figure~\ref{exa:clui_complex_function}.\smallskip\end{minipage} \\
+\hline
+userScript.py & \begin{minipage}{3in}\smallskip The loadable expert demo script from Figure~\ref{exa:clui_complex_interactive}.\smallskip\end{minipage} \\
+\hline
+fullTest.auto & \begin{minipage}{3in}\smallskip A script which uses the entire \AUTOc command set, except for the plotting commands.\smallskip\end{minipage} \\
+\hline
+plotter.auto & \begin{minipage}{3in}\smallskip A demonstration of some of the plotting capabilities of \AUTOc. \smallskip\end{minipage}\\
+\hline
+fullTest.auto & \begin{minipage}{3in}\smallskip A script which implements the tutorial from Section~\ref{sec:Demos_ab}. \smallskip\end{minipage}\\
+
+\hline n-body/compute\_lagrange\_points\_family.auto 
+& \begin{minipage}{3in}\smallskip A basic script which computes and plots all of the
+``Lagrange points'' as a function of the ratio of the masses of
+the two planets.\smallskip\end{minipage}\\
+
+\hline n-body/compute\_lagrange\_points\_0.5.auto
+& \begin{minipage}{3in}\smallskip A basic script which computes all of the ``Lagrange
+points'' for the case where the masses of the two planets are
+equal, and saves the data.
+\smallskip\end{minipage}\\
+
+\hline n-body/compute\_periodic\_family.xauto
+& \begin{minipage}{3in}\smallskip An expert script which starts at a ``Lagrange
+point'' computed by compute\_lagrange\_points\_0.5.auto
+and continues in the ratio of the masses until
+a specified mass ratio is reached.  It then computes
+a family of periodic orbits for each pair of
+purely complex eigenvalues.
+\smallskip\end{minipage}\\
+
+\hline n-body/to\_matlab.xauto
+& \begin{minipage}{3in}\smallskip A script which takes a set of \AUTOc data files and creates
+a set of files formatted for importing into Matlab
+for either plotting or further calculations.
+\smallskip\end{minipage}\\
+\hline
+\end{tabular}
+\caption[Available demo scripts.]
+{The various demonstration scripts for the \AUTOc CLUI.}
+\label{tbl:demo_scripts}
+\end{center}
+\end{table}
+
+\section{ First Example } \label{sec:clui_first_example}
+
+We begin with a simple example of the \AUTOc CLUI.  In this example we
+copy the \filef{ab} demo from the \AUTOc installation directory and
+run it.  For more information on the \filef{ab} demo see
+Section~\ref{sec:Demos_ab}.
+The commands listed in Table~\ref{tbl:example_clui_1}
+will copy the demo files to your work directory and run
+the first part of the demo.
+The results of running these commands are shown in Figure~\ref{exa:clui_first_example}.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  {\cal Unix}-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ auto}  & start the \AUTOc CLUI\\ 
+\hline
+  \AUTOc CLUI COMMAND  & ACTION \\
+\hline
+  \commandf{ copydemo('ab')}  & copy the demo files to the work directory\\
+  \commandf{ load(equation='ab')}  & load the filename \filef{ab.c} into memory\\
+  \commandf{ load(constants='ab.1')}  & load the contents of the file \filef{r.ab.1} into memory\\
+  \commandf{ run()}  & run \AUTOc with the current set of files\\
+\hline
+%==============================================================================
+\end{tabular}
+\caption[Running the demo \filef{ ab} files.]
+{Running the demo \filef{ ab} files.}
+\label{tbl:example_clui_1}
+\end{center}
+\end{table}
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+> auto
+Initializing
+Python 1.5.2 (#1, Feb  1 2000, 16:32:16)  [GCC egcs-2.91.66 19990314/Linux 
+(egcs- on linux-i386
+Copyright 1991-1995 Stichting Mathematisch Centrum, Amsterdam
+(AUTOInteractiveConsole)
+AUTO> copydemo('ab')
+Copying demo ab ... done
+AUTO> load(equation='ab')
+Runner configured
+AUTO> load(constants='ab.1')
+Runner configured
+AUTO> run()
+gcc -O -DPTHREADS -O -I/home/amavisitors/redrod/src/auto/2000/include -c ab.c
+gcc -O ab.o -o ab.exe /home/amavisitors/redrod/src/auto/2000/lib/*.o  
+-lpthread -L/home/amavisitors/redrod/src/auto/2000/lib -lauto_f2c -lm
+Starting ab ...
+ 
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    33  LP   2  1.057390E-01  1.484391E+00  3.110230E-01  1.451441E+00
+   1    70  LP   3  8.893185E-02  3.288241E+00  6.889822E-01  3.215250E+00
+   1    90  HB   4  1.308998E-01  4.271867E+00  8.950803E-01  4.177042E+00
+   1    92  EP   5  1.512417E-01  4.369748E+00  9.155894E-01  4.272750E+00
+
+ Total Time    9.502E-02
+ab ... done
+AUTO> 
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[The first example of the \AUTOc CLUI.]
+{Typing \commandf{auto} at the Unix shell prompt starts the
+\AUTOc CLUI.  The rest of the commands are interpreted by
+the \AUTOc CLUI.}
+\label{exa:clui_first_example}
+\end{figure}
+
+
+Let us examine more closely what action each of the commands 
+performs.  First, \commandf{copydemo('ab')} 
+(Section~\ref{sec:clui_ref_commandCopyDemo} in the reference) copies the files in 
+\filef{ \$AUTO\_DIR/demo/ab} into the work directory.  
+
+Next, \commandf{load(equation='ab')} 
+(Section~\ref{sec:clui_ref_commandRunnerLoadName} in the reference)
+informs the \AUTOc CLUI that the name of
+the user defined function file is \filef{ab.c}.  The command
+\commandf{load} is one of the most commonly used commands in the
+\AUTOc CLUI, since it reads and parses the user files which are
+manipulated by other commands.  The \AUTOc CLUI stores this setting
+until it is changed by a command, such as another \commandf{load}
+command.  The idea of storing information is one of the ideas that
+sets the CLUI apart from the command language described in
+Section~\ref{sec:command_mode}.
+
+Next, \commandf{load(constants='ab.1')} parses the \AUTO
+constants file \filef{c.ab.1} and reads it into memory.  Note that
+\emp{changes to the file \filef{c.ab.1} after it has been loaded in
+will not be used by \AUTOc unless it is loaded in again after the
+changes are made}.  
+
+Finally, \commandf{run()} 
+(Section~\ref{sec:clui_ref_commandRun} in the reference)
+uses the user defined functions loaded
+by the \commandf{load(equation='ab')} command, and the \AUTO constants
+loaded by the \commandf{load(constants='ab.1')} to run \AUTOc.
+
+Figure~\ref{exa:clui_first_example} showed two of 
+the file types that the 
+\commandf{load} command can read into memory, namely 
+the user defined function file and the \AUTO constants
+file (Section~\ref{sec: User_supplied_files}).  
+There are two other files types that can be read
+in using the \commandf{load} command, and they are
+the restart solution file (Section~\ref{sec:Output_files})
+and the {\cal HomCont} parameter
+file (Section~\ref{sec:HomCont_files}).
+
+Note that the name given to the load
+command is not the same as the filename which is read
+in, for example \commandf{load(constants='ab.1')} reads in 
+the file \filef{c.ab.1}.  This difference is 
+a result of the automatic transformation of the
+filenames by the 
+\AUTOc CLUI into the
+standard names used by \AUTOc.  
+The standard filename
+transformations are show in Table~\ref{tbl:clui_filename_translation}. 
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Long name & Short name & Name entered & Transformed file name \\
+\hline
+equation  & e          & foo          &foo.c \\
+\hline
+constants  & c          & foo          & c.foo \\
+\hline
+solution  & s          & foo          & s.foo \\
+\hline
+bifurcationDiagram  & b          & foo          &b.foo \\
+\hline
+diagnostics  & d          & foo          &d.foo \\
+\hline
+homcont  & h          & foo          &h.foo \\
+\hline
+\end{tabular}
+\caption[Standard \AUTOc CLUI filename translations.]
+{This table shows the standard \AUTOc CLUI filename
+translations.  In \filef{load} and \filef{run}
+commands either the long name or the short name may be
+used for loading the appropriate files.}
+\label{tbl:clui_filename_translation}
+\end{center}
+\end{table}
+
+Since the \commandf{load} command is so common, there are
+various shorthand versions of it.  First, there are short versions
+of the various arguments as shown in Table~\ref{tbl:clui_filename_translation}.
+For example, the command \commandf{load(constants='ab.1')} can 
+be shortened to \commandf{load(c='ab.1')}.
+Next, several different
+files may be loaded at once using the same \commandf{load} command.
+For example, the two commands in Figure~\ref{exa:clui_two_command}
+have the same effect as the single command in 
+Figure~\ref{exa:clui_one_command}.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+AUTO> load(e='ab')
+Runner configured
+AUTO> load(c='ab.1)
+Runner configured
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[Loading two files individually]
+{Loading two files individually.}
+\label{exa:clui_two_command}
+\end{figure}
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+AUTO> load(e='ab',c='ab.1')
+Runner configured
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[Loading two files at the same time]
+{Loading two files at the same time.}
+\label{exa:clui_one_command}
+\end{figure}
+
+Also, since it is common that several files will be loaded that
+have the same base name \commandf{load('ab')} performs the same 
+action as \commandf{load(e='ab',c='ab',s='ab',h='ab')}.  Note, 
+for the command \commandf{load('ab')} it is only required that 
+\filef{ab.c} and \filef{c.ab} exist;  \filef{s.ab} and
+\filef{h.ab} are optional, and if they do not exist,
+no error message will be given.  
+
+
+\section{ Scripting }
+
+Section~\ref{sec:clui_first_example} showed commands
+being interactively entered at the \AUTOc CLUI
+prompt, but since the \AUTOc CLUI is based 
+on \python~ one has the ability to write
+scripts for performing sequences of commands
+automatically.  A \python~ script is very similar
+to the interactive mode shown in Section~\ref{sec:clui_first_example}
+except that the commands are placed in a file and
+read all at once.  For example, if the
+commands from Figure~\ref{exa:clui_first_example} where placed 
+into the file \filef{demo1.auto}, in the format shown in 
+Figure~\ref{exa:clui_first_script}, then the commands
+could be run all at once by typing \commandf{auto demo1.auto}.
+See Figure~\ref{exa:clui_run_first_script} for the
+full output.
+
+\begin{figure}[htb]
+{\small \begin{center} \begin{boxedverbatim}
+copydemo('ab')
+load(equation='ab')
+load(constants='ab.1')
+run()
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[First example of a \AUTOc CLUI script.]
+{The commands from Figure~\ref{exa:clui_first_example}
+and they would appear in a \AUTOc CLUI script file.
+The source for this script can be found in \filef{\$AUTO\_DIR/demos/python/demo1.auto}.
+}
+\label{exa:clui_first_script}
+\end{figure}
+
+\begin{figure}[htb]
+{\small \begin{center} \begin{boxedverbatim}
+> cat demo1.auto
+copydemo('ab')
+load(equation='ab')
+load(constants='ab.1')
+run()
+
+> auto demo1.auto 
+Initializing
+Copying demo ab ... done
+Runner configured
+Runner configured
+gcc -O -DPTHREADS -O -I/home/amavisitors/redrod/src/auto/2000/include -c ab.c
+gcc -O ab.o -o ab.exe /home/amavisitors/redrod/src/auto/2000/lib/*.o  -lpthread 
+-L/home/amavisitors/redrod/src/auto/2000/lib -lauto_f2c -lm
+Starting ab ...
+ 
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    33  LP   2  1.057390E-01  1.484391E+00  3.110230E-01  1.451441E+00
+   1    70  LP   3  8.893185E-02  3.288241E+00  6.889822E-01  3.215250E+00
+   1    90  HB   4  1.308998E-01  4.271867E+00  8.950803E-01  4.177042E+00
+   1    92  EP   5  1.512417E-01  4.369748E+00  9.155894E-01  4.272750E+00
+
+ Total Time    8.740E-02
+ab ... done
+> 
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[Figure of running a simple \AUTOc CLUI script.]
+{This Figure starts by listing the contents
+of the \filef{demo1.auto} file using the Unix
+\commandf{cat} command.  The file is then run through
+the \AUTOc CLUI by typing {auto demo1.auto} 
+and the output is shown.}
+\label{exa:clui_run_first_script}
+\end{figure}
+
+
+\section{ Second Example } \label{sec:clui_complex_example}
+
+In Section~\ref{sec:clui_first_example} we showed a very simple
+\AUTOc CLUI script, in this Section we will describe a more
+complex example, which introduces several new \AUTOc CLUI
+commands as well as some basic \python~ constructs for conditionals
+and looping.  We will not provide an exhaustive reference for
+the \python~ language, but only 
+the very basics.  For more extensive documentation we refer the
+reader to \citename{Lut:96} \citeyear{Lut:96} or the
+web page \webf{http://www.python.org}.
+In this section we will describe each line of the script
+in detail, and the full text of the script is in
+Figure~\ref{exa:clui_complex_script}.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+copydemo('bvp')
+
+ld('bvp')
+run()
+sv('bvp')
+ld(s='bvp')
+data = sl('bvp')
+ch("NTST",50)
+for solution in data:
+    if solution["Type name"] == "BP":
+        ch("IRS", solution["Label"])
+        ch("ISW", -1)
+        # Compute forward
+        run()
+        ap('bvp')
+        # Compute back
+        ch("DS",-pr("DS"))
+        run()
+        ap('bvp')
+
+plot('bvp')
+wait()
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[A complex example of a \AUTOc CLUI script.]
+{This Figure shows a more complex \AUTOc CLUI script.
+The source for this script can be found in \filef{\$AUTO\_DIR/demos/python/demo2.auto}.
+}
+\label{exa:clui_complex_script}
+\end{figure}
+
+The script begins with a section, extracted into 
+Figure~\ref{exa:clui_complex_first}, which performs a task 
+identical to that shown in Figure~\ref{exa:clui_first_example}
+except that the shorthand discussed in 
+Section~\ref{sec:clui_first_example} is used for the 
+\commandf{ld} command.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+copydemo('bvp')
+
+ld('bvp')
+run()
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[The first part of the  complex \AUTOc CLUI script.]
+{The first part of the  complex \AUTOc CLUI script.}
+\label{exa:clui_complex_first}
+\end{figure}
+
+The next section of the script, extracted into 
+Figure~\ref{exa:clui_complex_second}, introduces
+three new \AUTOc CLUI commands.  First, \commandf{sv('bvp')}
+(Section~\ref{sec:clui_ref_commandCopyDataFiles} in the reference)
+saves the results of the \AUTOc run into files using
+the base name \filef{bvp} and the filename extensions in
+Table~\ref{tbl:clui_filename_translation}.  For example,
+in this case the bifurcation diagram file \filef{fort.7}
+will be saved as \filef{b.bvp}, 
+the solution file \filef{fort.8}
+will be saved as \filef{s.bvp}, and  
+the diagnostics file \filef{fort.9}
+will be saved as \filef{d.bvp}.  Next, \commandf{ld(s='bvp')}
+loads the solution file \filef{s.bvp} into memory
+so that it can be used by \AUTOc for further calculations.
+
+Up to this point all of the commands presented have had
+analogs in the command language discussed in 
+Section~\ref{sec:command_mode}, and the \AUTOc CLUI has
+been designed in this way to make it easy for users to
+migrate from the old command language to the
+\AUTOc CLUI.  The next command, namely \commandf{data = sl('bvp')}
+(Section~\ref{sec:clui_ref_commandParseSolutionFile} in the reference)
+is the first command which has no analog in the 
+old command language.
+The command \commandf{sl('bvp')} parses the file \filef{s.bvp}
+and returns a python object which encapsulates the
+information contained in the file and presents it to the
+user in an easy to use format.  Accordingly, the
+command \commandf{data = sl('bvp')} stores this easy to
+use representation of the object in the \python~
+variable \commandf{data}.
+Note, variables in \python~ are different from those in languages
+such as {\cal C} in that their type does not have to be
+declared before they are created.
+Finally, \commandf{ch("NTST",50)}  
+(Section~\ref{sec:clui_ref_commandRunnerConfigFort2} in the reference)
+changes the \parf{NTST} value to \parf{50} (see Section~\ref{sec:NDIM}).
+To be precise, the command \commandf{ch("NTST",50)} only modifies
+the ``in memory'' version of the \AUTOc constants created
+by the \commandf{ld('bvp')} command.
+The original file \filef{c.bvp} is \emp{not} modified.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+sv('bvp')
+ld(s='bvp')
+data = sl('bvp')
+ch("NTST",50)
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[The second part of the  complex \AUTOc CLUI script.]
+{The second part of the  complex \AUTOc CLUI script.}
+\label{exa:clui_complex_second}
+\end{figure}
+
+The next section of the script, extracted into 
+Figure~\ref{exa:clui_complex_third}, shows as example
+of looping and conditionals in an \AUTOc CLUI script.
+The first line \commandf{for solution in data:} is
+the \python~ syntax for loops.  The \commandf{data} variable
+was defined in Figure~\ref{exa:clui_complex_second}
+to be the parsed version of an \AUTOc \filef{fort.8}
+file, and accordingly contains a list of the solutions
+from the \filef{fort.8} file.  The command 
+\commandf{for solution in data:} is used to loop
+over all solutions in the data variable by 
+setting the variable \commandf{solution} to
+be one of the solutions in \commandf{data}
+and then calling the rest of the code in the
+block.  
+
+\python~ differs from most other computer languages in that
+blocks of code are not defined by some delimiter, such
+as \commandf{\{\}} in {\cal C}, but by indentation.  
+In Figure~\ref{exa:clui_complex_script} the commands
+\commandf{plot('bvp')} and \commandf{wait()} are not
+part of the loop, because they are indented 
+differently.  This can be confusing first time users of \python~,
+but it has the advantage that the code
+is forced to have a consistent indentation style.
+
+The next command in the script, \commandf{if solution["Type name"] == "BP":}
+is a \python~ conditional.  
+It examines the contents of the
+variable \commandf{solution} (which is one of the entries
+in the array of solutions \commandf{data}) 
+and checks to see if the condition
+\commandf{solution["Type name"] == "BP"} holds.  
+For parsed \filef{fort.8}
+files \commandf{Type name} \commandf{BP} corresponds to a bifurcation
+point.  Accordingly, the function of this loop and conditional
+is to examine every solution in the \filef{fort.8} file and
+run the following commands if the solution is a bifurcation
+point.
+
+The next line
+is \commandf{ch("IRS", solution["Label"])} which changes
+the ``in memory'' version of the \AUTOc constants file to 
+set \parf{IRS} (see Section~\ref{sec:IRS}) equal to the label
+of the bifurcation point. We then use \commandf{ch("ISW", -1)} to change
+the \AUTOc constant \parf{ISW} to \commandf{-1}, which
+indicates a branch switch (see Section~\ref{sec:ISW}).
+
+We then use a \commandf{run()} command to perform the
+calculation of the bifurcating branch and then append the
+data to the \filef{s.bvp}, \filef{b.bvp}, and
+\filef{d.bvp} files with the \commandf{ap('bvp')}
+command (Section~\ref{sec:clui_ref_commandAppend} in the reference).
+In addition, as can be seen in Figure~\ref{exa:clui_complex_third},
+the \commandf{\#} character is the \python~ comment character.
+When the \python~ interpretor encounters a \commandf{\#} character
+it ignores everything from that character to the end of the line.
+
+Finally, we us \commandf{ch("DS",-pr("DS"))} to change the
+\AUTOc initial step size from positive to negative, which allows
+us to compute the bifurcating branch in the other direction
+(see Section~\ref{sec:DS}).  Running the \AUTOc calculation
+with the \commandf{run()} command and appending the
+data the appropriate files with the \commandf{ap('bvp')} command
+completes the body of the loop.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+for solution in data:
+    if solution["Type name"] == "BP":
+        ch("IRS", solution["Label"])
+        ch("ISW", -1)
+        # Compute forward
+        run()
+        ap('bvp')
+        # Compute back
+        ch("DS",-pr("DS"))
+        run()
+        ap('bvp')
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[The second part of the  complex \AUTOc CLUI script.]
+{The second part of the  complex \AUTOc CLUI script.}
+\label{exa:clui_complex_third}
+\end{figure}
+
+Now that the section of script shown in 
+Figure~\ref{exa:clui_complex_third} has finished computing the
+bifurcation diagram, the command \commandf{plot('bvp')}
+brings up a plotting window 
+(Section~\ref{sec:clui_ref_commandPlotter} in the reference),
+and the command \commandf{wait()} causes the \AUTOc CLUI
+to wait for input.  You may now exit the \AUTOc CLUI
+by pressing any key in the window in which you started
+the \AUTOc CLUI.
+
+\section{ Extending the \AUTOc CLUI } \label{sec:clui_extending}
+
+The code in Figure~\ref{exa:clui_complex_script}
+performed a very useful and common procedure, it started an \AUTOc
+calculation and performed additional continuations
+at every point which \AUTOc detected as a bifurcation.
+Unfortunately, the script as written can only be used
+for the \filef{bvp} demo.  In this section we will 
+generalize the script in Figure~\ref{exa:clui_complex_script}
+for use with any demo, and demonstrate how it
+can be imported back into the interactive
+mode to create a new command
+for the \AUTOc CLUI.  Several examples of such
+``expert'' scripts can be found in \filef{auto/2000/demos/python/n-body}.
+
+Just as loops and conditionals can be used in \python~,
+one can also define functions.  For example,
+Figure~\ref{exa:clui_complex_function} is a
+functional version of script from 
+Figure~\ref{exa:clui_complex_script}.
+The changes are actually quite minor.  
+The first line, \commandf{from AUTOclui import *},
+includes the definitions of the \AUTOc CLUI commands,
+and must be included in all \AUTOc CLUI scripts
+which define functions.
+The next line, 
+\commandf{def myRun(demo):},
+begins the function definition, and 
+creates a function named \commandf{myRun} which
+takes one argument \commandf{demo}.  The
+rest of the script is the same except that it
+has been indented to indicate that it is
+part of the function definition, and all occurrences
+of string \commandf{'bvp'} have been replaced
+with the variable \commandf{demo}.
+Finally we have added a line \commandf{myRun('bvp')}
+which actually calls the function we have 
+created and runs the same computation as
+the original script.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+from AUTOclui import *
+
+def myRun(demo):
+
+    copydemo(demo)
+
+    ld(demo)
+    run()
+    sv(demo)
+    ld(s=demo)
+    data = sl(demo)
+    ch("NTST",50)
+    for solution in data:
+        if solution["Type name"] == "BP":
+            ch("IRS", solution["Label"])
+            ch("ISW", -1)
+            # Compute forward
+            run()
+            ap(demo)
+            # Compute back
+            ch("DS",-pr("DS"))
+            run()
+            ap(demo)
+
+    plot(demo)
+    wait()
+
+myRun('bvp')
+
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[A complex \AUTOc CLUI script as a function.]
+{This Figure shows a complex \AUTOc CLUI script
+written as a function.
+The source for this script can be found in \filef{\$AUTO\_DIR/demos/python/userScript.xauto}.
+}
+\label{exa:clui_complex_function}
+\end{figure}
+
+While the script in Figure~\ref{exa:clui_complex_function} is 
+only slightly different then the one showed in 
+Figure~\ref{exa:clui_complex_script} it is much more powerful.
+Not only can it be used as a script for running any demo
+by modifying the last line, it can be read back into
+the interactive mode of the \AUTOc CLUI and
+used to create a new command, 
+as in Figure~\ref{exa:clui_complex_interactive}.
+First, we create a file called \filef{userScript.py}
+which contains the script from 
+Figure~\ref{exa:clui_complex_function}, with
+one minor modification.  We want the function only
+to run when we use it interactively, not when
+the file \filef{userScript.py} is read in, so we
+remove the last line where the function is called.
+We start the \AUTOc CLUI with the Unix command
+\commandf{auto}, and once the \AUTOc CLUI is running
+we use the command \commandf{from userScript import *},
+to import the file \filef{userScript.py} into the
+\AUTOc CLUI.  The \commandf{import} command makes
+all functions in that file available for
+our use (in this case \commandf{myRun} is the only 
+one).  It is important to note that 
+\commandf{from userScript import *} does \emp{not}
+use the \filef{.py} extension on the file name. 
+After importing our new function, we may use it
+just like any other function in the \AUTOc
+CLUI, for example by typing \commandf{myRun('bvp')}.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+> cp \$AUTO\_DIR/python/demo/userScript.py .
+> ls
+userScript.py
+> cat userScript.py
+# This is an example script for the AUTO2000 command line user
+# interface.  See the "Command Line User Interface" chapter in the
+# manual for more details.
+from AUTOclui import *
+
+def myRun(demo):
+
+    copydemo(demo)
+
+    ld(demo)
+    run()
+    sv(demo)
+    ld(s=demo)
+    data = sl(demo)
+    ch("NTST",50)
+    for solution in data:
+        if solution["Type name"] == "BP":
+            ch("IRS", solution["Label"])
+            ch("ISW", -1)
+            # Compute forward
+            run()
+            ap(demo)
+            # Compute back
+            ch("DS",-pr("DS"))
+            run()
+            ap(demo)
+
+    plot(demo)
+    wait()
+
+> auto
+Initializing
+Python 1.5.2 (#1, Feb  1 2000, 16:32:16)  [GCC egcs-2.91.66 19990314/Linux 
+(egcs- on linux-i386
+Copyright 1991-1995 Stichting Mathematisch Centrum, Amsterdam
+(AUTOInteractiveConsole)
+AUTO> from userScript import *
+AUTO> myRun('bvp')
+...
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[An example of using a user created function interactively.]
+{This Figure shows the functional version of the
+ \AUTOc CLUI from Figure~\ref{exa:clui_complex_function} being 
+used as an extension to the \AUTOc CLUI.  The source
+code for this script can be found in 
+\filef{ \$AUTO\_DIR/python/demo/userScript.py }}
+\label{exa:clui_complex_interactive}
+\end{figure}
+
+\section{Bifurcation Diagram Files}
+Using the \commandf{commandParseDiagramFile} 
+command (Section~\ref{sec:clui_ref_commandParseDiagramFile} in the reference)
+the user can parse and read into memory an \AUTOc bifurcation
+diagram file.   For example, the command  \commandf{commandParseDiagramFile('ab')}
+would parse the file \filef{b.ab} (if you are using the standard
+filename translations from Table~\ref{tbl:clui_filename_translation})
+and return an object which encapsulates
+the bifurcation diagram in an easy to use form.
+
+The object returned by the \commandf{commandParseDiagramFile} 
+is a list of all of the solutions in the appropriate
+bifurcation diagram file, and each solution is a Python
+dictionary with entries for each piece of
+data for the solution.  For example, the sequence of commands
+in Figure~\ref{exa:clui parse diagram}, prints out the
+label of the first solution in a bifurcation diagram.
+The queriable parts of the object are listed in
+Table~\ref{tbl:clui parse diagram}.
+
+The individual elements of the array may be accessed 
+in two ways, either by index of the solution using the
+\commandf{[]} syntax or by label number using the
+\commandf{()} syntax.  For example, assume that the parsed object is contained
+in a variable \commandf{data}.  
+The first solution may be accessed 
+using the command \commandf{data[0]}, while the solution with
+label \commandf{57} may be accessed using the command \commandf{data(57)}.
+
+This class has two methods that are particularily useful for creating
+data which can be used in other programs.  First, there is a method
+called \commandf{toArray} which takes a bifurcation diagram and
+returns a standard Python array.  Second, there is a method called
+\commandf{writeRawFilename} which will create a standard ASCII file
+which contains the bifurcation diagram.  For example, we again assume
+that the parsed object is contained in a variable \commandf{data}.  If
+one wanted to have the bifurcation diagram returned as a Python array
+one would type \commandf{data.toArray()}.  Similarily, if one wanted
+to write out the bifurcation diagram to the file \commandf{outputfile}
+one would type \commandf{data.writeRawFilename('outputfile')}.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+AUTO> data=dg('ab')
+Parsed file: b.ab
+AUTO> print data[0]
+{'LAB': 6, 'TY name': 'EP', 'data': [0.0, 0.0, 0.0, 0.0], 'section': 12, 
+'BR': 2, 'PT': 1, 'TY number': 9}
+AUTO> print data[0]['LAB']
+6
+AUTO> 
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[An example of parsing a bifurcation diagram.]
+{This figure shows an example of parsing a bifurcation diagram.
+The first command, \commandf{data=dg('ab')}, reads in the bifurcation
+diagram and puts it into the variable \commandf{data}.
+The second command, \commandf{print data[0]} prints out all of
+the data about the first solution in the list.
+The third command, \commandf{print data[0]['LAB']}, prints
+out the label of the first point.
+}
+\label{exa:clui parse diagram}
+\end{figure}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+Query string & Meaning \\
+\hline
+TY name &  The short name for the solution type (see Table~\ref{tbl:clui type translation}). \\
+\hline
+TY number &  The number of the solution type (see Table~\ref{tbl:clui type translation}). \\
+\hline
+BR  &  The branch number. \\
+\hline
+PT  &  The point number. \\
+\hline
+LAB  &  The solution label, if any. \\
+\hline
+section  &  A unique identifier for each branch in a file with multiple branches. \\
+\hline
+data  &  An array which contains the \AUTOc output. \\
+\hline
+\end{tabular}
+\caption[Contents of a bifurcation diagram object.]
+{This table shows the strings that can be used to
+query a bifurcation diagram object and their
+meanings.}
+\label{tbl:clui parse diagram}
+\end{center}
+\end{table}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l | l |}
+\hline
+Type & Short Name & Number \\
+\hline
+No Label & No Label &  \\
+\hline
+Branch point (algebraic problem) & BP & 1 \\
+\hline
+Fold (algebraic problem) & LP & 2 \\
+\hline
+Hopf bifurcation (algebraic problem) & HB & 3 \\
+\hline
+Regular point (every NPR steps) & RG & 4 \\
+\hline
+User requested point & UZ & -4 \\
+\hline
+Fold (ODE) & LP & 5 \\
+\hline
+Bifurcation point (ODE) & BP & 6 \\
+\hline
+Period doubling bifurcation (ODE) & PD & 7 \\
+\hline
+Bifurcation to invarient torus (ODE) & TR & 8 \\
+\hline
+Normal begin or end & EP & 9 \\
+\hline
+Abnormal termination & MX & -9 \\
+\hline
+\end{tabular}
+\caption[Type translations.]
+{This table shows the the various types of points
+that can be in solution and bifurcation diagram
+files, with their short names and numbers.}
+\label{tbl:clui type translation}
+\end{center}
+\end{table}
+
+\section{Solution Files}
+Using the \commandf{commandParseSolutionFile} 
+command (Section~\ref{sec:clui_ref_commandParseSolutionFile} in the reference)
+the user can parse and read into memory an \AUTOc bifurcation
+solution file.   For example, the command  \commandf{commandParseSolutionFile('ab')}
+would parse the file \filef{b.ab} (if you are using the standard
+filename translations from Table~\ref{tbl:clui_filename_translation})
+and return an object which encapsulates
+the bifurcation solution in a easy to use form.
+
+The object returned by the \commandf{commandParseSolutionFile} 
+is a list of all of the solutions in the appropriate
+bifurcation solution file, and each solution is a Python
+dictionary with entries for each  piece of
+data for the solution.  For example, the sequence of commands
+in Figure~\ref{exa:clui parse solution}, prints out the
+label of the first solution in a bifurcation solution.
+The queriable parts of the object are listed in
+Table~\ref{tbl:clui parse solution}.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim}
+AUTO> data=sl()
+Parsed file: fort.8
+AUTO> print data[0]
+'Branch number': 2
+'ISW': 1
+'Label': 6
+'NCOL': 0
+'NTST': 0
+'Parameters': [0.0, 14.0, 2.0, 0.0, 0.0, 0.0]
+'Point number': 1
+'Type name': 'EP'
+'Type number': 9
+'p': [0.0, 14.0, 2.0, 0.0, 0.0, 0.0]
+'parameters': [0.0, 14.0, 2.0, 0.0, 0.0, 0.0]
+AUTO> print data[0]['Label']
+6
+AUTO> data[0]["data"][0]
+{'t': 0.0, 'u': [0.0, 0.0]}
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[An example of parsing a bifurcation solution.]
+{This figure shows an example of parsing a bifurcation solution.
+The first command, \commandf{data=dg('ab')}, reads in the bifurcation
+solution and puts it into the variable \commandf{data}.
+The second command, \commandf{print data[0]} prints out all of
+the data about the first solution in the list.
+The third command, \commandf{print data[0]['Label']}, prints
+out the label of the first point.  The last command prints
+the value of the solution at the first point of the
+first solution.
+}
+\label{exa:clui parse solution}
+\end{figure}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+Query string & Meaning \\
+\hline
+data  & \begin{minipage}{4in} \smallskip An array which contains the \AUTOc output. \smallskip \end{minipage} \\
+\hline
+Branch number & \begin{minipage}{4in} \smallskip The number of the branch to which the solution belongs. \smallskip \end{minipage} \\ 
+\hline
+ISW & \begin{minipage}{4in} \smallskip  The ISW value used to start the calcluation.  See Section~\ref{sec:ISW}. \smallskip \end{minipage} \\ 
+\hline
+Label & \begin{minipage}{4in} \smallskip The label of the solution.   \smallskip \end{minipage} \\ 
+\hline
+NCOL & \begin{minipage}{4in} \smallskip The number of collocation points used to compute the solution.  See Section~\ref{sec:NCOL}. \smallskip \end{minipage} \\ 
+\hline
+NTST & \begin{minipage}{4in} \smallskip The number of mesh intervals used to compute the solution.  See Section~\ref{sec:NTST}. \smallskip \end{minipage} \\ 
+\hline
+Parameters & \begin{minipage}{4in} \smallskip The value of all of the parameters for the solution. \smallskip \end{minipage} \\ 
+\hline
+Point number & \begin{minipage}{4in} \smallskip The number of the point in the given branch.  \smallskip \end{minipage} \\  
+\hline
+Type name & \begin{minipage}{4in} \smallskip A short string which describes the type of the solution (see Table~\ref{tbl:clui type translation}). \smallskip \end{minipage} \\  
+\hline
+Type number & \begin{minipage}{4in} \smallskip A number which describes the type of the solution (see Table~\ref{tbl:clui type translation}).  \smallskip \end{minipage} \\  
+\hline
+p & \begin{minipage}{4in} \smallskip The value of all of the parameters for the solution. (This is an alias for 'Parameter'). \smallskip \end{minipage} \\  
+\hline
+parameters & \begin{minipage}{4in} \smallskip The value of all of the parameters for the solution. (This is an alias for 'Parameter').\smallskip \end{minipage} \\  
+\hline
+\end{tabular}
+\caption[Contents of a bifurcation solution object.]
+{This table shows the strings that can be used to
+query a bifurcation solution object and their
+meanings.}
+\label{tbl:clui parse solution}
+\end{center}
+\end{table}
+
+The individual elements of the array may be accessed 
+in two ways, either by the index of the solution using the
+\commandf{[]} syntax or by label number using the
+\commandf{()} syntax.  For example, sssume that the parsed object is contained
+in a variable \commandf{data}.  
+The first solution may be accessed 
+using the command \commandf{data[0]}, while the solution with
+label \commandf{57} may be accessed using the command \commandf{data(57)}.
+
+This class has two methods that are particularily useful
+for creating data which can be used in other programs.
+First, there is a method called \commandf{toArray} which
+takes a solution and returns a standard Python array.
+Second, there is a method called \commandf{writeRawFilename}
+which will create a standard ASCII file which contains
+the solution.  The first element of each row will be
+the 't' value and the following elements will be the
+values of the components at that 't' value.
+For example, we again assume that the parsed object is contained
+in a variable \commandf{data}.  If one wanted to have the
+solution with label \commandf{57} returned as a Python
+array one would type \commandf{data(57).toArray()}.
+Similarily, if one wanted to write out the solution
+to the file \commandf{outputfile} one would type
+\commandf{data(57).writeRawFilename('outputfile')}.
+
+\section{ The \filef{.autorc} File }
+
+Much of the default behavior of the \AUTOc CLUI
+can be controlled by the \filef{.autorc} file.
+The \filef{.autorc} file can exist in
+either the main \AUTOc directory, the users
+home directory, or the current directory.  For any
+option which is defined in more then one file, 
+the \filef{.autorc} file
+in the current directory (if it exists) takes precedence, 
+followed by the \filef{.autorc} file
+in the users home directory (if it exists), and then the
+\filef{.autorc} file in the main \AUTOc directory.  Hence, 
+options may be defined on either a per directory, per
+user, or global basis.  
+
+The first section of the \filef{.autorc} file
+begins with the line \commandf{[AUTO\_command\_aliases]}
+and this section defines short names, or aliases,
+for the \AUTOc CLUI commands.  
+Each line thereafter is a definition of
+a command, similiar to 
+\commandf{branchPoint     =commandQueryBranchPoint}.
+The right hand side of the assignment
+is the internal \AUTOc CLUI name for the command,
+while the left hand side is the desired alias.  
+Aliases and
+internal names may be used interchangably, but the
+intention is that the aliases will be more commonly
+used.  A default set of aliases is provided, and
+these aliases will be used in the examples in the
+rest of this Chapter.  The default aliases
+are listed in the reference in Section~\ref{sec:clui reference}.
+
+%FIXME:  Fix the documentation here
+{\em NOTE:  Defaults for the plotting tool may be included in
+the .autorc file as well.  The documentation for this
+is under developement, but the file \filef{\$AUTO\_DIR/.autorc}
+contains examples of how these options may be set.}
+
+\section{Two Dimensional Plotting Tool}\label{clui:2d plotting}
+
+The two dimensional plotting tool can be run by using the command
+\commandf{plot()} to plot the files \filef{fort.7} and \filef{fort.8}
+after a calculation has been run, or using the command
+\commandf{plot('foo')} to plote the data in the
+files \filef{s.foo} and \filef{b.foo}.  
+
+The menu bar provides two buttons.  The \commandf{File}
+button brings up a menu which allows the user to save
+the current plot as a Postscript file or
+to quit the plotter.
+The \commandf{Options} button allows the plotter
+configuration options to be modified.
+The available options are decribed in
+Table~\ref{tbl:clui 2d plotter specific options}.  In addition, the options can 
+be set from within the CLUI.  For example,
+the set of commands in Figure~\ref{exa:plotter_example} shows how to
+create a plotter and change its background color to black.  The
+demo script \filef{auto/2000/demo/python/plotter.py} contains several
+examples of changing options in plotters.
+
+Pressing the right mouse button in the plotting window brings
+up a menu of buttons which control several aspects
+of the plotting window.  The top two toggle buttons
+control what function the left button performs.  
+The \commandf{print value} button causes the
+left button to print out the numerical value underneath
+the pointer when it is clicked.
+When \commandf{zoom} button is checked the left
+mouse button may be held down to create
+a box in the plot.  When the left button
+is released the plot will zoom to the selected
+portion of the diagram.
+The \commandf{unzoom} button returns the
+diagram to the default zoom. 
+The \commandf{Postscript} button allows the user
+to save the plot as a Postscript file.
+The \commandf{Configure...} button brings up
+the dialog for setting configuration options.
+
+\begin{figure}[htbp]
+{\small \begin{center} \begin{boxedverbatim} 
+AUTO> plot=pl()
+Created plotter
+AUTO> plot.config(bg="black")
+AUTO> 
+\end{boxedverbatim}
+\end{center} 
+}
+\caption[Configuring a two-dimensional plotter.]
+{This example shows how a plotter is created, and
+how the background color may be changed to black.
+All other configuration options are set similarily.
+Note, the above commands assume that the files
+fort.7 and fort.8 exist in the current directory.
+}
+\label{exa:plotter_example}
+\end{figure}
+
+\begin{longtable}{| l | l |}
+\hline
+Query string & Meaning \\
+\hline
+background  &  The background color of the plot. \\
+\hline
+bifurcation\_column\_defaults  & A set of bifurcation columns the user is likely to use. \\
+\hline
+bifurcation\_diagram  &  A parsed bifurcation diagram file to plot. \\
+\hline
+bifurcation\_diagram\_filename  & The filename of the bifurcation diagram to plot. \\
+\hline
+bifurcation\_symbol  &  The symbol to use for bifurcation points. \\ 
+\hline
+bifurcation\_x  & The column to plot along the X-axis for bifurcation diagrams. \\
+\hline
+bifurcation\_y  & The column to plot along the Y-axis for bifurcation diagrams. \\
+\hline
+color\_list  &  A list of colors to use for multiple plots. \\
+\hline
+decorations  & Turn on or off the axis, tick marks, etc. \\
+\hline
+error\_symbol  &    The symbol to use for error points. \\ 
+\hline
+foreground  &  The background color of the plot. \\
+\hline
+grid  &  Turn on or off the grid. \\
+\hline
+hopf\_symbol  &    The symbol to use for Hopf bifurcation points. \\ 
+\hline
+index  & An array of indicies to plot.\\
+\hline
+label  & An array of labels to plot.\\
+\hline
+label\_defaults  & A set of labels that the user is likely to use. \\
+\hline
+limit\_point\_symbol  &    The symbol to use for limit points. \\ 
+\hline
+mark\_t  &  The t value to marker with a small ball. \\      
+\hline
+maxx  & The upper bound for the x-axis of the plot. \\
+\hline
+maxy  & The upper bound for the y-axis of the plot. \\
+\hline
+minx  &  The lower bound for the x-axis of the plot. \\
+\hline
+miny  & The lower bound for the y-axis of the plot. \\
+\hline
+period\_doubling\_symbol  &   The symbol to use for period doubling bifurcation points. \\ 
+\hline
+runner  &  The runner object from which to get data. \\       
+\hline
+special\_point\_colors  &    An array of colors used to mark special points. \\ 
+\hline
+special\_point\_radius  &    The radius of the spheres used to mark special points. \\ 
+\hline
+solution  &  A parsed solution file to plot. \\
+\hline
+solution\_column\_defaults  & A set of solution columns the user is likely to use.\\
+\hline
+solution\_filename  & The filename of the solution to plot. \\
+\hline
+solution\_x  &  The column to plot along the X-axis for solutions. \\
+\hline
+solution\_y  & The column to plot along the Y-axis for solutions. \\
+\hline
+symbol\_font  &  The font to use for marker symbols. \\
+\hline
+symbol\_color  & The color to use for the marker symbols. \\
+\hline
+tick\_label\_template  & A string which defines the format of the tick labels. \\
+\hline
+tick\_length  &  The length of the tick marks. \\
+\hline
+torus\_symbol  &    The symbol to use for torus bifurcation points. \\ 
+\hline
+type  & The type of the plot, either ``solution'' or ``bifurcation''. \\  
+\hline
+user\_point\_symbol  &   The symbol to use for user defined output points. \\ 
+\hline
+xlabel  & The label for the x-axis. \\
+\hline
+xmargin  & The margin between the graph and the right and left edges. \\
+\hline
+xticks  & The number of ticks on the x-axis. \\
+\hline
+ylabel  & The label for the y-axis. \\
+\hline
+ymargin  & The margin between the graph and the top and bottom edges. \\
+\hline
+yticks  & The number of ticks on the y-axis. \\
+\hline
+\caption[The options for the \AUTOc CLUI two dimensional
+plotting window.]
+{This table shows the options that
+can be set for the \AUTOc CLUI two dimensional
+plotting window and their meanings.}
+\label{tbl:clui 2d plotter specific options}
+\end{longtable}
+
+\section{Three Dimensional Plotting Tool}
+%FIXME:  Fix the documentation here
+{\em NOTE:  the documentation in this section is under developement.}
+
+The \AUTOc three dimensional plotting tool can use DataViewer or
+OpenInventor for rendering three dimensional representations of
+bifurcation diagrams and solutions and is under active development.
+Neither DataViewer nor OpenInventor are provided with \AUTOc and must
+be downloaded seperately.  If you are interested in the three
+dimensional plotting tool please contact \webf{redrod@acm.org}.
+
+\floatstyle{plain}
+\restylefloat{figure}
+
+\clearpage
+
+\pagebreak
+\section{ Quick Reference } \label{sec:clui quick reference}
+
+In this section we have created a table of all of the \AUTOc CLUI
+commands, their abbreviations, and a one line description of what
+function they perform.  Each command may be entered using 
+its full name or any of its aliases.
+
+\input{clui_quick_reference}
+\pagebreak
+\section{ Reference }  \label{sec:clui reference}
+\input{clui_reference}
+
+
+
+
+                                % Local Variables:
+                                % tex-main-file: "auto.tex"
+                                % End:
+
+
+
+
+
+
+
+
+
+
+

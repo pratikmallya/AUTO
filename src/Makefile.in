@@ -1,0 +1,74 @@
+# Generated automatically from Makefile.in by configure.
+# ===> Makefile
+#
+#   Makefile            Xianjun WANG            3/1994
+#
+#   used to compile AUTO libraries
+#   
+#   Changed by Randy Paffenroth 6/1999 for the C version
+#
+F77 = @F77@ 
+FFLAGS = @FFLAGS@ 
+OPT = @OPT_FLAG@
+CFLAGS = -DMANIFOLD -DAUTLIB @CFLAGS@ $(OPT) -I../include -I../../include -Ilibf2c
+CC=@CC@
+
+OBJ = main.o autlib1.o autlib2.o autlib3.o autlib4.o autlib5.o eispack.o conpar.o setubv.o worker.o reduce.o dmatrix.o
+RM =rm -f
+
+all: header compile autlab 94to97 86to97 double triple copy libf2c libauto2000.a libauto_f.a
+
+auto: header compile copy libf2c
+
+header: FORCE
+	cp ../include/auto.h ./auto.h
+
+compile: $(OBJ)
+
+libf2c:  FORCE 
+	cd ./libf2c;$(MAKE)
+
+libauto2000.a: $(OBJ)
+	rm -f libauto2000.a
+	ar cr libauto2000.a $(OBJ) 
+	mv libauto2000.a ../lib
+
+libauto_f.a: user_f.o
+	rm -f libauto_f.a
+	ar cr libauto_f.a user_f.o
+	mv libauto_f.a ../lib
+
+autlab: autlab.c 
+	$(CC) $(CFLAGS) autlab.c -o ../bin/autlab
+
+94to97: 94to97.c
+	$(CC) $(CFLAGS) 94to97.c -o ../bin/94to97
+
+86to97: 86to97.c
+	$(CC) $(CFLAGS) 86to97.c -o ../bin/86to97
+
+double: double.c
+	$(CC) $(CFLAGS) double.c -o ../bin/double
+
+triple: triple.c
+	$(CC) $(CFLAGS) triple.c -o ../bin/triple
+
+copy: $(OBJ)
+	cp $(OBJ) ../lib
+	$(RM) auto.h
+clean:
+	rm -f *.o 
+	cd libf2c;$(MAKE) clean
+
+superclean:
+	rm -f *.o ../lib/*.o ../lib/*.a
+	cd libf2c;$(MAKE) clean
+
+FORCE:
+
+#
+#  DO NOT ADD ANYTHING AFTER THIS LINE
+#
+
+
+

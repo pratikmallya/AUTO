@@ -1,0 +1,167 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Miscellaneous.} \label{ch:Demos_Misc}
+%==============================================================================
+%==============================================================================
+
+\newpage
+%==============================================================================
+%DEMO=pvl======================================================================
+%==============================================================================
+\section{ pvl : Use of the Subroutine \funcf{ pvls}.} \label{sec:Demos_pvl}
+
+Consider Bratu's equation
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= -p_1  e^{u_1} , \\ 
+\end{array} \end{equation}
+with boundary conditions $ u_1(0)=0$, $u_1(1)=0.$
+As in demo \filef{ exp}, a solution curve requires one free parameter;
+here $p_1$.
+
+Note that additional parameters are specified in the user-supplied subroutine 
+\funcf{ pvls} in file \filef{ pvls.c}, namely,
+$p_2$ (the $L_2$-norm of $u_1$),
+$p_3$ (the minimum of $u_2$ on the space-interval $[0,1]$~),
+$p_4$ (the boundary value $u_2(0)$~).
+These additional parameters should be considered as ``solution measures''
+for output purposes; they should not be treated as true
+continuation parameters.
+
+Note also that four free parameters are specified in the \AUTO-constants file 
+\filef{ c.pvl.1}, namely, $p_1$, $p_2$, $p_3$, and $p_4$.
+The first one in this list, $p_1$, is the true continuation parameter. 
+The parameters $p_2$, $p_3$, and $p_4$ are \emp{ overspecified}
+so that their values will appear in the output.
+However, 
+\emp{ it is essential that the true continuation parameter appear first.}
+For example, it would be an error to specify the parameters
+in the following order~: $p_2$, $p_1$, $p_3$, $p_4$.
+
+In general, true continuation parameters must appear first in the
+parameter-specification in the \AUTO constants-file.
+Overspecified parameters will be printed, and can be
+defined in \funcf{ pvls}, but they are not part of the intrinsic continuation
+procedure.
+
+As this demo also illustrates (see the \parf{ UZR} values in \filef{ c.pvl.1}),
+labeled solutions can also be output at selected values 
+of the overspecified parameters.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pvl} & create an empty work directory \\ 
+  \commandf{ cd pvl} & change directory \\
+  \commandf{ demo('pvl')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='pvl.1')} & compute a solution branch \\ 
+  \commandf{ sv('pvl')} & save output-files as \filef{ b.pvl, s.pvl, d.pvl} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pvl}.}
+\label{tbl:demo_pvl}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=ext======================================================================
+%==============================================================================
+\section{ ext : Spurious Solutions to BVB.} \label{sec:Demos_ext}
+
+This demo illustrates the computation of spurious solutions
+to the boundary value problem
+\begin{equation} \begin{array}{cl}
+& u_1' - u_2 = 0 , \\
+& u_2' + \lambda^2 \pi^2 \sin( u_1 + u_1^2 + u_1^3 ) = 0,
+  \qquad t \in [0,1], \\ 
+& u_1(0) = 0, \quad u_1(1) = 0. \\
+\end{array} \end{equation}
+Here the differential equation is discretized using a fixed uniform mesh.
+This results in spurious solutions that disappear when an adaptive mesh is used.
+See the \AUTO-constant \parf{ IAD} in Section~\ref{sec:Discretization_constants}.
+This example is also considered in
+\citename{BeDo:81} \citeyear{BeDo:81}
+and
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir ext} & create an empty work directory \\ 
+  \commandf{ cd ext} & change directory \\
+  \commandf{ demo('ext')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='ext.1')} & detect bifurcations from the trivial solution branch \\ 
+  \commandf{ sv('ext')} & save output-files as \filef{ b.ext, s.ext, d.ext} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ext.2',s='ext')} & \parbox[t]{3in}{compute a bifurcating branch containing spurious bifurcations.  Constants changed : \parf{ IRS, ISW, NUZR} \vspace{0.2cm}}\\ 
+  \commandf{ ap('ext')} & append output-files to \filef{ b.ext, s.ext, d.ext} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ ext}.}
+\label{tbl:demo_ext}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=tim======================================================================
+%==============================================================================
+\section{ tim : A Test Problem for Timing \AUTO.} \label{sec:Demos_tim}
+This demo is a boundary value problem with variable dimension \parf{ NDIM}. 
+It can be used to time the performance of \AUTO 
+for various choices of \parf{ NDIM} (which must be even), \parf{ NTST}, and \parf{ NCOL}.
+The equations are
+\begin{equation} \begin{array}{cl}
+  u_i ' &= u_i  ,  \\
+  v_i ' &= -p_1 ~  e(u_i) , \\
+\end{array} \end{equation}
+$i=1,\cdots$,\parf{ NDIM}/2,
+with boundary conditions $ u_i(0)=0$, $u_i(1)=0.$
+Here 
+$$ e(u) = \sum_{k=0}^{n} ~ {u^k \over k!} ~ , $$
+with $n=25$.
+The computation requires 10 full $LU$-decompositions of the linearized system
+that arises from Newton's method for solving the collocation equations.
+The commands for running the timing problem for a particular choice 
+of \parf{ NDIM}, \parf{ NTST}, and \parf{ NCOL} are given below.
+(Note that if \parf{ NDIM} is changed then \parf{ NBC} must be changed accordingly.)
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir tim} & create an empty work directory \\ 
+  \commandf{ cd tim} & change directory \\
+  \commandf{ demo('tim')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='tim.1')} & Timing run \\ 
+  \commandf{ sv('tim')} & save output-files as \filef{ b.tim, s.tim, d.tim} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ tim}.}
+\label{tbl:demo_tim}
+\end{center}
+\end{table}
+

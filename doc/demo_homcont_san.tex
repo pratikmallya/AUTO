@@ -1,0 +1,306 @@
+
+
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont} Demo : san.} \label{ch:HomCont_san}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=san======================================================================
+%==============================================================================
+\section{ Sandstede's Model.}
+\newcommand{\ti}{\tilde}
+Consider the system \cite{Sa:95b}
+\begin{equation} \label{bs1} \begin{array}{rcl}
+\dot{x} & = & a \, x + b \, y - a \, x^2 + (\ti \mu - \alpha \, z) \, x
+\, (2-3x) \\
+\dot{y} & = & b \, x + a \, y - \frac{3}{2} \, b \, x^2 - 
+\frac{3}{2} \, a \, x \, y - (\ti \mu - \alpha \, z) \, 2 \, y \\
+\dot{z} & = & c \, z + \mu \, x + \gamma\, x\, y + \alpha \, 
+\beta \, (x^2 \, (1-x) - y^2)
+
+\end{array} \end{equation}
+as given in the file \filef{ san.c}.
+Choosing the constants appearing
+in (\ref{bs1}) appropriately allows for computing inclination and
+orbit flips as well as non-orientable resonant bifurcations, see
+\cite{Sa:95b} for details and proofs. The starting point for all
+calculations is $a=0$, $b=1$ where there exists an explicit solution
+given by  
+$$ 
+(x(t),y(t),z(t)) = 
+\left( 1 - \left(\frac{1-e^t}{1+e^t}\right)^2 , 4 \, e^t \,
+\frac{1-e^t}{(1+e^t)^3} , 0 \right). 
+$$
+This solution is specified in the routine \funcf{ stpnt}.
+
+\section{Inclination Flip.}
+We start by copying the demo to the current work directory 
+and running the first step
+\begin{center}
+\commandf{ @dm san }\\
+\commandf{ make first }
+\end{center}
+This computation starts from the analytic solution above with 
+$a=0$, $b=1$, $c=-2$, $\alpha=0$, $\beta=1$ and 
+$\gamma = \mu=\ti \mu =0$. The homoclinic solution is followed in the
+parameters $(a,\ti \mu)$ \parf{ =(PAR(1), PAR(8))} up to $a=0.25$. 
+The output is summarised on the screen as
+\begin{verbatim}
+   BR  PT  TY LAB    PAR(1)        L2-NORM           PAR(8)     
+    1   1  EP   1  0.000000E+00  4.000000E-01 ...  0.000000E+00
+    1   5  UZ   2  2.500000E-01  4.030545E-01 ... -3.620329E-11
+    1  10  EP   3  7.384434E-01  4.339575E-01 ... -9.038826E-09
+\end{verbatim}
+and saved in more detail as \filef{ b.1}, \filef{ s.1} and \filef{ d.1}.
+
+Next we want to add a solution to the adjoint equation to the
+solution obtained at $a=0.25$. This is
+achieved by making the change \parf{ ITWIST = 1} saved in \filef{ h.san.2},
+and \parf{ IRS = 2},  \parf{ NMX = 2} and \parf{ ICP(1) = 9} saved in 
+\filef{ c.san.2}. We also disable any
+user-defined functions \parf{ NUZR=0}. The computation so-defined 
+is a single step in a trivial parameter \parf{ PAR(9)} (namely a parameter
+that does not appear in the problem). The effect is to perform a Newton
+step to enable \AUTO to converge to a solution of the adjoint equation.
+\begin{center}
+\commandf{ make second}
+\end{center} 
+The output is stored in \filef{ b.2}, \filef{ s.2}  and \filef{ d.2}.
+
+We can now continue the homoclinic plus
+adjoint in $(\alpha,\ti \mu)$ \parf{ =(PAR(4), PAR(8))} by
+changing the constants (stored in \filef{ c.san.3}) to read
+\parf{ IRS = 4}, \parf{ NMX = 50} and \parf{ ICP(1) = 4}.
+We also add \parf{ PAR(10)} to the list of continuation parameters
+\parf{ NICP,(ICP(I),I=1 NICP)}. Here \parf{ PAR(10)} is a dummy parameter used in
+order to make the continuation of the adjoint well posed. Theoretically,
+it should be zero if the computation of the adjoint is successful
+\cite{Sa:95b}.
+The test functions for detecting resonant bifurcations 
+(\parf{ ISPI(1)=1}) and inclination flips (\parf{ ISPI(1)=13}) are
+also activated. Recall that this should be specified in
+three ways. First we add \parf{ PAR(21)} and \parf{ PAR(33)}
+to the list of continuation parameters in \filef{ c.san.3}, second we set up user defined
+output at zeros of these parameters in the same file, and finally we set \parf{ NPSI=2}
+\parf{ (IPSI(1),IPSI(2))=1,13} in \filef{ h.san.3}. We also add to \filef{ c.san.3} another user zero
+for detecting when \parf{ PAR(4)=1.0}.
+Running 
+\begin{center}
+\commandf{ make third }\\
+\end{center}
+reads starting data from \filef{ s.2} and outputs to the screen
+\begin{verbatim}
+ BR  PT  TY LAB    PAR(4)     ...    PAR(8)        PAR(10)    ...    PAR(33)    
+  1  20       5  7.847219E-01 ... -3.001440E-11 -4.268884E-09 ... -1.441124E+01
+  1  27  UZ   6  1.000000E+00 ... -3.844872E-11 -4.460769E-09 ... -5.701675E+00
+  1  35  UZ   7  1.230857E+00 ... -5.833977E-11 -4.530541E-09 ...  9.434843E-06
+  1  40       8  1.383969E+00 ... -8.133899E-11 -4.671817E-09 ...  1.348810E+00
+  1  50  EP   9  1.695209E+00 ... -1.386324E-10 -5.098460E-09 ...  5.311065E-01
+\end{verbatim}
+Full output is stored in \filef{ b.3}, \filef{ s.3} and \filef{ d.3}. 
+\begin{figure}[b]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/san1.ps}}
+\caption{Second versus third component of the solution to the adjoint
+equation at labels 5, 7 and 9}
+\label{Ftest1}
+\end{figure}
+Note that the artificial parameter $\epsilon=$\parf{ PAR(10)} is zero within
+the allowed tolerance. At label \parf{ 7}, a zero of test function $\psi_{13}$ has
+been detected which corresponds to an inclination flip with respect to
+the stable manifold. That the orientation of the homoclinic loop
+changes as the branch passes through this point can be read from
+the information in \filef{ d.3}.
+However in \filef{ d.3}, the line 
+\begin{verbatim} 
+ORIENTABLE (    0.2982090775D-03)
+\end{verbatim}
+at \parf{ PT=35} would seems to contradict the 
+detection of the inclination flip at this point. Nonetheless, the
+important fact is the zero of the test function; and note that 
+the value of the variable indicating the orientation is 
+small compared to its value at the other regular points. 
+Data for the adjoint equation at \parf{ LAB= 5, 7} and \parf{ 9} at
+and on either side of the inclination flip are presented in 
+Fig.\ \ref{Ftest1}. The switching of the solution between components
+of the leading unstable left eigenvector is apparent.
+Finally, we remark that the Newton step in the dummy 
+parameter \parf{ PAR(20)} performed above is crucial
+to obtain convergence. Indeed, if instead we try to continue the
+homoclinic orbit and the solution of the adjoint equation directly by
+setting
+\begin{verbatim}
+  ITWIST = 1   IRS = 2   NMX = 50   ICP(1) = 4   NPUSZR = 0
+\end{verbatim}
+(as saved in \filef{ c.san.4}) and running
+\begin{center}
+\commandf{ make fourth}
+\end{center}
+we obtain a no convergence error.
+
+\section{Non-orientable Resonant Eigenvalues.}
+Inspecting the output saved in the third run,
+we observe the existence of a non-orientable homoclinic orbit at label 
+\parf{ 7} corresponding to \parf{ N=40}. We restart at this label, with
+the first continuation parameter being once again $a=$\parf{ PAR(1)}, 
+by changing constants and storing them in \filef{ c.san.5} according to 
+\begin{verbatim}
+   IRS = 7     DS = -0.05D0    NMX = 20    ICP(1) = 1
+\end{verbatim}
+Running, 
+ \begin{center}
+\commandf{ make fifth}\\
+\end{center}
+the output at label \parf{ 10}
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)           PAR(8)        PAR(10)       PAR(21)       
+  1     8  UZ  10 -1.304570E-07  ... 3.874816E-12 -1.468457E-09 -2.609139E-07 
+\end{verbatim}
+indicates that \AUTO has detected a zero of
+\parf{ PAR(21)}, implying that a non-orientable resonant bifurcation occurred at that
+point.
+
+\section{Orbit Flip.}
+In this section we compute an orbit flip. To this end we restart
+from the original explicit solution, without computing the orientation. We 
+begin by separately performing continuation in $(\alpha,\ti \mu)$, 
+$(\beta,\ti \mu)$, $(a,\ti \mu)$, $(b,\ti \mu)$ and $(\mu, \ti \mu)$
+in order to reach the parameter values 
+$(a,b,\alpha,\beta, \mu)=(0.5,3,1,0,0.25)$.
+The sequence of continuations up to the desired parameter values 
+are run via
+\begin{center}
+\it make sixth\\
+make seventh\\
+make eighth\\
+make ninth\\ 
+make tenth\\
+\end{center}
+with appropriate continuation parameters and user output values
+set in the corresponding files \filef{ c.san.xx}. 
+All the output is saved to \filef{ s.6}.
+
+The final saved point \parf{ LAB=10} contains a homoclinic solution at
+the desired parameter values. From here we perform continuation in
+the negative direction of $(\mu,\ti \mu)=$ (\parf{ PAR(7),PAR(8)}) with
+the test function $\psi_{11}$ for orbit flips with respect to the
+stable manifold activated.
+\begin{center}
+\it make eleventh
+\end{center}
+The output detects an inclination flip (by a zero of \parf{ PAR(31)}) 
+at \parf{ PAR(7)=0} 
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(7)      ...    PAR(8)        PAR(31)    
+  1     5  UZ  12  2.394737E-07   ...  6.434492E-08 -4.133994E-06
+\end{verbatim}
+at which parameter value the homoclinic orbit is contained in the $(x,y)$-plane
+(see Fig.\ \ref{Ftest2}).
+
+\begin{figure}[t]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/san2.ps}}
+\caption{Orbits on either side of the orbit flip bifurcation. The critical
+orbit is contained in the $(x,y)$-plane}
+\label{Ftest2}
+\end{figure}
+
+Finally, we demonstrate that the orbit flip can be continued as 
+three parameters (\parf{ PAR(6), PAR(7), PAR(8)}) are varied. 
+\begin{center}
+\it make twelfth
+\end{center}
+\begin{verbatim}
+ BR    PT  TY LAB    PAR(7)       ...    PAR(8)        PAR(6)     
+   1     5      14 -5.374538E-19  ... -1.831991E-10 -3.250000E-01
+   1    10      15 -6.145911E-19  ... -2.628607E-10 -8.250001E-01
+   1    15      16 -4.947133E-19  ... -2.361151E-10 -1.325000E+00
+   1    20  EP  17 -5.792940E-19  ... -3.075527E-10 -1.825000E+00
+\end{verbatim}
+The orbit flip continues to be defined by a planar homoclinic orbit
+at \parf{ PAR(7)=PAR(8)=0}.
+
+\newpage
+\section{ Detailed \AUTO-Commands.}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir san} & create an empty work directory \\ 
+  \commandf{ cd san} & change directory \\
+  \commandf{ demo('san')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='san.1',h='san.1') } &  continuation in \parf{ PAR(1)} \\ 
+  \commandf{ sv('1') } & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.2',h='san.2',s='1') } & generate adjoint variables; restart from \filef{ s.1} \\ 
+  \commandf{ sv('2') } & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='san.3',h='san.3',s='2') } & continue homoclinic orbit and adjoint; restart from \filef{ s.2} \\ 
+  \commandf{ sv('3') } & save output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.4',h='san.4',s='1') } & no convergence without dummy step; restart from \filef{ s.1} \\ 
+  \commandf{ sv('4') } &  save output-files as \filef{ b.4, s.4, d.4} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='san.5',h='san.5',s='3') } & continue non-orientable orbit; restart from \filef{ s.3} \\
+  \commandf{ sv('5') } & save output-files as \filef{ b.5, s.5, d.5} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{ san}.}
+\label{tbl:demo_san_1}
+\end{center}
+\end{table}
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ run(c='san.6',h='san.6',s='san') } & restart and homotopy to \parf{ PAR(4)}=1.0 \\ 
+  \commandf{ sv('6') } & save output-files as \filef{ b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.7',h='san.7',s='6') } & homotopy to \parf{ PAR(5)}=0.0; restart from \filef{ s.6} \\ 
+  \commandf{ ap('6') } & append output-files to \filef{ b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.8',h='san.8',s='6') } & homotopy to \parf{ PAR(1)}=0.5; restart from \filef{ s.6} \\ 
+  \commandf{ ap('6') } & append output-files to \filef{ b.6, s.6, d.6} \\ 
+\hline
+  \commandf{ run(c='san.9',h='san.9',s='6') } & homotopy to \parf{ PAR(2)}=3.0; restart from \filef{ s.6} \\ 
+  \commandf{ ap('6') } & append output-files to \filef{ b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.10',h='san.10',s='6') } & homotopy to \parf{ PAR(7)}=0.25; restart from \filef{ s.6} \\ 
+  \commandf{ ap('6') } & append output-files to \filef{ b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.11',h='san.11',s='6') } & continue in \parf{ PAR(7)} to detect orbit flip; restart from \filef{ s.6} \\ 
+  \commandf{ sv('11') } & save output-files as \filef{ b.11, s.11, d.11} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='san.12',h='san.12',s='11') } & three-parameter continuation of orbit flip; restart from \filef{ s.11} \\ 
+  \commandf{ sv('12') } & save output-files as \filef{ b.12, s.12, d.12} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{san}.}
+\label{tbl:demo_san_2}
+\end{center}
+\end{table}
+

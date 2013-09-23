@@ -1,0 +1,85 @@
+Branch switching for algebraic problems is "automatic" in AUTO. It would be
+better to do it "manually", as for ODEs, and instead use the Python interface
+for automatic branch switching, using a supplied "standard" script.
+
+The 3D graphics ("p3") is VERY useful. People here in Seville really
+like it. (Also, a student here, Francisco-Javier, is already writing
+AUTO2000 Python scripts...) I think it is a very good idea to include a
+3D visualization tool based on OpenInventor if you also feel this way.
+
+Useful to have: Automatic branch switching (as you have already done),
+while skipping those bifurcations that are duplicates (up to a certain
+tolerance) of a given bifurcation. (Or a variation on this; the objective
+being to avoid computing the same branch repeatedly.) I suppose scripts
+of this types will suggest themselves during your 3-body calculations.
+
+Also useful (for stable/unstable manifold calculations): getting the
+value of the eigenfunctions (say, at time t=0) associated with the
+Floquet multipliers.
+
+p2: Unlabeled special points should also get a symbol.
+
+Intercept "singular blow-ups". (They occur when the user accidentally
+selects a zero-area blow-up.)
+
+Possibility to return to "previous zoom(s)". (Especially useful when the
+user has previously entered numerical diagram limits!)  Add a button
+to the right click menu which does previous zoom all the way back
+to the very first.
+ 
+Choosing diagram limits: Put "minx, miny, maxx, maxy" in separate sub-window?
+(This may speed up the selection process.) Group other related actions
+into similar subgroups, each with their own sub-window?  Maybe not
+needed with the implementation of smart labeling??
+
+BUG!!!  You can't actually turn off the smart labeling of axis
+even though the option exists.
+
+Put extra space in fort.7 and fort.8 real number format to avoid output like
+6.2161626345E-01  1.0418762748E+00  2.1897222196E-02-1.6496073449E-172
++8.1937753115E-02 -2.1122881632E+00-2.4939311800E-170
+
+In autlib3.f there is an instance of "using UPOLDP for temporary storage",
+which should be easy to eliminate in the C-version by using a temporary
+local array. (Just to eliminate some bad programming that could have side
+effects.) Perhaps this has already been done in the C-version?
+
+In connection with Bard Ermentrout's suggestion, I made changes in the
+following autlib.f routines: ICPS, ICPL, ICPD, ICTR, FIPO. In each routine
+I deleted the "IF(NRTN(I).EQ.0)" clause and replaced one instance of
+"U(I)*UPOLD(I)" by "(U(I)-UOLD(I))*UPOLD(I)". A similar change was made
+in setting up the Jacobian in these routines (except in FIPO). However,
+I get some differences in output of the test suite, so I need to check
+my changes again.
+
+I'd like to re-think all demos, and for each give a complete set of
+Python commands. On the one hand, I want to simplify them, reducing
+duplication, while, on the other hand, putting in more sophisticated
+command sequences, with loops, conditions, etc. Can you prepare a set
+of simple examples that I can use a models? (Start from a list of labels,
+compute all bifurcation branches, automatically produce graphics, ...,
+anything that you can think of. A library of useful scripts, including
+more elaborate ones, is also a good thing.
+
+I suggest (even without his
+contribution) that the authorship of the software (and the manual)
+be listed as: : "EJD+RCP {\small_print with major contributions by}
+{previous `extras' + (possibly) Schilder}" The introduction would
+specify who contributed what. In citations of the software and manual
+we would just list all authors, without the "\small_print".
+
+Check to make sure that parseB gets branch divisions correctly.
+Looking for the header isn't enough.  You need to check
+for point number 1.
+
+Type numbers can have two digits when you are following certain
+types of singularities.  These need to be named.  Currently
+I have hacked the code so that any type which is not known
+is given a default typename "Unknown Type" but it otherwise
+runs.
+
+Make the case where f77 isn't installed more transparent.
+Right now you need to do a --which-F77=no, but I
+can make it easier.
+
+

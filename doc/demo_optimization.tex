@@ -1,0 +1,437 @@
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Optimization.} \label{ch:Demos_Opt}
+%==============================================================================
+%==============================================================================
+
+\newpage
+%==============================================================================
+%DEMO=opt======================================================================
+%==============================================================================
+\section{ opt : A Model Algebraic Optimization Problem.} \label{sec:Demos_opt}
+This demo illustrates the method of successive continuation 
+for constrained optimization problems 
+ by applying it to the following
+simple problem~:~
+Find the
+maximum sum of coordinates on the unit sphere in $R^{5}$.
+Coordinate 1 is treated as the state variable.
+Coordinates 2-5 are treated as control parameters.
+For details on the successive continuation procedure
+see  \citename{DoKeKe:91a} \citeyear{DoKeKe:91a},
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir opt} & create an empty work directory \\ 
+  \commandf{ cd opt} & change directory \\
+  \commandf{ demo('opt')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='opt.1')} & one free equation parameter \\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='opt.2',s='1')} & \parbox[t]{3in}{two free equation parameters; read restart data from \filef{ s.1}.  Constants changed : \parf{ IRS} \vspace{0.2cm}}\\ 
+  \commandf{ sv('2')} & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%============================================================================== 
+  \commandf{ run(c='opt.3',s='2')} & \parbox[t]{3in}{three free equation parameters; read restart data from \filef{ s.2}.  Constants changed : \parf{ IRS} \vspace{0.2cm}}\\ 
+  \commandf{ sv('3')} & save output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='opt.4',s='3')} & \parbox[t]{3in}{four free equation parameters; read restart data from \filef{ s.3}.  Constants changed : \parf{ IRS} \vspace{0.2cm}}\\ 
+  \commandf{ sv('4')} & save output-files as \filef{ b.4, s.4, d.4} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ opt}.}
+\label{tbl:demo_opt}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=ops======================================================================
+%==============================================================================
+\section{ ops : Optimization of Periodic Solutions.} \label{sec:Demos_ops}
+This demo illustrates the method of successive continuation
+for the optimization of periodic solutions.
+For a detailed description of the basic method see
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+The illustrative system of autonomous ODEs, taken from 
+\citename{Alej:91} \citeyear{Alej:91}, is
+\begin{equation} \begin{array}{cl}
+  x'(t) & = [-\lambda_4(x^3/3-x) + (z-x)/\lambda_2 - y]/\lambda_1, \\
+  y'(t) &= x-\lambda_3, \\
+  z'(t) &= -(z-x)/\lambda_2,
+\end{array} \end{equation}
+with objective functional
+$$ \omega = 
+  \int_0^{1} g(x,y,z;\lambda_1,\lambda_2,\lambda_3,\lambda_4) ~ dt, $$
+where $g(x,y,z;\lambda_1,\lambda_2,\lambda_3,\lambda_4) \equiv \lambda_3$.
+Thus, in this application, a one-parameter extremum of $g$ corresponds
+to a fold with respect to the problem parameter $\lambda_3$, 
+and multi-parameter extrema correspond to generalized folds.
+Note that, in general, the objective functional is an integral along 
+the periodic orbit, so that a variety of optimization problems
+can be addressed.
+
+For the case of periodic solutions, the extended optimality system
+can be generated automatically, i.e., one need only define the vector field 
+and the objective functional, as in done in the file \filef{ ops.c}.
+For reference purpose it is convenient here to write down
+the full extended system in its general form~:
+
+\begin{equation} \begin{array}{cl}
+  &u'(t)  = T f \bigl( u(t),\lambda \bigr) ,
+  \qquad T\in \R {\rm ~(period)},~ u(\cdot),f(\cdot,\cdot) \in \Rn, 
+  ~ \lambda \in \R^{n_{\lambda}},  \\
+  & \cr
+  &w'(t)  = -Tf_u\bigl( u(t),\lambda \bigr)^{*} w(t) 
+  + \kappa u_0'(t) 
+  + \gamma g_u\bigl( u(t),\lambda \bigr)^{*}, 
+  \qquad w(\cdot) \in \Rn,~ \kappa, \gamma \in \R, \\
+  & \cr
+  &u(1) - u(0) = 0, \qquad w(1) - w(0) = 0,  \\
+  & \cr  
+  &\int_{0}^{1} u(t)^{*} u_0'(t)~ dt = 0,  \\
+  & \cr
+  &\int_{0}^{1}  \omega - g\bigl(u(t),\lambda\bigr)  ~dt = 0,  \\
+  & \cr
+  &\int_0^{1}  w(t)^{*}w(t)
+  + \kappa^2 + \gamma^{2} - \alpha ~ dt = 0, 
+  \qquad \alpha \in \R,  \\ 
+  & \cr
+  &\int_0^{1}  f\bigl( u(t),\lambda \bigr)^{*}w(t) 
+  - \gamma g_{T}\bigl( u(t),\lambda \bigr)
+  - \tau_0  ~ dt= 0, \qquad \tau_0 \in \R,  \\
+  & \cr
+  &\int_0^{1}  T f_{\lambda_i}\bigl( u(t),\lambda \bigr)^{*}w(t)
+  - \gamma g_{\lambda_i}\bigl( u(t),\lambda \bigr)
+  - \tau_i  ~dt= 0, 
+  \qquad \tau_i \in \R, \quad i=1, \cdots, n_{\lambda}.\\
+\end{array} \end{equation}
+Above  $u_0$ is a reference solution, namely, the previous solution along 
+a solution branch.  
+
+\newpage
+In the computations below, the two preliminary runs, with \parf{ IPS}=1 and \parf{ IPS}=2,
+respectively, locate periodic solutions. 
+The subsequent runs are with \parf{ IPS}=15 and hence use the automatically
+ generated extended system.
+
+\begin{itemize}
+\item[-] 
+  \commandf{ Run 1.}~ Locate a Hopf bifurcation. 
+  The free system parameter is $\lambda_3$. 
+\item[-]\commandf{ Run 2.}~ 
+  Compute a branch of periodic solutions from the Hopf bifurcation.
+\item[-]\commandf{ Run 3.}~ 
+  This run retraces part of the periodic solution branch, 
+  using the full optimality system,
+  but with all adjoint variables, $w(\cdot), \kappa, \gamma$, 
+  and hence $\alpha$, equal to zero.
+  The optimality parameters $\tau_0$ and $\tau_3$ are zero throughout.
+  An extremum of the objective functional with respect to $\lambda_3$
+  is located.
+  Such a point corresponds to a branch point of the extended system. 
+  Given the choice of objective functional in this demo, 
+  this extremum is also a fold with respect to $\lambda_3$.
+\item[-]\commandf{ Run 4.}~
+  Branch switching at the above-found branch point yields nonzero
+  values of the adjoint variables.
+  Any point on the bifurcating branch away from the branch point
+  can serve as starting solution for the next run.
+  In fact, the branch-switching can be viewed as generating
+  a nonzero eigenvector in an eigenvalue-eigenvector relation.
+  Apart from the adjoint variables, all other variables remain
+  unchanged along the bifurcating branch.
+\item[-]\commandf{ Run 5.}~ 
+  The above-found starting solution is continued in two system parameters, 
+  here $\lambda_3$ and $\lambda_2$; i.e., a two-parameter branch 
+  of extrema with respect to $\lambda_3$ is computed.
+  Along this branch the value of the optimality parameter $\tau_2$ 
+  is monitored, i.e., the value of the functional that vanishes 
+  at an extremum with respect to the system parameter $\lambda_2$.
+  Such a zero of $\tau_2$ is, in fact, located, and hence an extremum 
+  of the objective functional with respect to both $\lambda_2$ and 
+  $\lambda_3$ has been found.
+  Note that, in general, $\tau_i$ is the value of the
+  functional that vanishes at an extremum with respect to the system
+  parameter $\lambda_i$.
+\item[-]\commandf{ Run 6.}~ 
+  In the final run, the above-found two-parameter extremum is continued
+  in three system parameters, here $\lambda_1$, $\lambda_2$, 
+  and $\lambda_3$, toward $\lambda_1=0$.
+  Again, given the particular choice of objective functional,
+  this final continuation has an alternate significance here~:
+  it also represents a three-parameter branch of transcritical
+  secondary periodic bifurcations points.
+\end{itemize}
+
+Although not illustrated here, one can restart an ordinary
+continuation of periodic solutions, using \parf{ IPS}=2 or \parf{ IPS}=3,
+from a labeled solution point on a branch computed with \parf{ IPS}=15.
+
+\newpage
+The free scalar variables specified in the \AUTO constants-files
+for Run~3 and Run~4 are shown in  Table~\ref{tbl:demo_ops_1}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | r | r | r | r | r | r | r |}
+\hline
+  Index& 3 & 11 & 12 & 22  & -22 & -23 & -31 \\
+\hline
+  Variable& $\lambda_3$ & $T$ &  $\alpha$ & $\tau_2$  
+  & $[\lambda_2]$ & $[\lambda_3]$ & $[T]$ \\
+\hline
+\end{tabular}
+\caption{\commandf{ Runs 3 and 4}~ (files \filef{ c.ops.3} and \filef{ c.ops.4}).}
+\label{tbl:demo_ops_1}
+\end{center}
+\end{table}
+
+The parameter $\alpha$, which is the norm of the adjoint variables,
+becomes nonzero after branch switching in Run~4.
+The negative indices (-22, -23, and -31) set the active optimality 
+functionals, namely for $\lambda_2$, $\lambda_3$, and $T$, respectively,
+with corresponding variables $\tau_2$, $\tau_3$, and $\tau_0$,
+respectively.
+These should be set in the first run with \parf{ IPS}=15 and remain unchanged
+in all subsequent runs.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | r | r | r | r | r | r | r |}
+\hline
+  Index& 3 & ~2 & 11 & 22  & -22 & -23 & -31 \\
+\hline
+  Variable& $\lambda_3$ & $\lambda_2$ & $T$ & $\tau_2$  
+  & $[\lambda_2]$ & $[\lambda_3]$ & $[T]$ \\
+\hline
+\end{tabular}
+\caption{\commandf{ Run 5}~ (file \filef{ c.ops.5}).}
+\label{tbl:demo_ops_2}
+\end{center}
+\end{table}
+
+In Run~5 the parameter $\alpha$, which has been replaced by $\lambda_2$,
+remains fixed and nonzero.
+The variable $\tau_2$ monitors the value of the optimality functional 
+associated with $\lambda_2$.
+The zero of $\tau_2$ located in this run signals an extremum  
+with respect to $\lambda_2$.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | r | r | r | r | r | r | r |}
+\hline
+  Index& 3 & ~2 & ~1 & 11  & -22 & -23 & -31 \\
+\hline
+  Variable& $\lambda_3$ & $\lambda_2$ & $\lambda_1$ & $T$  
+  & $[\lambda_2]$ & $[\lambda_3]$ & $[T]$ \\
+\hline
+\end{tabular}
+\caption{\commandf{ Run 6}~ (file \filef{ c.ops.6}).}
+\label{tbl:demo_ops_3}
+\end{center}
+\end{table}
+
+
+In Run~6 $\tau_2$, which has been replaced by $\lambda_1$, remains zero.
+
+
+Note that $\tau_0$ and $\tau_3$ are not used as variables in any
+of the runs; in fact, their values remain zero throughout.
+Also note that the optimality functionals corresponding to 
+$\tau_0$ and $\tau_3$ (or, equivalently, to $T$ and $\lambda_3$) 
+\emp{ are} active in all runs.
+This set-up allows the detection of the extremum of the objective functional,
+with $T$ and $\lambda_3$ as scalar equation parameters,
+as a bifurcation in the third run.
+
+The parameter $\lambda_4$, and its corresponding optimality variable $\tau_4$,
+are not used in this demo.
+Also, $\lambda_1$ is used in the last run only, and its corresponding 
+optimality variable $\tau_1$ is never used.
+
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir ops} & create an empty work directory \\ 
+  \commandf{ cd ops} & change directory \\
+  \commandf{ demo('ops')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.1')} & locate a Hopf bifurcation \\ 
+  \commandf{ sv('0')} & save output-files as \filef{ b.0, s.0, d.0} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.2',s='0')} & \parbox[t]{3in}{compute a branch of periodic solutions;  restart from \filef{ s.0}. Constants changed : \parf{ IPS, IRS, NMX, NUZR}  \vspace{0.2cm}}\\ 
+  \commandf{ ap('0')} & append the output-files to \filef{ b.0, s.0, d.0} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.3',s='0')} & \parbox[t]{3in}{locate a 1-parameter extremum as a bifurcation; restart from \filef{ s.0}.  Constants changed : \parf{ IPS, IRS, ICP}, $\cdots$ \vspace{0.2cm}}\\ 
+  \commandf{ sv('1')} & save the output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.4',s='1')} & \parbox[t]{3in}{switch branches to generate optimality starting data; restart from \filef{ s.1}.  Constants changed : \parf{ IRS, ISP, ISW, NMX} \vspace{0.2cm}}\\ 
+  \commandf{ ap('1')} & append the output-files to \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.5',s='1')} & \parbox[t]{3in}{compute 2-parameter branch of 1-parameter extrema; restart from \filef{ s.1}.  Constants changed : \parf{ IRS, ISW, ICP, ISW}, $\cdots$\vspace{0.2cm}}\\ 
+  \commandf{ sv('2')} & save the output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ops.6',s='2')} & \parbox[t]{3in}{compute 3-parameter branch of 2-parameter extrema; restart from \filef{ s.2}.   Constants changed : \parf{ IRS, ICP, EPSL, EPSU, NUZR} \vspace{0.2cm}}\\ 
+  \commandf{ sv('3')} & save the output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ ops}.}
+\label{tbl:demo_ops_4}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=obv======================================================================
+%==============================================================================
+\section{ obv : Optimization for a BVP.} \label{sec:Demos_obv}
+This demo illustrates use of the method of successive continuation
+for a  boundary value optimization problem.
+A detailed description of the basic method, as well as a discussion
+of the specific application considered here, is given in 
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+The required extended system is fully programmed here in the user-supplied
+subroutines in \filef{ obv.c}.
+For the case of periodic solutions the optimality system can be generated
+automatically; see the demo \filef{ ops}.
+
+Consider the system
+\begin{equation} \begin{array}{cl}
+  u_1'(t) & = u_2(t), \\
+  u_2'(t) &=
+  -\lambda_1 e^{p(u_1,\lambda_2,\lambda_3)},
+\end{array} \end{equation}
+where
+$ p(u_1,\lambda_2,\lambda_3) \equiv
+  u_1 + \lambda_2 u_1^{2} + \lambda_3 u_1^{4},$
+with boundary conditions
+\begin{equation} \begin{array}{cl}
+  u_1(0) &= 0, \\
+  u_1(1) &= 0. \\
+\end{array} \end{equation}
+The objective functional is
+$$ \omega = \int_0^{1} (u_1(t)-1)^{2}~ dt
+  +  {1\over{10}} \sum_{k=1}^{3} \lambda_{k}^{2}.  $$
+The  successive continuation equations are given by
+\begin{equation} \begin{array}{cl}
+  u_1'(t) &= u_2(t), \\
+  u_2'(t) &=
+  -\lambda_1 e^{p(u_1,\lambda_2,\lambda_3)}, \\
+  w_1'(t) &=
+  \lambda_1 e^{p(u_1,\lambda_2,\lambda_3)} p_{u_1} w_2(t)
+  + 2 \gamma(u_1(t)-1), \\
+  w_2'(t) &= -w_1(t), \\
+\end{array} \end{equation}
+where
+$$ p_{u_1} \equiv
+  {{\partial p} \over {\partial u_1}} =
+  1 + 2\lambda_2 u_1 + 4\lambda_3 u_1^{3},$$
+with 
+\begin{equation} \begin{array}{cl}
+  u_1(0) = 0,\qquad  &w_1(0) - \beta_1 = 0,\qquad  w_2(0) = 0, \\
+  u_1(1) = 0,\qquad  &w_1(1) + \beta_2 = 0,\qquad  w_2(1) = 0, \\\end{array} \end{equation}
+
+$$ \int_0^{1} \bigl[ \omega - (u_1(t)-1)^{2}
+  - {1\over{10}} \sum_{k=1}^{3} \lambda_{k}^{2} \bigr]~ dt = 0, $$
+
+$$ \int_0^{1} \bigl[w_1^{2}(t) - \alpha_0 \bigr]~ dt = 0, $$
+ 
+\begin{equation} \begin{array}{cl}
+  &\int_0^{1} \bigl[
+  -e^{p(u_1,\lambda_2,\lambda_3)} w_2(t)
+  - {1\over 5}\gamma \lambda_1
+  \bigr]~ dt = 0, \\
+  &\int_0^{1} \bigl[
+  -\lambda_1 e^{p(u_1,\lambda_2,\lambda_3)} u_1(t)^{2} w_2(t)
+  - {1\over 5}\gamma \lambda_2
+  - \tau_2  \bigr]~ dt = 0, \\
+  &\int_0^{1} \bigl[
+  -\lambda_1 e^{p(u_1,\lambda_2,\lambda_3)} u_1(t)^{4} w_2(t)
+  - {1\over 5}\gamma \lambda_3
+  - \tau_3 \bigr]~ dt = 0. \\\end{array} \end{equation}
+
+In the first run the free equation parameter is $\lambda_1$.
+All adjoint variables are zero.
+Three extrema of the objective function are located.
+These correspond to branch points and, in the second run,
+branch switching is done at one of these.
+Along the bifurcating branch the adjoint variables become nonzero,
+while state variables and $\lambda_1$ remain constant.
+Any such non-trivial solution point can be used for continuation 
+in two equation parameters, after fixing the $L_2$-norm of one of 
+the adjoint variables. This is done in the third run.
+Along the resulting branch several two-parameter extrema are located 
+by monotoring certain inner products.
+One of these is further continued in three equation parameters in the final run,
+where a three-parameter extremum is located.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir obv} & create an empty work directory \\ 
+  \commandf{ cd obv} & change directory \\
+  \commandf{ demo('obv')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='obv.1')} & locate 1-parameter extrema as branch points \\ 
+  \commandf{ sv('obv')} & save output-files as \filef{ b.obv, s.obv, d.obv} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='obv.2',s='obv')} & \parbox[t]{3in}{compute a few step on the first bifurcating branch.  Constants changed : \parf{ IRS, ISW, NMX} \vspace{0.2cm}}\\ 
+  \commandf{ sv('1')} & save the output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='obv.3',s='1')} & \parbox[t]{3in}{locate 2-parameter extremum; restart from \filef{ s.1}.  Constants changed : \parf{ IRS, ISW, NMX, ICP(3)} \vspace{0.2cm}}\\ 
+  \commandf{ sv('2')} & save the output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='obv.4',s='2')} & \parbox[t]{3in}{locate 3-parameter extremum; restart from \filef{ s.2}.  Constants changed : \parf{ IRS, ICP(4)} \vspace{0.2cm}}\\ 
+  \commandf{ sv('3')} & save the output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ obv}.}
+\label{tbl:demo_obv}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+

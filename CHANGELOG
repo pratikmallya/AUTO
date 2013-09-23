@@ -1,0 +1,229 @@
+0.9.8:
+* (most changes by Bart Oldeman:)
+* Fixed fcon.c; it now uses dynamic memory allocation
+* Optimized conpar and minimized the number of malloc()s in autlib3.c.
+  This change sometimes makes AUTO 4x quicker.
+* Miscellaneous optimizations.
+* Parallellized calculation of some more arrays.
+* Added some code for continuation of manifolds (M. Henderson)
+* Cleanups by R. Paffenroth
+* Improved speed of 2D Python graphics (5x quicker)
+* Print solution type in case of 2-par continuation (E.J. Doedel)
+* PLAUT: Changed max number of labels to 999 (E.J. Doedel)
+* Most of AUTO is usable without "," in your PATH
+* HomCont now supports global rotations (including branch switching), i.e.
+  one or more of the phase space variables can be angular.
+* Made it possible to link with user files written in Fortran, so that
+  AUTO2000 is backwards compatible with AUTO97 from a user point of view
+  (including r., p., and q. files)
+* tek2ps.c: Replaced the default path for "doedel" by a more flexible one
+  using $AUTO_DIR.
+* Replace the while loops that wait for \n by a function that checks for
+  EOF too. This solves some obscure hangups when user files did not
+  terminate with an end of line character.
+* Add blank lines in writeRawFilename in between continuations.
+* Remove #include malloc.h (file not present on MacOS X)
+* parseH.py: Correct IREV/NREV parsing for homcont files.
+* runAUTO.py: Use "time" instead of "/usr/bin/time" because
+  the former may be an sh internal and the latter may not exist.
+* Look for g95, gfortran, etc, as well, as *77 as Fortran compiler.
+* More sophisticated method to detect pthread compiler flags.
+* Update Pmw to version 1.2.
+* Updated ab demo to better match with the documentation.
+* Fix compilation problem with struct timeval
+* "save as postscript" in the plotter now uses a proper file dialog.
+* use pythonw on MacOS X
+* implemented a workaround for the hanging plot window in Cygwin.
+* allow resizing of the plot window, and avoid the continuous resizing
+  at startup that happened on MacOS X and Cygwin.
+ 
+0.9.7
+* (from Bart Oldeman): added CLUI commands for HomCont.
+  Fixed a segmentation fault. Don't initialize par[18] unless it's
+  necessary. Updated graphics Python files to use "re" instead of
+  "regex", as "regex" is outphased.
+  Cleaned up autlib5.c and introduced a new matrix allocation
+  scheme, "borrowed" from DSTool in dmatrix.c. For now, only a few 
+  local matrices in autlib5.c use it, as a proof of concept.
+  Document the use of ISTART=4 in HomCont and fixed the mtn and kpr demos.
+  Add homoclinic branch switching and eigenvalue tracking of the
+  right-hand equilibrium for heteroclinic orbits.
+
+* IMPORTANT:  The getp calling sequence has changed.  It is now
+  doublereal getp(char *code, integer ic, doublereal *ups)
+  while it used to be,
+  doublereal getp(char *code, integer *ic, doublereal *ups, integer *code_len).
+  If you use the getp function in the pvls user routine you must
+  update your code.
+
+* (from M. Henderson) set_function_pointers has been moved
+  to autlib1.c from main.c.  People who want to wrap the
+  AUTO functions themselves commonly want to rewrite main, 
+  and linking was awkward if they wanted to use set_function_pointers.
+
+* The global scratch array no longer exists.  All scratch space
+  arrays in autlib3.c and autlib5.c are now function scope
+  statics.  The reason was to make the wrapper functions
+  more parallelizable by allowing multiple copies to be
+  run at once.  
+  NOTE:  The above change is OPTIONAL, and turned on
+  by using the -DSTATIC_ALLOC compile flag.  While the
+  performance is better, on some problem types you can
+  get into a nasty race condition.
+
+* The ICP, THU, THL, and UZR sections of the parseC are easier to
+  set.  You can just hand them a list of the appropriate size
+  and NICP, etc will be computed automatically.  In fact, NICP,
+  etc. are nore directly accessible any more.
+
+* commandCopyDemo now copies "*" instead of "[^C]*" since not
+  all shells know the "[^C]" syntax.  We now get an warning
+  when copying a demo from a CVS version, but everything
+  works.
+
+0.9.6
+* The AUTO2000 CLUI works with Python 2.0.  There
+  were a few places where Python 2.0 was more fussy
+  then Python 1.5.2, and they have been fixed.
+
+* (from M. Henderson) The abs macro in auto_f2c.h was a
+  bit strange since you ended up writing abs(double),
+  when the abs FUNCTION works on integers.  I have
+  made two macros, abs and fabs, to make the code
+  look nicer.  Also, they are wrapped in #ifndefs
+  to avoid conflicts with system header files.
+
+* All scripts in the documentation also appear in
+  demos/python.
+
+* The documentation for the CLUI has been substantially updated.
+  All that is missing now is the 3D plotter documentation
+  (since that may change substantially if we go
+  with an OpenInventor tool), and a small section on
+  the relationshop between the .autorc file and
+  the 2D plotter.
+
+* I added scripts for both sh and csh compatible shells
+  to auto/2000/cmds and I updated the documentation
+  appropriately.
+
+* the Python file shortBindings.py changed its name
+  to AUTOclui.py.  The new name is much more
+  edifying as to what the file does.
+
+* I got rid of fort7 and fort8 in all external routines.
+  the fort7 and fort8 file are not refered to any more in
+  any user visable routines.  Even the names of the
+  classes have changed to more closely match the
+  file naming convention.  For example, parse8
+  is now parseS, and parse7 is now parseB.
+
+* There are new demonstrations of the CLUI in demos/python.
+  fullTest.auto, plotter.auto, and tutorial.auto
+  are annotated scripts which demonstrate how the CLUI
+  can be used.  In addition, there is a collection
+  of 'expert' scripts in demos/python/n-body which
+  demonstrate how to preform various calculations in
+  the n-body problem.
+
+* The 2D plotter now uses "smart" ranges.  It tries to round the
+  range so that the tick marks are at reasonable values.
+
+* (inspired by W. Koon and S. Ross) The main "auto" script is smarter.
+  It now uses straight /bin/sh stuff to make it more portable, and it
+  has two modes.  If you run it as "auto" it gives you the basic
+  interface (i.e. the AUTO commands are already imported and the
+  shorthand "cd", "ls", and "cat" work).  If you run it as "auto -x"
+  (for eXpert) you get a standard Python command line, with the only
+  addition being that PYTHON_PATH is set correctly.  The idea being
+  that "auto -x" is used for scripts which use Python functionality
+  not available in the basic interface, such as funciton defition.
+
+* (inspired by W. Koon and S. Ross) Both parse7 and parse8 objects now
+  have methods for exporting data to external programs.  The "toArray"
+  takes the appropriate data (a solution for parse8 objects and the
+  whole bifurcation diagram for parse7 objects) and returns a standard
+  Python array.  The "writeRaw" and "writeRawFilename" output the same
+  information to a stream and file respectively.
+
+* (inspired by W. Koon and S. Ross) AUTO2000 is now smart
+  about whether Tkinter is installed.  Since it is not
+  turned on by the default source installation I imagine
+  there are lots of people without it.  So, AUTO2000 now
+  runs whether it is there or not.  If it is installed
+  in provides the plotting routines, if not it gives a
+  warning and disables the plotting routines.
+
+* All global structures have been cleaned up and commented.  They
+  are needed in various places for efficiency, and I am not sure
+  how to get rid of them.  At least now they are clearly marked and
+  documented.
+
+* I have removed some spurious lines in the 3d plotter.
+
+* The commandCopyFortFiles (aka save) currently overwrites the target
+  data files if they exist.  Now, it makes a backup copy before
+  doing so (though, if you do it twice, the former backup copy gets
+  overwritten with the new one).
+
+* In the 2D plotter "zoom" is turned on by default.
+
+* In the 3D plotter "mark_t = 0.0" works correctly
+
+* (from Tom W.) the "auto" script didn't export the PYTHONPATH
+  variable, so if you didn't use set -a (or called it from another
+  shell) it didn't work.  That has ACTUALLY been fixed now.  For some
+  reason (probably operator error :-) this fix didn't make it into
+  the last release.  I updated the distribution for 0.9.5 anyway
+  since I was not ready to release this version.
+
+* I fixed a small bug in the printing of the fort.7 file.  When
+  the exponent was 3 digits columns would somtimes run together.
+
+* Many of the "template routines" in autlib3.c have been modified
+  so that it is clear which arguments are read only and which may
+  be written to.  I.e. the appropriate scalars are call by
+  value instead of call by reference, and all read only
+  arrays are now declared "const".
+
+0.9.5
+
+* IMPORTANT (inspired by Patrick G.): The calling sequences for the
+user functions are different.  Each argument that is a scalar is now
+call be value, each array argument that is not supposed to be changed
+in declared as "const", and each array argument you can change appears
+at the end of the argument list.  The call by reference and "const"
+changes affect ALL user functions, while the order changes affect only
+bcnd, icnd, and stpnt.  All of the demos have been updated
+appropriately.
+
+* Fixed a bug in the pvl demo about not including auto_c.h
+
+* Added sections to documentation for parsed data structures.
+
+* type_translation is now a dictionary with long and short names for each type.
+
+* parse7 and parse8 are NOT lists anymore, though they do have SOME of the
+  properties of lists.
+
+* parse7 and parse8 do not have as many entries as before.  Some of 
+  the entries are not really appropriate for users, and only have
+  to do with the structure of the files, which we are trying to
+  hide.  They have been removed.
+
+* the plotting programs can handle the case where either the solution
+  or bifurcation file doesn't exist
+
+* (from Mike H.) conpar.c didn't have all of the Pthreads specific
+  stuff wrapped by #ifdefs.  That has been fixed.
+
+* (from Tom W.) the "auto" script didn't export the PYTHONPATH
+  variable, so if you didn't use set -a (or called it from another
+  shell) it didn't work.  That has been fixed.
+
+
+0.9.4 
+
+*Start of CHANGELOG entries
+
+

@@ -1,0 +1,25 @@
+#!/bin/sh
+echo " File recovery ... done."
+if ( test $# -eq 1 ) then
+	if ( test -r b.$1 ) then
+		BIFURCATION=b
+		SOLUTIONS=s
+	else
+		BIFURCATION=p
+		SOLUTIONS=q
+	fi
+	mv $BIFURCATION.$1 $BIFURCATION.tmp
+	mv $SOLUTIONS.$1 $SOLUTIONS.tmp
+	mv $BIFURCATION.$1~ $BIFURCATION.$1
+	mv $SOLUTIONS.$1~ $SOLUTIONS.$1
+	mv $BIFURCATION.tmp $BIFURCATION.$1~
+	mv $SOLUTIONS.tmp $SOLUTIONS.$1~
+else
+	mv fort.7 tmp.7
+	mv fort.8 tmp.8
+	mv fort.7~ fort.7
+	mv fort.8~ fort.8
+	mv tmp.7 fort.7~
+	mv tmp.8 fort.8~
+fi
+echo " File recovery ... done."

@@ -1,0 +1,24 @@
+#!/bin/sh
+if ( test $# -eq 1 ) then
+	if ( test -r b.$1 ) then
+		BIFURCATION=b
+		SOLUTIONS=s
+	else
+		BIFURCATION=p
+		SOLUTIONS=q
+	fi
+	cp $SOLUTIONS.$1 fort.28
+	cp $BIFURCATION.$1 $BIFURCATION.$1~
+	mv $SOLUTIONS.$1 $SOLUTIONS.$1~
+	$AUTO_DIR/bin/double
+	mv fort.38 $SOLUTIONS.$1
+	rm fort.28
+else
+	cp fort.8 fort.28
+	cp fort.7 fort.7~
+	mv fort.8 fort.8~
+	$AUTO_DIR/bin/double
+	mv fort.38 fort.8
+	rm fort.28
+fi
+

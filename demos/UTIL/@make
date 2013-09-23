@@ -1,0 +1,8 @@
+cp ../$1/Makefile fort.1
+make.exe
+cp fort.2 ../$1/Makefile
+cp fort.2 ../$1/Makefile.sav
+
+diff fort.2 fort.1 >> d
+rm fort.1
+rm fort.2

@@ -1,0 +1,5 @@
+if ( test $# -eq 1 ) then
+	grep BP d.$1
+else
+	grep BP fort.9
+fi

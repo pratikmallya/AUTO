@@ -1,0 +1,44 @@
+# 
+echo " "
+echo "Cleaning up ..."
+cd $HOME/auto/97
+make superclean
+# 
+echo " "
+echo "Creating AUTO-manual tar file ..."
+cd doc
+make clean
+make
+compress auto.ps
+uuencode auto.ps.Z auto.ps.Z > auto.ps.Z.uu
+mv auto.ps.Z.uu $HOME/auto/users
+rm auto.ps.Z
+make clean
+#
+echo " "
+echo "Creating AUTO tar file ... "
+cd $HOME
+rm auto.tar*
+tar cvf auto.tar auto/97
+compress auto.tar
+uuencode auto.tar.Z auto.tar.Z > auto.tar.Z.uu
+mv auto.tar.Z.uu $HOME/auto/users
+rm auto.tar.Z
+#
+echo " "
+echo "Creating on-line manual ... "
+cd $HOME
+cd $HOME/auto/97/doc
+make
+#
+echo " "
+echo "Recompiling AUTO ... "
+cd $HOME/auto/97
+make sgi
+make clean
+#
+cd $HOME
+echo " "
+echo "Done . "
+
+

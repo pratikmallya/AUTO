@@ -1,0 +1,125 @@
+#
+#   Makefile		3/1994		Xianjun WANG
+#
+PGM    = rev
+FC     = f77
+FFLAGS = -O
+SRC    = $(PGM).f
+EXE    = $(PGM).exe
+LIBS   = $(AUTO_DIR)/lib/*.o
+RM     = rm -f
+LP     = lp
+HB     = hb
+HOM    = hom
+#
+all: clean first second third fourth
+#
+$(EXE): $(SRC:.f=.o)
+	$(FC) $(FFLAGS) $(SRC:.f=.o) -o $@ $(LIBS)
+#
+first:
+	@echo " "
+	@echo "Demo $(PGM) is started"
+	@echo "Copying data from rev.dat.1"
+	@cp rev.dat.1 rev.dat
+	@echo " "
+	@echo "Starting conversion of $(PGM).dat : "
+	@echo "(Required files : $(PGM).f, c.$(PGM), $(PGM).dat)"
+	@f77 $(AUTO_DIR)/src/fcon.f $(PGM).f -o fcon
+	@cp c.$(PGM).1   fort.2
+	@cp $(PGM).dat fort.3
+	@fcon
+	@mv fort.8 s.dat
+	@rm fcon* fort.2 fort.3
+	@echo "Conversion done : converted file saved as s.dat"
+	@echo " "
+	@echo "$(PGM) : first run : increase PAR(1)"
+	@cp s.dat fort.3
+	@echo "Copying Equations-file from rev.f.1"
+	@cp $(SRC).1 $(SRC)
+	f77 -O rev.f -o rev.exe $(AUTO_DIR)/lib/*.o
+	@cp c.$(PGM).1 fort.2
+	@cp h.$(PGM).1 fort.12
+	@$(EXE)
+	@cat fort.7 > b.1
+	@cat fort.8 > s.1
+	@cat fort.9 > d.1
+	@echo " Saved as *.1"
+	@$(RM) fort.*
+#
+second:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : second run : continue in reverse direction"
+	@cp c.$(PGM).2 fort.2
+	@cp h.$(PGM).2 fort.12
+	@cp s.1   fort.3
+	@$(EXE)
+	@cat fort.7 >> b.1
+	@cat fort.8 >> s.1
+	@cat fort.9 >> d.1
+	@echo " Appended to *.1"
+	@$(RM) fort.*
+#
+third:
+	@echo " "	
+	@echo "$(PGM) : third run : restart from solution with different reversibility"
+	@echo "Copying Equations-file from rev.f.3"
+	@cp $(SRC).3 $(SRC)
+	@echo "Copying data from rev.dat.3"
+	@cp rev.dat.3 rev.dat
+	@echo "Starting conversion of $(PGM).dat : "
+	@echo "(Required files : $(PGM).f, c.$(PGM), $(PGM).dat)"
+	@f77 $(AUTO_DIR)/src/fcon.f $(PGM).f -o fcon
+	@cp c.$(PGM).3   fort.2
+	@cp $(PGM).dat fort.3
+	@fcon
+	@mv fort.8 s.dat
+	@rm fcon* fort.2 fort.3
+	@echo "Conversion done : converted file saved as s.dat"
+	@echo " "
+	@cp s.dat fort.3
+	f77 -O rev.f -o rev.exe $(AUTO_DIR)/lib/*.o
+	@cp c.$(PGM).3 fort.2
+	@cp h.$(PGM).3 fort.12
+	@touch fort.3
+	@$(EXE)
+	@cat fort.7 > b.3
+	@cat fort.8 > s.3
+	@cat fort.9 > d.3
+	@echo " Saved as *.3"
+	@$(RM) fort.*
+#
+fourth:	$(EXE)
+	@echo " "
+	@echo "$(PGM) : fourth run : continue in reverse direction"
+	@cp c.$(PGM).4 fort.2
+	@cp h.$(PGM).4 fort.12
+	@cp s.3   fort.3
+	@$(EXE)
+	@cat fort.7 >> b.3
+	@cat fort.8 >> s.3
+	@cat fort.9 >> d.3
+	@echo " Appended to *.3"
+	@$(RM) fort.*
+	@echo " "
+	@echo "Demo $(PGM) is done"
+#
+clean:
+	@echo "Cleaning $(PGM) ..."
+	@cp $(SRC) $(EXE)
+	@$(RM) *.exe *.o* b.* s.* d.* fort.* *~ core
+	@cp c.$(PGM).1 c.$(PGM)
+	@cp h.$(PGM).1 h.$(PGM)
+	@echo "Cleaning ... done"
+#
+semiclean:
+	@echo "Cleaning $(PGM) ..."
+	@cp $(SRC) $(EXE)
+	@$(RM) *.exe *.o* fort.* *~
+	@cp c.$(PGM).1 c.$(PGM)
+	@cp h.$(PGM).1 h.$(PGM)
+	@echo "Cleaning ... done"
+#
+ 
+ 
+ 

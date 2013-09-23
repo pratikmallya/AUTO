@@ -1,0 +1,85 @@
+# This script shows how the tutorial from the AUTO2000 manual    
+# can be implemented in the new command line user interface.      
+
+# Load the files ab.c, c.ab, s.ab, and h.ab into the AUTO
+# command interpretor.   If either the s.ab or the h.ab file
+# does not exist it is silently ignored, since they are not
+# necessarily required to run AUTO.  
+ld("ab")
+# Run AUTO 2000 using the above constants file.
+rn()
+# Save the bifurcation diagram in b.ab, the solution in s.ab,
+# and the diagnostics in d.ab.
+sv("ab")
+# Now change the constants for the next run.
+# We first that AUTO2000 restart from the solution with label 4
+# which happens to be a Hopf bifurcation.
+cc("IRS",4)
+# Since solution 4 is a Hopf bifurcation we can compute the branch
+# of periodic orbits which emanate from it.  In AUTO2000 that
+# can be accomplished by setting the problem type to 2.
+cc("IPS",2)
+# We turn off limit point (fold) detection
+cc("ILP",0)
+# Parameter 10 is the period.  We add it to the list of free parameters
+# since the computation of the periodic orbits requires the addition
+# of a phase-condition.  I.e., since we add a constraint to handle
+# the phase of solution we must also add another free parameter.
+cc("ICP",[1,10])
+# We stop the computation after we compute 150 points
+cc("NMX",150)
+# and print every 30th solution.
+cc("NPR",30)
+# Next, we increase the maximum step size.
+cc("DSMAX",0.5)
+# With the above parameters, we run the problem.
+rn(solution="ab")
+# Append the current solution onto the files b.ab, s.ab, and d.ab
+# as appropriate.
+ap("ab")
+# We want to compute a locus of folds, so we change the problem
+# type to be stationary solutions of ODEs instead of periodic orbits.
+cc("IPS",1)
+# As well as free parameters.  For the locus of folds we free two problem
+# parameters instead of one problem parameter and the period as before.
+cc("ICP",[1,3])
+# Solution 2 happens to be a fold, so we use that as our starting solution.
+cc("IRS",2)
+# We turn limit point detection on
+cc("ILP",1)
+# But turn off the detection of branch points.
+cc("ISP",0)
+# The ISW parameter informs AUTO2000 that we wish to compute a locus
+# of folds.
+cc("ISW",2)
+# We stop after computing 100 points
+cc("NMX",100)
+# And we only print the last solution, as well as any special points detected.
+cc("NPR",100)
+# Now run AUTO2000 using the above parameters.
+rn(s="ab")
+# Save the bifurcation diagram in b.2p, the solution in s.2p,
+# and the diagnostics in d.2p
+sv("2p")
+# We want to compute the locus of folds in the opposite direction,
+# so we change the sign of the initial step size
+cc("DS",-0.01)
+# We can now run AUTO2000 again.
+rn()
+# Append the current solution onto the files b.ab, s.ab, and d.ab
+# as appropriate.
+ap("2p")
+# Finally, we compute a locus of Hopf bifurcations.  Since ISW is
+# already 2, we just have to choose a new starting point which is
+# Hopf bifurcation.
+cc("IRS",4)
+# And we do the last run of AUTO2000 in the tutorial
+rn()
+# Append the current solution onto the files b.ab, s.ab, and d.ab
+# as appropriate.
+ap("2p")
+
+
+
+
+

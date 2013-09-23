@@ -1,0 +1,27 @@
+#!/bin/sh
+CONSTANTS=`echo c.*`
+RCONSTANTS=`echo r.*`
+if ( test "$CONSTANTS" = "c.*" -a "$RCONSTANTS" != "r.*" ) then
+	BIFURCATION=p
+	SOLUTIONS=q
+else
+	BIFURCATION=b
+	SOLUTIONS=s
+fi
+if ( test $# -eq 1 ) then
+	cat fort.7 >> $BIFURCATION.$1
+	cat fort.8 >> $SOLUTIONS.$1
+	cat fort.9 >> d.$1
+	echo "Appending fort.7 to $BIFURCATION.$1 ... done"
+	echo "Appending fort.8 to $SOLUTIONS.$1 ... done"
+	echo "Appending fort.9 to d.$1 ... done"
+elif ( test $# -eq 2 ) then
+	cat $BIFURCATION.$1 >> $BIFURCATION.$2
+	cat $SOLUTIONS.$1 >> $SOLUTIONS.$2
+	cat d.$1 >> d.$2
+	echo "Appending $BIFURCATION.$1 to $BIFURCATION.$2 ... done"
+	echo "Appending $SOLUTIONS.$1 to $SOLUTIONS.$2 ... done"
+	echo "Appending d.$1 to d.$2 ... done"
+else
+	echo "Illegal command"
+fi

@@ -1,0 +1,316 @@
+%==============================================================================
+%==============================================================================
+\chapter{ Graphical User Interface.} \label{ch:GUI}
+%==============================================================================
+%==============================================================================
+\section{ General Overview.} \label{sec:GUI_Overview}
+%%%FIXME
+\emp{ Please note:}  as of \date{\today} the GUI is being updated, so the
+documentation is this chapter is not being actively maintained.
+The old GUI is provided with this release of \AUTO, but it is unsupported
+and may not be included in future releases.
+
+The \AUTOold graphical user interface (GUI) is a tool
+for creating and editing equations-files and constants-files;
+see Section~\ref{sec: User_supplied_files}
+ for a description of these files.
+The GUI can also be used to run \AUTO and to manipulate and plot
+output-files and data-files; 
+see Section~\ref{sec:command_mode} for corresponding commands.
+To use the GUI for a new equation, change to an empty work directory.
+For an existing equations-file, change to its directory.
+(\emp{ Do not activate the GUI in the directory \filef{ auto/2000} 
+or in any of its subdirectories.})
+Then type 
+
+\centerline { @\commandf{ auto}, }
+
+or its abbreviation @\commandf{ a}.
+Here we assume that the \AUTO aliases have been activated; 
+see Section~\ref{sec:Installation}.
+The GUI includes a window for editing the equations-file,
+and four groups of buttons, namely,
+the \commandf{ Menu Bar} at the top of the GUI,
+the \commandf{ Define Constants}-buttons at the center-left,
+the \commandf{ Load Constants}-buttons at the lower left,
+and the \commandf{ Stop- and Exit}-buttons.
+
+{\bf Note :}~
+Most GUI buttons are activated by point-and-click action with 
+the \commandf{ left} mouse button. 
+If a beep sound results then the \commandf{ right} mouse button must be used. 
+
+\subsection{ The Menu bar.}
+It contains the main buttons for running \AUTO
+and for manipulating the equations-file, the constants-file,
+the output-files, and the data-files.
+In a typical application, these buttons are used from left to right.
+First the \commandf{ Equations} are defined and, if necessary, \commandf{ Edited},
+before being \commandf{ Written}.
+Then the \AUTO-constants are \commandf{ Defined}.
+This is followed by the actual \commandf{ Run} of \AUTO.
+The resulting output-files can be \commandf{ Saved} as data-files,
+or they can be \commandf{ Appended} to existing data-files.
+Data-files can be \commandf{ Plotted} with the graphics program {\cal PLAUT},
+and various file operations can be done with the \commandf{ Files}-button.
+Auxiliary functions are provided by the \commandf{ Demos-}, \commandf{ Misc-},
+and \commandf{ Help}-buttons.
+The Menu Bar buttons are described in more detail 
+in Section~\ref{sec:GUI_Menu_bar}.
+
+
+\subsection{ The Define-Constants-buttons.}
+These have the same function as
+the \commandf{ Define}-button on the  Menu Bar, namely to set and change
+\AUTO-constants.
+However, 
+for the \commandf{ Define}-button all constants appear in one panel, 
+while 
+for the Define Constants-buttons they
+are grouped by function, 
+as in Chapter~\ref{ch:AUTO_constants}, namely
+\commandf{ Problem} definition constants,
+\commandf{ Discretization} constants,
+convergence \commandf{ Tolerances},
+continuation \commandf{ Step Size},
+diagram \commandf{ Limits},
+designation of free \commandf{ Parameters},
+constants defining the \commandf{ Computation},
+and
+constants that specify \commandf{ Output} options.
+
+
+\subsection{ The Load-Constants-buttons.}
+The \commandf{ Previous}-button can be used to load an existing \AUTO-constants file.
+Such a file is also loaded, if it exists,
+by the \commandf{ Equations}-button on the \commandf{ Menu Bar}.
+The \commandf{ Default}-button can be used
+to load  default values of all \AUTO-constants. 
+Custom editing is normally necessary.
+
+
+\subsection{ The Stop- and Exit-buttons.}
+The \commandf{ Stop}-button can be used to abort execution of an \AUTO-run.
+This should be done only in exceptional circumstances.
+Output-files, if any, will normally be incomplete and should be deleted.
+Use the \commandf{ Exit}-button to end a session.
+
+
+\section{ The Menu Bar.} \label{sec:GUI_Menu_bar}
+\subsection{ Equations-button.}
+This pull-down menu contains the items
+\commandf{ Old}, to load an existing equations-file,
+\commandf{ New}, to load a model equations-file,
+and
+\commandf{ Demo}, to load a selected demo equations-file.
+Equations-file names are of the form \filef{ xxx.c}.
+The corresponding constants-file \filef{ c.xxx} is also loaded if it exists.
+The equation name \filef{ xxx} remains active until redefined.
+
+\subsection{ Edit-button.}
+This pull-down menu contains the items
+\commandf{ Cut} and \commandf{ Copy}, 
+to be performed on text in the GUI window
+highlighted by click-and-drag action of the mouse,
+and the item \commandf{ Paste}, which places editor buffer text at the
+location of the cursor.
+
+
+
+\subsection{ Write-button.}
+This pull-down menu contains the item
+\commandf{ Write},
+to write the loaded files \filef{ xxx.c} and \filef{ c.xxx},
+by the active equation name,
+and the item
+\commandf{ Write As}
+to write these files by a selected new name, which then becomes the active name.
+
+
+\subsection{ Define-button.}
+Clicking this button will display the full \AUTO-constants panel.
+Most of its text fields can be edited,
+but some have restricted input values that can be selected with
+the right mouse button.
+Some text fields will display a subpanel for entering data.
+To actually apply changes made in the panel, click the
+\commandf{ OK-} or \commandf{ Apply}-button at the bottom of the panel.
+
+
+
+\subsection{ Run-button.}
+Clicking this button will write the constants-file \filef{ c.xxx} and run \AUTO.
+If the equations-file has been edited then it should first be rewritten 
+with the \commandf{ Write}-button. 
+
+
+\subsection{ Save-button.}
+This pull-down menu contains the item
+\commandf{ Save},
+to save the output-files \filef{ fort.7}, \filef{ fort.8}, \filef{ fort.9},
+as \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, respectively.
+Here \filef{ xxx} is the active equation name.
+It also contains the item
+\commandf{ Save As}, 
+to save the output-files under another name. 
+Existing data-files with the selected name, if any, will be overwritten.
+
+
+\subsection{ Append-button.}
+This pull-down menu contains the item
+\commandf{ Append},
+to append the output-files \filef{ fort.7}, \filef{ fort.8}, \filef{ fort.9},
+to existing data-files \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, respectively.
+Here \filef{ xxx} is the active equation name.
+It also contains the item
+\commandf{ Append To}, 
+to append the output-files to other existing data-files.
+
+\subsection{ Plot-button.}
+This pull-down menu contains the items
+\commandf{ Plot},
+to run the plotting program {\cal PLAUT} for the data-files 
+\filef{ b.xxx} and \filef{ s.xxx},
+where \filef{ xxx} is the active equation name,
+and the item
+\commandf{ Name}, 
+to run {\cal PLAUT} with other data-files.
+
+
+\subsection{ Files-button.}
+This pull-down menu contains 
+the item 
+\commandf{ Restart}, to redefine the restart file.
+Normally, when restarting from a previously computed solution,
+the restart data is expected in the file \filef{ s.xxx},
+where \filef{ xxx} is the active equation name.
+Use the \commandf{ Restart}-button to read the restart data from another data-file
+in the immediately following run.  
+The pull-down menu also contains the following items~:
+\begin{itemize}
+\item[-]\commandf{ Copy},~ to copy  
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, \filef{ c.xxx},
+  to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, \filef{ c.yyy}, resp.;
+
+\item[-]\commandf{ Append},~ to append data-files
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx},
+  to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, resp.;
+
+\item[-]\commandf{ Move},~ to move 
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx}, \filef{ c.xxx},
+  to
+  \filef{ b.yyy}, \filef{ s.yyy}, \filef{ d.yyy}, \filef{ c.yyy}, resp.;
+
+\item[-]\commandf{ Delete},~ to delete data-files
+  \filef{ b.xxx}, \filef{ s.xxx}, \filef{ d.xxx};  
+
+\item[-]\commandf{ Clean}, to delete all files of the form 
+  \filef{ fort.*}, \filef{ *.o}, and \filef{ *.exe}.  
+\end{itemize}
+
+
+\subsection{ Demos-button.}
+This pulldown menu contains the items
+\commandf{ Select},
+to view and run a selected \AUTO demo in the demo directory,
+and
+\commandf{ Reset},
+to restore the demo directory to its original state.
+Note that demo files can be copied to the user work directory
+with the \commandf{ Equations/Demo}-button.
+
+
+\subsection{ Misc.-button.}
+This pulldown menu contains the items
+\commandf{ Tek Window}
+and
+\commandf{ VT102 Window},
+for opening windows;
+\commandf{ Emacs}
+and
+\commandf{ Xedit},
+for editing files,
+and
+\commandf{ Print}, for printing the active equations-file \filef{ xxx.c}.
+
+
+\subsection{ Help-button.}
+This pulldown menu contains the items
+\commandf{ \AUTO-constants}, for help on \AUTO-constants,
+and
+\commandf{ User Manual}, for viewing the user manual; i.e., this document.
+
+
+\section{ Using the GUI.} \label{sec:Using_the_GUI}
+\AUTO-commands are described in Section~\ref{sec:command_mode} and
+illustrated in the demos.
+In Table~\ref{tbl:CM_GUI} we list the main \AUTO-commands 
+together with the corresponding GUI button.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+\commandf{ @r }  & \commandf{ Run} \\  
+\hline
+\commandf{ @sv }  & \commandf{ Save}  \\ 
+\hline
+\commandf{ @ap }  & \commandf{ Append} \\ 
+\hline
+\commandf{ @p }  & \commandf{ Plot}  \\ 
+\hline
+\commandf{ @cp }  & \commandf{ Files/Copy}  \\ 
+\hline
+\commandf{ @mv }  & \commandf{ Files/Move}  \\ 
+\hline
+\commandf{ @cl }  & \commandf{ Files/Clean} \\ 
+\hline
+\commandf{ @dl }  & \commandf{ Files/Delete} \\  
+\hline
+\commandf{ @dm }  & \commandf{ Equations/Demo} \\  
+\hline
+\end{tabular}
+\caption{Command Mode - GUI correspondences.}
+\label{tbl:CM_GUI}
+\end{center}
+\end{table}
+
+
+The \AUTO-command \commandf{ @r xxx yyy} is given in the GUI as follows~:
+click \commandf{ Files/Restart} and enter \filef{ yyy} as data.
+Then click \commandf{ Run}.
+As noted in Section~\ref{sec:command_mode}, 
+this will run \AUTO with the current equations-file
+\filef{ xxx.c} and the current constants-file \filef{ c.xxx}, 
+while expecting restart data in \filef{ s.yyy}.
+The \AUTO-command \commandf{ @ap xxx yyy} is given in the GUI by
+clicking \commandf{ Files/Append}.
+
+\section{ Customizing the GUI.} \label{sec:Customizing_the_GUI}
+\subsection{ Print-button.}
+The \commandf{ Misc/Print}-button on the Menu Bar can be customized 
+by editing the file \filef{ GuiConsts.h} in directory \filef{ auto/2000/include}.
+
+\subsection{ GUI colors.}
+GUI colors can be customized by creating an X resource file.
+Two model files can be found in directory \filef{ auto/2000/gui}, namely,
+\filef{ Xdefaults.1} and \filef{ Xdefaults.2}.
+To become effective, edit one of these, if desired,
+and copy it to \filef{ .Xdefaults} in your home directory.
+Color names can often be found in the system file \filef{ /usr/lib/X11/rgb.txt}.
+
+\subsection{ On-line help.}
+The file \filef{ auto/2000/include/GuiGlobal.h}
+contains on-line help on \AUTO-constants and demos.
+The text can be updated, subject to a modifiable maximum length.
+On SGI machines this is 10240 bytes,
+which can be increased, for example, to 20480 bytes, 
+by replacing the line
+\commandf{ CC = cc -Wf, -XNl10240 -O}
+in \filef{ auto/2000/gui/Makefile} by
+\commandf{ CC = cc -Wf, -XNl20480 -O}
+On other machines, the maximum message length is the system defined maximum
+string literal length.
+

@@ -1,0 +1,28 @@
+cd ../97c/demos/ab
+shell make clean
+for i in range(1,6):
+    R "ab" i
+    ap "ab"
+wait 
+R "ab" 1
+wait
+R "ab" 2
+wait
+shell make clean
+wait
+l2 "r.ab.1"
+r "ab"
+sv "ab"
+wait
+r "ab" "r.ab.2" "q.ab"
+ap "ab"
+wait
+r "ab" "r.ab.3" "q.ab"
+sv "2p"
+wait
+r "ab" "r.ab.4" "q.ab"
+ap "2p"
+wait
+r "ab" "r.ab.5" "q.ab"
+ap "2p"
+wait

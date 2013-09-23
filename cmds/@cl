@@ -1,0 +1,2 @@
+rm -f fort.* *.o *.exe *.*~
+echo "Deleting fort.* *.o *.exe *.*~ ... done" 

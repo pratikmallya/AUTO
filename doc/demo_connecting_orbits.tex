@@ -1,0 +1,252 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Connecting orbits.} \label{ch:Demos_Heteroclinics}
+%==============================================================================
+%==============================================================================
+
+\newpage
+%==============================================================================
+%DEMO=fsh======================================================================
+%==============================================================================
+\section{ fsh : A Saddle-Node Connection.} \label{sec:Demos_fsh}
+This demo illustrates the computation of travelling wave front solutions
+to the Fisher equation,
+\begin{equation} \begin{array}{cl}
+  & w_t = w_{xx} + f(w),
+  \qquad -\infty < x < \infty,
+  \quad  t > 0,  \\
+  & f(w) \equiv w(1-w) .  \\
+\end{array} \end{equation}
+We look for solutions of the form $w(x,t)=u(x+ct)$, where
+$c$ is the wave speed.
+This gives the first order system
+\begin{equation} \begin{array}{cl}
+  &  u_1'(z)  = u_2(z),  \\
+  &  u_2'(z)  = c u_2(z) - f\bigl(u_1(z)\bigr).  \\
+\end{array} \end{equation}
+Its fixed point $(0,0)$ has two positive eigenvalues when $c>2$.
+The other fixed point, $(1,0)$, is a saddle point.
+A branch of orbits connecting the two fixed points
+requires one free parameter; see 
+\citename{FrDo:91} \citeyear{FrDo:91}.
+Here we take this parameter to be the wave speed $c$.
+
+In the first run a starting connecting orbit is computed 
+by continuation in the period $T$.
+This procedure can be used generally for time integration of an ODE with \AUTO.
+Starting data in \funcf{stpnt} correspond to a point on the approximate stable manifold
+of $(1,0)$, with $T$ small.
+In this demo the ``free'' end point of the orbit necessary approaches the
+unstable fixed point $(0,0)$.
+A computed orbit with sufficiently large $T$ is then chosen as restart orbit
+in the second run, where, typically, one replaces $T$ by $c$ as continuation
+parameter.
+However, in the second run below, we also add a phase condition, 
+and both $c$ and $T$ remain free.
+
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir fsh} & create an empty work directory \\ 
+  \commandf{ cd fsh} & change directory \\
+  \commandf{ demo('fsh')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='fsh.1')} & continuation in the period $T$, with $c$ fixed; no phase condition \\ 
+  \commandf{ sv('0')} & save output-files as \filef{ b.0, s.0, d.0} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='fsh.2',s='0')} & \parbox[t]{3in}{continuation in $c$ and $T$, with active phase condition. Constants changed : \parf{ IRS, ICP, NINT, DS} \vspace{0.2cm}} \\ 
+  \commandf{ sv('fsh')} & save output-files as \filef{ b.fsh, s.fsh, d.fsh} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ fsh}.}
+\label{tbl:demo_fsh}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=nag======================================================================
+%==============================================================================
+\section{ nag : A Saddle-Saddle Connection.} \label{sec:Demos_nag}
+This demo illustrates the computation of traveling wave front solutions
+to Nagumo's equation,
+\begin{equation} \begin{array}{cl}
+  & w_t = w_{xx} + f(w,a),
+  \qquad -\infty < x < \infty,
+  \quad  t > 0,  \\
+  & f(w,a) \equiv w(1-w)(w-a), \qquad 0<a<1.  \\
+\end{array} \end{equation}
+We look for solutions of the form $w(x,t)=u(x+ct)$, where
+$c$ is the wave speed.
+This gives the first order system
+\begin{equation} \begin{array}{cl}
+  &  u_1'(z)  = u_2(z),  \\
+  &  u_2'(z)  = c u_2(z) - f\bigl(u_1(z),a\bigr),  \\
+\end{array} \end{equation}
+where $z=x+ct$, and $' = d/dz$.
+If $a=1/2$ and $c=0$ then there are two analytically known
+heteroclinic connections, one of which is given by
+$$ u_1(z) = {
+  {e^{{1 \over 2} \sqrt{2} z}}
+  \over
+  {1 + e^{{1 \over 2} \sqrt{2} z}}  },
+  \qquad  u_2(z) = u_1'(z),  \qquad  -\infty < z < \infty.
+  $$
+The second heteroclinic connection is obtained by reflecting the
+phase plane representation of the first with respect to the
+$u_1$-axis.
+In fact, the two connections together constitute a heteroclinic cycle.
+One of the exact solutions is used below as starting orbit.
+To start from the second exact solution, change SIGN=-1 in the  
+subroutine \funcf{stpnt} in \filef{ nag.c} and repeat the computations below;
+see also
+\citename{FrDo:91} \citeyear{FrDo:91}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir nag} & create an empty work directory \\ 
+  \commandf{ cd nag} & change directory \\
+  \commandf{ demo('nag')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='nag.1')} & compute part of first branch of heteroclinic orbits \\ 
+  \commandf{ sv('nag')} & save output-files as \filef{ b.nag, s.nag, d.nag} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='nag.2',s='nag')} & \parbox[t]{3in}{compute first branch in opposite direction.  Constants changed : \parf{ DS}  \vspace{0.2cm}}\\ 
+  \commandf{ ap('nag')} & append output-files to \filef{ b.nag, s.nag, d.nag} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ nag}.}
+\label{tbl:demo_nag}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=stw======================================================================
+%==============================================================================
+\section{ stw : Continuation of Sharp Traveling Waves.} \label{sec:Demos_stw}
+This demo illustrates the computation of sharp traveling wave front solutions
+to nonlinear diffusion problems of the form
+$$ w_t = A(w) w_{xx} + B(w) w_x^{2} + C(w),  $$
+with
+$A(w) = a_1 w + a_2 w^{2}$,
+$B(w) = b_0 + b_1 w + b_2 w^{2}$,
+and
+$C(w) = c_0 + c_1 w + c_2 w^{2}$.
+Such equations can have \commandf{ sharp traveling wave fronts} as solutions, i.e., solutions of the form
+$w(x,t)=u(x+ct)$ for which there is a $z_0$ such that
+$u(z)=0$ for $z \ge z_0$,
+$u(z) \not= 0$ for $z < z_0$, and
+$u(z) \rightarrow constant$ as $z \rightarrow -\infty$.
+These solutions are actually generalized solutions, since they need
+not be differentiable at $z_0$.
+
+Specifically, in this demo a homotopy path will be computed 
+from an analytically known exact sharp traveling wave solution of
+$$ w_t = 2w w_{xx} + 2 w_x^{2} + w(1-w),  \leqno(1) $$
+to a corresponding sharp traveling wave of
+$$ w_t = (2w+w^{2}) w_{xx} + w w_x^{2} + w(1-w). \leqno(2) $$
+This problem is also considered in
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+For these two special cases the functions $A,B,C$ are defined
+by the coefficients in Table~\ref{tbl:demo_stw_1}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l | l | l | l | l | l | l | l |}
+\hline
+         & $a_1$ & $a_2$ & $b_0$ &$b_1$ &$b_2$ &$c_0$ &$c_1$ &$c_2$ \\
+\hline
+Case (1) &  2    &   0   &   2   &  0   &  0   &  0   &  1   &  -1 \\
+\hline
+Case (2) &  2    &   1   &   0   &  1   &  0   &  0   &  1   &  -1 \\
+\hline
+\end{tabular}
+\caption{Problem coefficients in demo \filef{ stw}.}
+\label{tbl:demo_stw_1}
+\end{center}
+\end{table}
+
+With $w(x,t)=u(x+ct)$, $z=x+ct$, one obtains the reduced system
+\begin{equation} \begin{array}{cl}
+  & u_1'(z) = u_2,  \\
+  & u_2'(z) = \bigl[c u_2 - B(u_1) u_2^{2} - C(u_1) \bigr]/A(u_1). \\
+\end{array} \end{equation}
+To remove the singularity when $u_1=0$, we apply a
+nonlinear transformation of the independent variable 
+(see \citename{Ar:80} \citeyear{Ar:80}), viz.,
+${d / d \tilde z} = A(u_1) {d / dz}$,
+which changes the above equation into
+\begin{equation} \begin{array}{cl}
+  & u_1'(\tilde z) = A(u_1) u_2,  \\
+  & u_2'(\tilde z) = c u_2 - B(u_1) u_2^{2} - C(u_1). \\
+\end{array} \end{equation}
+Sharp traveling waves then correspond to heteroclinic connections
+in this transformed system.
+
+\newpage 
+Finally, we  map $ [0,T] \rightarrow [0,1] $
+by the transformation $\xi = \tilde z / T$.
+With this scaling of the independent variable, the reduced system
+becomes
+\begin{equation} \begin{array}{cl}
+  & u_1'(\xi) = T A(u_1) u_2,  \\
+  & u_2'(\xi) = T \bigl[ c u_2 - B(u_1) u_2^{2} - C(u_1)\bigr]. \\
+\end{array} \end{equation}
+For Case~1 this equation has a known exact solution, namely,
+$$ u(\xi) = { 1 \over 1 + exp(T\xi) }, \qquad
+  v(\xi) = { -{1 \over 2}  \over 1 + exp(-T\xi) }. $$
+This solution has wave speed $c=1$.
+In the limit as $T \rightarrow \infty$ its phase plane trajectory
+connects the stationary points $(1,0)$ and $(0,-{1 \over 2})$.
+ 
+The sharp traveling wave in Case~2
+can now be obtained using the following homotopy.
+Let
+$(a_1,a_2,b_0,b_1,b_2) =
+  (1-\lambda) (2,0,2,0,0) + \lambda (2,1,0,1,0)$.
+Then as $\lambda$ varies continuously from 0 to 1, the parameters
+$(a_1,a_2,b_0,b_1,b_2)$
+vary continously from the values for Case~1
+  to the values for Case~2.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir stw} & create an empty work directory \\ 
+  \commandf{ cd stw} & change directory \\
+  \commandf{ demo('stw')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='stw.1')} & continuation of the sharp traveling wave \\ 
+  \commandf{ sv('stw')} & save output-files as \filef{ b.stw, s.stw, d.stw} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ stw}.}
+\label{tbl:demo_stw_2}
+\end{center}
+\end{table}

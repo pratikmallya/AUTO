@@ -1,0 +1,8 @@
+#!/bin/sh
+if ( test -r r.$NUMBER -a ! -r c.$NUMBER ) then
+	CONSTANTS=r
+else
+	CONSTANTS=c
+fi
+cp $CONSTANTS.$1.$2 $CONSTANTS.$1
+

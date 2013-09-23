@@ -1,0 +1,12 @@
+#!/bin/sh
+if ( test -r s.$1 ) then
+	SOLUTIONS=s
+else
+	SOLUTIONS=q
+fi
+cp $SOLUTIONS.$1 fort.28
+mv $SOLUTIONS.$1 $SOLUTIONS.$1~
+$AUTO_DIR/bin/86to97
+mv fort.38 $SOLUTIONS.$1
+rm fort.28
+

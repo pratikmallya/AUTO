@@ -1,0 +1,413 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : BVP.} \label{ch:Demos_BVP}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=exp======================================================================
+%==============================================================================
+\section{ exp : Bratu's Equation.} \label{sec:Demos_exp}
+This demo illustrates the computation of a solution branch to
+the boundary value problem
+
+
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= -p_1  e^{u_1} , \\
+\end{array} \end{equation}
+with boundary conditions $ u_1(0)=0 ,  \quad  u_1(1)=0.$
+This equation is also considered in 
+\citename{DoKeKe:91a} \citeyear{DoKeKe:91a}.
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir exp} & create an empty work directory \\ 
+  \commandf{ cd exp} & change directory \\
+  \commandf{ demo('exp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='exp.1')} & 1st run; compute solution branch containing fold \\ 
+  \commandf{ sv('exp')} & save output-files as \filef{ b.exp, s.exp, d.exp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='exp.2',s='exp')} & \parbox[t]{3in}{2nd run; restart at a labeled solution, using increased accuracy.  Constants changed : \parf{ IRS, NTST, A1, DSMAX} vspace{0.2cm}}\\ 
+  \commandf{ ap('exp')} & append output-files to \filef{ b.exp, s.exp, d.exp} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ exp}.}
+\label{tbl:demo_exp}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=int======================================================================
+%==============================================================================
+\section{ int : Boundary and Integral Constraints.} \label{sec:Demos_int}
+This demo illustrates the computation of a solution branch to
+the equation
+
+\begin{equation} \begin{array}{cl}
+ u_1 ' &= u_2 , \\
+  u_2 ' &= -p_1  e^{u_1} , \\\end{array} \end{equation}
+with a non-separated boundary condition and an integral constraint:
+
+$$ u_1(0)-u_1(1)-p_2=0 ,\qquad \int_0^{1}u(t)dt-p_3=0 . $$
+The solution branch contains a fold, which, in the second run, is  
+continued in two equation parameters.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir int} & create an empty work directory \\ 
+  \commandf{ cd int} & change directory \\
+  \commandf{ demo('int')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='int.1')} & 1st run; detection of a fold \\ 
+  \commandf{ sv('int')} & save output-files as \filef{ b.int, s.int, d.int} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='int.2',s='int')} & 2nd run; generate starting data for a curve of folds.  \parbox[t]{3in}{Constants changed : \parf{ IRS, ISW } vspace{0.2cm}}\\ 
+  \commandf{ sv('t')} & save the output-files as \filef{ b.t, s.t, d.t} \\ 
+\hline
+%==============================================================================
+
+  \commandf{ run(c='int.3',s='t')} & \parbox[t]{3in}{3rd run; compute a curve of folds; restart from \filef{ s.t}.  Constants changed : \parf{ IRS} vspace{0.2cm}}\\ 
+  \commandf{ sv('lp')} & save the output-files as \filef{ b.lp, s.lp, d.lp} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ int}.}
+\label{tbl:demo_int}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=bvp======================================================================
+%==============================================================================
+\section{ bvp : A Nonlinear ODE Eigenvalue Problem.} \label{sec:Demos_bvp}
+This demo illustrates the location of eigenvalues of a nonlinear ODE
+boundary value problem as bifurcations from the trivial solution branch.
+The branch of solutions that bifurcates at the first eigenvalue
+is computed in both directions.
+The equations are
+\begin{equation} \begin{array}{cl}
+ u_1 ' &= u_2  ,  \\
+  u_2 ' &=-(p_1 \pi)^{2}u_1 + u_1^{2} ,\end{array} \end{equation}
+with boundary conditions $ u_1(0)=0 ,  \quad  u_1(1)=0.$~~~
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir bvp} & create an empty work directory \\ 
+  \commandf{ cd bvp} & change directory \\
+  \commandf{ demo('bvp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='bvp.1')} &  compute the trivial solution branch and locate eigenvalues \\ 
+  \commandf{ sv('bvp')} & save output-files as \filef{ b.bvp, s.bvp, d.bvp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='bvp.2',s='bvp')} &  \parbox[t]{3in}{compute the first bifurcating branch.  Constants changed : \parf{ IRS, ISW, NPR, DSMAX} \vspace{0.2cm}}\\ 
+  \commandf{ ap('bvp')} & append output-files to \filef{ b.bvp, s.bvp, d.bvp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='bvp.3',s='bvp')} &  \parbox[t]{3in}{compute the first bifurcating branch in opposite direction.  Constants changed : \parf{ DS} \vspace{0.2cm}}\\ 
+  \commandf{ ap('bvp')} & append output-files to \filef{ b.bvp, s.bvp, d.bvp} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ bvp}.}
+\label{tbl:demo_bvp}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=lin======================================================================
+%==============================================================================
+\section{ lin : A Linear ODE Eigenvalue Problem.} \label{sec:Demos_lin}
+This demo illustrates the location of eigenvalues of a linear ODE
+boundary value problem as bifurcations from the trivial solution branch.
+By means of branch switching an eigenfunction is computed,
+as is illustrated for the first eigenvalue. 
+This eigenvalue is then continued in two parameters
+by fixing the $L_2$-norm of the first solution component.
+The eigenvalue problem is given by the equations
+
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= (p_1 \pi)^{2} u_1 , \end{array} \end{equation}
+with boundary conditions $ u_1(0)-p_2=0 $ and $  u_1(1)=0.$
+We add the integral constraint
+ $$ \int_0^{1} u_1(t)^{2} dt - p_3 = 0. $$
+Then $p_3$ is simply the $L_2$-norm of the first solution component.
+In the first two runs $p_2$ is fixed, while $p_1$ and $p_3$ are free.
+In the third run  $p_3$ is fixed, while $p_1$ and $p_2$ are free.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir lin} & create an empty work directory \\ 
+  \commandf{ cd lin} & change directory \\
+  \commandf{ demo('lin')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='lin.1')} & 1st run; compute the trivial solution branch and locate eigenvalues \\ 
+  \commandf{ sv('lin')} & save output-files as \filef{ b.lin, s.lin, d.lin} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lin.2',s='lin')} & \parbox[t]{3in}{2nd run; compute a few steps along the bifurcating branch.  Constants changed : \parf{ IRS, ISW, DSMAX} \vspace{0.2cm}}\\ 
+  \commandf{ ap('lin')} & append output-files to \filef{ b.lin, s.lin, d.lin} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='lin.3',s='lin')} & \parbox[t]{3in}{3rd run; compute a two-parameter curve of eigenvalues. Constants changed : \parf{ IRS, ISW, ICP(2)} \vspace{0.2cm}} \\ 
+  \commandf{ sv('2p')} & save the output-files as \filef{ b.2p, s.2p, d.2p} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ lin}.}
+\label{tbl:demo_lin}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=non======================================================================
+%==============================================================================
+\section{ non : A Non-Autonomous BVP.} \label{sec:Demos_non}
+This demo illustrates the continuation of solutions to
+the non-autonomous boundary value problem
+
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= -p_1  e^{x^3 u_1} , \\\end{array} \end{equation}
+with boundary conditions $ u_1(0)=0 ,  \quad  u_1(1)=0.$
+Here $x$ is the independent variable.
+This system is first converted to the following equivalent
+autonomous system~:
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= -p_1  e^{u_3^3 u_1} ,  \\  
+  u_3 ' &= 1 ,  \\
+\end{array} \end{equation}
+ with boundary conditions $ u_1(0)=0 ,  \quad  u_1(1)=0, \quad u_3(0)=0.$
+(For a periodically forced system see demo \filef{ frc}).
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir non} & create an empty work directory \\ 
+  \commandf{ cd non} & change directory \\
+  \commandf{ demo('non')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+
+  \commandf{ run(c='non.1')} & compute the solution branch \\ 
+  \commandf{ sv('non')} & save output-files as \filef{ b.non, s.non, d.non} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ non}.}
+\label{tbl:demo_non}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=kar======================================================================
+%==============================================================================
+\section{ kar : The Von Karman Swirling Flows.} \label{sec:Demos_kar}
+The steady axi-symmetric flow of a viscous incompressible fluid
+above an infinite rotating disk is modeled by the following 
+ODE boundary value problem (Equation (11) in
+\citename{LeKe:80} \citeyear{LeKe:80}~:
+\begin{equation} \begin{array}{cl}
+  u_1' &= T u_2,  \\
+  u_2' &= T u_3,  \\
+  u_3' &= T \bigl[ -2 \gamma u_4 + u_2^2 - 2 u_1 u_3 - u_4^2 \bigr], \\
+  u_4' &= T u_5, \\
+  u_5' &= T \bigl[ 2 \gamma u_2 + 2 u_2 u_4 - 2 u_1 u_5 \bigr], \\
+\end{array} \end{equation}
+with left boundary conditions
+$$ u_1(0)=0, \qquad u_2(0)=0, \qquad u_4(0)=1-\gamma, $$
+and (asymptotic) right boundary conditions
+\begin{equation} \begin{array}{cl}
+  & \bigl[ f_\infty + a(f_\infty,\gamma) \bigr] ~ u_2(1) + u_3(1)
+  - \gamma ~ { u_4(1) \over a(f_\infty,\gamma) } = 0,  \\
+  & a(f_\infty,\gamma)~ { b^2(f_\infty,\gamma) \over \gamma } ~u_2(1)
+  + \bigl[ f_\infty + a(f_\infty,\gamma) \bigr] ~u_4(1) 
+  + u_5(1) = 0, \\
+ & u_1(1) = f_\infty,
+ \end{array} \end{equation}
+where
+\begin{equation} \begin{array}{cl}
+ & a(f_\infty,\gamma) = {1 \over \sqrt{2} }
+  \bigl[ (f_\infty^4 + 4 \gamma^2)^{1/2} + f_\infty^2 \bigr]^{1/2}, \\
+ & b(f_\infty,\gamma) = {1 \over \sqrt{2} }
+  \bigl[ (f_\infty^4 + 4 \gamma^2)^{1/2} - f_\infty^2 \bigr]^{1/2}.  \\
+\end{array} \end{equation}
+Note that there are five differential equations and six boundary conditions.
+Correspondingly, there are two free parameters in the computation of a 
+solution branch, namely $\gamma$ and $f_\infty$.
+The ``period'' $T$ is fixed; $T=500$.
+The starting solution is $u_i=0$, $i=1,\cdots,5$, 
+at $\gamma=1$, $f_\infty=0$.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir kar} & create an empty work directory \\ 
+  \commandf{ cd kar} & change directory \\
+  \commandf{ demo('kar')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='kar.1')} & computation of the solution branch \\ 
+  \commandf{ sv('kar')} & save output-files as \filef{ b.kar, s.kar, d.kar} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ kar}.}
+\label{tbl:demo_kar}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=spb======================================================================
+%==============================================================================
+\section{ spb : A Singularly-Perturbed BVP.} \label{sec:Demos_spb}
+This demo illustrates the use of continuation to compute 
+solutions to the singularly perturbed boundary value problem
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= {\lambda \over \eps} \bigl(
+  u_1 u_2 (u_1^2 - 1) + u_1
+  \bigr)  , \\ \end{array} \end{equation}
+with boundary conditions $u_1(0)=3/2$,  $u_1(1)=\gamma.$
+The parameter $\lambda$ has been introduced into the equations in order
+to allow a homotopy from a simple equation with known exact solution
+to the actual equation. This is done in the first run.
+In the second run $\eps$ is decreased by continuation.
+In the third run $\eps$ is fixed at $\eps=.001$ and the solution is continued 
+in $\gamma$.
+This run takes more than 1500 continuation steps.
+For a detailed analysis of the solution behavior see 
+\citename{JL:82} \citeyear{JL:82}.
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir spb} & create an empty work directory \\ 
+  \commandf{ cd spb} & change directory \\
+  \commandf{ demo('spb')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='spb.1')} & 1st run; homotopy from $\lambda=0$ to $\lambda=1$ \\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='spb.2',s='1')} & \parbox[t]{3in}{2nd run; let $\eps$ tend to zero; restart from \filef{ s.1}.  constants changed : \parf{ IRS, ICP(1), NTST, DS} \vspace{0.2cm}}\\ 
+  \commandf{ sv('2')} & save the output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='spb.3',s='2')} & \parbox[t]{3in}{3rd run; continuation in $\gamma$; $\eps=0.001$; restart from \filef{ s.2}.  Constants changed : \parf{ IRS, ICP(1), RL0, ITNW, EPSL, EPSU, NUZR} \vspace{0.2cm}} \\ 
+  \commandf{ sv('3')} & save the output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ spb}.}
+\label{tbl:demo_spb}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=ezp======================================================================
+%==============================================================================
+\section{ ezp : Complex Bifurcation in a BVP.} \label{sec:Demos_ezp}
+This demo illustrates the computation of a solution branch to
+the the complex boundary value problem
+
+\begin{equation} \begin{array}{cl}
+  u_1 ' &= u_2  ,  \\
+  u_2 ' &= -p_1  e^{u_1} , \\
+\end{array} \end{equation}
+with boundary conditions $ u_1(0)=0 , ~u_1(1)=0.$
+Here $u_1$ and $u_2$ are allowed to be complex, 
+while the parameter $p_1$ can only take real values.
+In the real case, this is Bratu's equation, whose solution branch 
+contains a fold; see the demo \filef{ exp}.
+It is known 
+(\citename{HeKe:90} \citeyear{HeKe:90}) that a simple quadratic fold gives rise to a pitch fork
+bifurcation in the complex equation.
+This bifurcation is located in the first computation below.
+In the second and third run, both legs of the bifurcating solution branch
+are computed.
+On it, both solution components $u_1$ and $u_2$ have nontrivial 
+imaginary part.
+
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir ezp} & create an empty work directory \\ 
+  \commandf{ cd ezp} & change directory \\
+  \commandf{ demo('ezp')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='ezp.1')} & 1st run; compute solution branch containing fold \\ 
+  \commandf{ sv('ezp')} & save output-files as \filef{ p.ezp, s.ezp, d.ezp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ezp.2',s='ezp')} & \parbox[t]{3in}{2nd run; compute bifurcating complex solution branch.  Constants changed : \parf{ IRS, ISW} \vspace{0.2cm}}\\ 
+  \commandf{ ap('ezp')} & append output-files to \filef{ p.ezp, s.ezp, d.ezp} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='ezp.3',s='ezp')} & \parbox[t]{3in}{3rd run; compute 2nd leg of bifurcating branch.  constant changed : \parf{ DS} \vspace{0.2cm}}\\ 
+  \commandf{ ap('ezp')} & append output-files to \filef{ p.ezp, s.ezp, d.ezp} \\
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ ezp}.}
+\label{tbl:demo_ezp}
+\end{center}
+\end{table}
+%==============================================================================

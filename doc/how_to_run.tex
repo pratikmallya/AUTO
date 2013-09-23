@@ -1,0 +1,191 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ How to Run \AUTO.}  \label{ch:How_to_run_AUTO}
+%==============================================================================
+%==============================================================================
+\section{ User-Supplied Files.} \label{sec: User_supplied_files}
+The user must prepare the two files described below.
+This can be done with the GUI described in Chapter~\ref{ch:CLUI}, 
+or independently.
+
+\subsection{ The equations-file \filef{ xxx.c}} 
+A source file \filef{ xxx.c} containing the C subroutines
+\funcf{ func}, \funcf{ stpnt}, \funcf{ bcnd}, \funcf{ icnd}, \funcf{ fopt}, and \funcf{ pvls}.
+Here \filef{ xxx} stands for a user-selected name. 
+If any of these subroutines is irrelevant 
+to the problem then its body need not be completed.
+Examples are in \filef{ auto/2000/demos}, where, e.g.,
+the file \filef{ ab/ab.c} defines a two-dimensional dynamical system,
+and the file \filef{ exp/exp.c} defines a boundary value problem.
+The simplest way to create a new equations-file is to copy 
+an appropriate demo file.
+%For a fully documented equations-file see \filef{ auto/2000/gui/aut.f}.
+In GUI mode, this file can be directly loaded with the GUI-button 
+\commandf{ Equations/New}; see Section~\ref{sec:GUI_Menu_bar}.
+
+Alternatively you can use a Fortran equations-file \filef{ xxx.f }
+(the same one used in \AUTOold).
+However, arrays in Fortran are 1-based as opposed to
+of the 0 based C-arrays. In particular, this affects the parameter
+array, where the period-parameter \parf{ PAR(11)} in Fortran
+corresponds to \parf{ par[10]} in C, and you need to add 1 to all
+fixed parameter indices mentioned in Chapters~\ref{ch:AUTO_constants}
+and ~\ref{ch:HomCont}
+
+\subsection{ The constants-file \filef{ c.xxx}} 
+\AUTO-constants for \filef{ xxx.c} are normally expected 
+in a corresponding file \filef{ c.xxx}.
+Specific examples include \filef{ ab/c.ab}
+and \filef{ exp/c.exp} in \filef{ auto/2000/demos}.
+See Chapter~\ref{ch:AUTO_constants}
+for the significance of each constant.
+
+\newpage
+\section{ User-Supplied Subroutines.} \label{sec: User_supplied_subroutines}
+The purpose of each of the user-supplied subroutines in
+the file \filef{ xxx.c} is described below.
+  
+\begin{itemize}
+\item[-] \funcf{ func}~:~
+  defines the function $f(u,p)$ in (\ref{1}), (\ref{2}), or (\ref{3}).
+\item[-] \funcf{ stpnt}~:~
+  This subroutine is called only if \parf{ IRS}=0 
+(see Section~\ref{sec:IRS} for \parf{ IRS}),
+  which typically is the case for the first run.
+  It defines a starting solution $(u,p)$ of (\ref{1}) or (\ref{2}).
+  The starting solution should not be a branch point.\\ 
+  (Demos \filef{ ab}, \filef{ exp}, \filef{ frc}, \filef{ lor}.)  
+\item[-] \funcf{ bcnd}~:~ 
+  A subroutine \funcf{ bcnd} that defines the boundary conditions. \\
+  (Demo \filef{ exp}, \filef{ kar}.)
+\item[-] \funcf{ icnd}~:~ 
+  A subroutine \funcf{ icnd} that defines the integral conditions. \\ 
+  (Demos \filef{ int}, \filef{ lin}.)  
+\item[-] \funcf{ fopt}~:~ 
+  A subroutine \funcf{ fopt} that defines the objective functional. \\ 
+  (Demos \filef{ opt}, \filef{ ops}.)  
+\item[-] \funcf{ pvls}~:~
+  A subroutine \funcf{ pvls} for defining ``solution measures''. \\
+  (Demo \filef{ pvl}.)
+\end{itemize}
+ 
+
+\section{ Arguments of \funcf{ stpnt}.} \label{sec:Arguments_of_STPNT}
+Note that the arguments of \funcf{ stpnt} depend on the solution type~:
+\begin{itemize}
+\item[-]
+  When starting from a fixed point or an analytically or numerically known space-dependent 
+  solution, \funcf{ stpnt} must have four arguments, namely, 
+(\parf{NDIM,U,PAR,T}).
+  Here T is the independent space variable which
+  takes values in the interval $[0,1]$.  T is ignored in 
+  the case of fixed points.\\ 
+  (Demos \filef{exp} and \filef{ab}.)
+\item[-]
+  Similarly, when starting from an analytically known 
+  time-periodic solution or rotation, the arguments of \funcf{ stpnt} are
+  (\parf{NDIM,U,PAR,T}), where T denotes the independent time variable which
+  takes values in the interval $[0,1]$.
+  In this case one must also specify the period in \parf{PAR(11)}. \\  
+  (Demos \filef{frc}, \filef{lor}, \filef{pen}.)
+\item[-]
+  When using the \commandf{@fc} command (Section~\ref{sec:command_mode})
+  for conversion of numerical data,
+  \funcf{ stpnt} must have four arguments, namely, (\parf{NDIM,U,PAR,T}).
+  In this case only the parameter values need to be defined in \funcf{ stpnt}.
+  (Demos \filef{lor} and \filef{pen}.)
+\end{itemize}
+ 
+\section{ User-Supplied Derivatives.} \label{sec:derivatives}
+If \AUTO-constant \parf{ JAC} equals 0 
+then derivatives need not be specified in 
+\funcf{ func}, \funcf{ bcnd}, \funcf{ icnd}, and \funcf{ fopt}; see Section~\ref{sec:JAC}.
+If \parf{ JAC=1} then derivatives must be given.
+This may be necessary for sensitive 
+problems, and is recommended for computations in which \AUTO 
+generates an extended system.
+Examples of user-supplied derivatives can be found in
+demos  \filef{ dd2}, \filef{ int}, \filef{ plp}, \filef{ opt}, and \filef{ ops}.
+
+\section{ Output Files.} \label{sec:Output_files}
+\AUTO writes four output-files~:
+\begin{itemize}
+\item[-] \filef{ fort.6}~:~
+  A summary of the computation is written in \filef{ fort.6}, which usually
+  corresponds to the window in which \AUTO is run. 
+  Only special, labeled solution points are noted, namely those listed
+  in Table~\ref{tbl:Solution_Types}.
+  The letter codes in the Table are used in the screen output.
+  The numerical codes are used internally and in
+  the \filef{ fort.7} and \filef{ fort.8} output-files described below.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | r | l |}
+\hline
+ BP & (1)  & Branch point (algebraic systems) \\
+\hline
+ LP & (2)  & Fold (algebraic systems) \\
+\hline
+ HB & (3)  & Hopf bifurcation \\
+\hline
+  & (4)  & User-specified regular output point \\
+\hline
+ UZ & (-4)  & Output at user-specified parameter value \\
+\hline
+ LP & (5)  & Fold (differential equations) \\
+\hline
+ BP & (6)  & Branch point (differential equations) \\
+\hline
+ PD & (7)  & Period doubling bifurcation \\
+\hline
+ TR & (8)  & Torus bifurcation \\
+\hline
+ EP & (9)  & End point of branch; normal termination \\
+\hline
+ MX & (-9)  & Abnormal termination; no convergence \\
+\hline
+\end{tabular}
+\caption{Solution Types.}
+\label{tbl:Solution_Types}
+\end{center}
+\end{table}
+ 
+
+\item[-] \filef{ fort.7}~:~ 
+  The \filef{ fort.7} output-file contains the bifurcation diagram.
+  Its format is the same as the \filef{ fort.6} (screen) output, 
+  but the \filef{ fort.7} output is more extensive, as every solution point has 
+  an output line printed.
+\item[-] \filef{ fort.8}~:~ 
+  The \filef{ fort.8} output-file contains complete graphics and restart data
+  for selected, labeled solutions. 
+  The information per solution is generally much more extensive than
+  that in \filef{ fort.7}. 
+  The \filef{ fort.8} output should normally be kept to a minimum.
+\item[-] \filef{ fort.9}~:~
+  Diagnostic messages, convergence history, eigenvalues, and 
+  Floquet multipliers are written in \filef{ fort.9}.
+  It is strongly recommended that this output be habitually inspected.
+  The amount of diagnostic data can be controlled via the \AUTO-constant \parf{ IID};
+  see Section~\ref{sec:IID}.
+\end{itemize}
+
+The user has some control over the \filef{ fort.6} (screen) and \filef{ fort.7} output 
+via the \AUTO-constant \parf{ IPLT} (Section~\ref{sec:IPLT}).
+Furthermore, the subroutine \funcf{ pvls} can be used to define ``solution measures''
+which can then be printed by ``parameter overspecification'';
+see Section~\ref{sec:Parameter_over_specification}.
+For an example see demo \filef{ pvl}.
+
+The \AUTO-commands \commandf{ @sv}, \commandf{ @ap}, and \commandf{ @df} can be used 
+to manipulate  the output-files \filef{ fort.7}, \filef{ fort.8},
+and \filef{ fort.9}.
+Furthermore, the \AUTO-command \commandf{ @lb} can be used to delete and
+relabel solutions simultaneously in \filef{ fort.7} and \filef{ fort.8}.
+For details see Section~\ref{sec:command_mode}.
+
+The graphics program {\cal PLAUT} can be used to graphically inspect 
+the data in \filef{ fort.7} and \filef{ fort.8}; see Chapter~\ref{ch:PLAUT}.
+ 

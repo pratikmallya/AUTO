@@ -1,0 +1,554 @@
+Cleaning pp2 ...
+Cleaning ... done
+f77 -O  -c  pp2.f
+f77 -O pp2.o -o pp2.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo pp2 is started
+ 
+pp2 : first run : stationary solutions
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    14  BP   2  6.000000E-01  0.000000E+00  0.000000E+00  0.000000E+00
+   1    26  EP   3  1.200000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   2    16  BP   4  8.219044E-01  3.333336E-01  3.333336E-01  0.000000E+00
+   2    19  LP   5  8.329293E-01  4.111619E-01  4.111619E-01  0.000000E+00
+   2    50  EP   6  7.892881E-02  9.731735E-01  9.731735E-01  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   2    47  EP   7  7.484181E-04  2.021092E+00 -2.021092E+00  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   3    11  HB   8  6.715938E-01  4.948663E-01  3.333333E-01  3.657615E-01
+   3    46  EP   9  6.406324E-03  2.012212E+00  3.333333E-01  1.984411E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   3    23  EP  10  1.209653E+00  1.000686E+00  3.333333E-01 -9.435367E-01
+
+ Total Time    0.888E+00
+ Saved as *.pp2
+ 
+pp2 : second run : restart at labelled solution
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   3    24  EP  11  1.639174E+00  2.016464E+00  3.333333E-01 -1.988722E+00
+
+ Total Time    0.148E+00
+ Appended to *.pp2
+ 
+pp2 : third run : periodic solutions
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)       PERIOD    
+   8     6  UZ  12  6.765295E-01  4.904253E-01  4.309354E-01  5.108299E-01  1.099995E+01
+   8    10  UZ  13  6.921110E-01  4.714657E-01  5.516740E-01  5.963101E-01  1.399885E+01
+   8    13  UZ  14  7.037283E-01  4.504823E-01  6.224366E-01  5.936510E-01  2.000673E+01
+   8    15  UZ  15  7.075772E-01  4.381817E-01  6.474717E-01  5.821662E-01  2.998662E+01
+   8    19  MX  16  7.080680E-01  4.299559E-01  6.517691E-01  5.800569E-01  5.444957E+01
+
+ Total Time    0.210E+01
+ Appended to *.pp2
+ 
+pp2 : fourth run : restart at a labelled periodic solution
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)       PERIOD    
+   8    13  MX  17  7.080728E-01  4.253023E-01  6.518110E-01  5.813729E-01  8.807907E+01
+
+ Total Time    0.189E+01
+ Appended to *.pp2
+ 
+pp2 : fifth run : 2-parameter continuation of folds 
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)        PAR(2)     
+   5    50  EP  18  1.483011E+00  4.111616E-01  4.111616E-01 -1.448996-223  5.341430E+00
+
+ Total Time    0.370E+00
+ Saved as *.lp
+ 
+pp2 : sixth run : 2-parameter continuation of Hopf bifurcations
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)        PAR(2)     
+   8    50  EP  18  1.186839E+00  7.272612E-01  3.333333E-01  6.463728E-01  5.301592E+00
+
+ Total Time    0.494E+00
+ Saved as *.hb
+ 
+pp2 : seventh run : 2-parameter continuation of homoclinic orbits
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(2)     
+   8    29  EP  18  2.034603E+00  5.785321E-01  6.629861E-01  1.239215E+00  8.777318E+00
+
+ Total Time    0.243E+01
+ Saved as *.hom
+ 
+pp2 : eighth run : restart homoclinic orbits
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(2)     
+   8    12  EP  19  2.522882E+00  6.399843E-01  6.655048E-01  1.492006E+00  1.092818E+01
+
+ Total Time    0.101E+01
+ Appended to *.hom
+ 
+Demo pp2 is done
+Cleaning pp2 ...
+Cleaning ... done
+Cleaning exp ...
+Cleaning ... done
+f77 -O  -c  exp.f
+f77 -O exp.o -o exp.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo exp is started
+ 
+exp : first run : compute solution branch containing fold
+ 
+  BR    PT  TY LAB    PAR(1)      INTEGRAL U(1)   MAX U(1)      MAX U(2)   
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    14  UZ   2  2.000001E+00  2.169361E-01  3.289519E-01  1.248218E+00
+   1    19  LP   3  3.513831E+00  7.619245E-01  1.186570E+00  4.000109E+00
+   1    24  UZ   4  2.000002E+00  1.774970E+00  2.895248E+00  8.268769E+00
+   1    50  EP   5  1.690175E-04  8.075075E+00  1.494765E+01  3.265992E+01
+
+ Total Time    0.147E+01
+ Saved as *.exp
+ 
+exp : second run : restart, using increased accuracy
+ 
+  BR    PT  TY LAB    PAR(1)      INTEGRAL U(1)   MAX U(1)      MAX U(2)   
+   1    50  EP   6  2.432525E-08  1.300605E+01  2.475168E+01  5.227595E+01
+
+ Total Time    0.389E+01
+ Appended to *.exp
+ 
+Demo exp is done
+Cleaning exp ...
+Cleaning ... done
+Cleaning int ...
+Cleaning ... done
+f77 -O  -c  int.f
+f77 -O int.o -o int.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo int is started
+ 
+int : first run : detection of a fold
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)   
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    11  UZ   2  1.000040E+00  2.962616E-01  4.292222E-02  5.003819E-01
+   1    14  UZ   3  3.000001E+00  9.261290E-01  1.377429E-01  1.510766E+00
+   1    21  LP   4  1.192384E+01  7.164931E+00  1.292485E+00  9.145710E+00
+   1    30  UZ   5  3.000000E+00  2.096050E+01  4.427893E+00  2.281375E+01
+   1    34  UZ   6  9.999999E-01  2.758931E+01  6.045027E+00  2.932922E+01
+   1    40  EP   7  1.076105E-01  3.945544E+01  8.949417E+00  4.101196E+01
+
+ Total Time    0.127E+01
+ Saved as *.int
+ 
+int : second run : generate starting data
+
+ Generating starting data : Restart at EP label below :
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(2)     
+   2     5  EP   8  1.192382E+01  7.164877E+00  1.291147E+00  9.145660E+00  0.000000E+00
+
+ Total Time    0.470E+00
+ Saved as *.t
+ 
+ 
+int : third run : compute a curve of folds
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(2)     
+   2    38  UZ   9  3.000000E+00  1.237279E+01  3.493087E+00  1.274553E+01  7.909225E+00
+   2    40  EP  10  1.370076E+00  1.486760E+01  4.584858E+00  1.475134E+01  1.039179E+01
+
+ Total Time    0.327E+01
+ Saved as *.lp
+ 
+Demo int is done
+Cleaning int ...
+Cleaning ... done
+Cleaning dd2 ...
+Cleaning ... done
+f77 -O  -c  dd2.f
+f77 -O dd2.o -o dd2.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo dd2 is started
+ 
+dd2 : first run : fixed point solution branches
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    13  BP   2  1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    53  EP   3  5.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   2    38  BP   4  2.000001E+00  5.000001E-01  5.000001E-01  0.000000E+00
+   2    49  HB   5  3.000001E+00  6.666668E-01  6.666668E-01  0.000000E+00
+   2    70  EP   6  5.095098E+00  8.037329E-01  8.037329E-01  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   2    85  EP   7  1.654673E-01  5.043491E+00 -5.043491E+00  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   3    58  EP   8  3.998617E+00  5.021499E+00  5.000000E-01  4.996544E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)     
+   3    58  EP   9  1.382534E-03  5.021499E+00  5.000000E-01 -4.996544E+00
+
+ Total Time    0.134E+01
+ Saved as *.dd2
+ 
+dd2 : second run : a 2-parameter curve of Naimark-Sacker bifurcations
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)        PAR(2)     
+   5   100  EP  10  3.000000E+00  6.666667E-01  6.666667E-01  2.753203E-33  9.960001E+00
+
+ Total Time    0.612E+00
+ Saved as *.ns
+ 
+Demo dd2 is done
+Cleaning dd2 ...
+Cleaning ... done
+Cleaning opt ...
+Cleaning ... done
+f77 -O  -c  opt.f
+f77 -O opt.o -o opt.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo opt is started
+ 
+opt : first run : one free equation parameter
+ 
+  BR    PT  TY LAB      FOPT        L2-NORM         U(1)        PAR(1)        PAR(2)        PAR(3)        PAR(4)     
+   1     1  EP   1  1.000000E+00  1.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    19  LP   2  1.414214E+00  7.070907E-01  7.070907E-01  7.071229E-01  0.000000E+00  0.000000E+00  0.000000E+00
+   1    25  EP   3  1.299947E+00  3.715229E-01  3.715229E-01  9.284238E-01  0.000000E+00  0.000000E+00  0.000000E+00
+
+ Total Time    0.215E+00
+ Saved as *.1
+ 
+opt : second run : two free equation parameters
+ 
+  BR    PT  TY LAB      FOPT        L2-NORM         U(1)        PAR(1)        PAR(2)        PAR(3)        PAR(4)     
+   2    15  LP   4  1.732051E+00  5.773503E-01  5.773503E-01  5.773503E-01  5.773503E-01  0.000000E+00  0.000000E+00
+   2    25  EP   5  1.586586E+00  3.650968E-01  3.650968E-01  3.650968E-01  8.563930E-01  0.000000E+00  0.000000E+00
+
+ Total Time    0.411E+00
+ Saved as *.2
+ 
+opt : third run : three free equation parameters
+ 
+  BR    PT  TY LAB      FOPT        L2-NORM         U(1)        PAR(1)        PAR(2)        PAR(3)        PAR(4)     
+   4    13  LP   6  2.000000E+00  5.000000E-01  5.000000E-01  5.000000E-01  5.000000E-01  5.000002E-01  0.000000E+00
+   4    25  EP   7  1.768419E+00  3.072676E-01  3.072676E-01  3.072676E-01  3.072676E-01  8.466169E-01  0.000000E+00
+
+ Total Time    0.499E+00
+ Saved as *.3
+ 
+opt : fourth run : four free equation parameters
+ 
+  BR    PT  TY LAB      FOPT        L2-NORM         U(1)        PAR(1)        PAR(2)        PAR(3)        PAR(4)     
+   6    11  LP   8  2.236068E+00  4.472007E-01  4.472007E-01  4.472007E-01  4.472007E-01  4.472007E-01  4.472652E-01
+   6    25  EP   9  1.910048E+00  2.657463E-01  2.657463E-01  2.657463E-01  2.657463E-01  2.657463E-01  8.470631E-01
+
+ Total Time    0.558E+00
+ Saved as *.4
+ 
+Demo opt is done
+Cleaning opt ...
+Cleaning ... done
+Cleaning lin ...
+Cleaning ... done
+f77 -O  -c  lin.f
+f77 -O lin.o -o lin.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo lin is started
+ 
+lin : first run :  compute trivial solutions and locate eigenvalues
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(3)     
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1     6  BP   2  1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    12  BP   3  2.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    18  BP   4  3.000019E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    24  BP   5  4.000231E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    29  EP   6  5.000231E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+
+ Total Time    0.516E+00
+ Saved as *.lin
+ 
+lin : second run : compute a few steps on the bifurcating branch
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(3)     
+   2    10  UZ   7  1.000000E+00  3.296899E+00  1.414161E+00  4.442871E+00  9.999941E-01
+   2    15  EP   8  1.000000E+00  5.259149E+00  2.255843E+00  7.087181E+00  2.544586E+00
+
+ Total Time    0.569E+00
+ Appended to *.lin
+ 
+lin : third run : compute a 2-parameter curve of eigenvalues
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      PAR(2)     
+   2    33  EP   9  1.722349E+00  5.039129E+00  1.353585E+00  7.320809E+00 -1.036832E+00
+
+ Total Time    0.100E+01
+ Saved as *.2p
+ 
+Demo lin is done
+Cleaning lin ...
+Cleaning ... done
+Cleaning bvp ...
+Cleaning ... done
+f77 -O  -c  bvp.f
+f77 -O bvp.o -o bvp.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo bvp is started
+ 
+bvp : first run : the trivial solution branch
+ 
+  BR    PT  TY LAB    PAR(1)      INTEGRAL U(1)   MAX U(1)      MAX U(2)   
+   1     1  EP   1  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1     6  BP   2  1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    12  BP   3  2.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    18  BP   4  3.000019E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    24  BP   5  4.000231E+00  0.000000E+00  0.000000E+00  0.000000E+00
+   1    29  EP   6  5.000231E+00  0.000000E+00  0.000000E+00  0.000000E+00
+
+ Total Time    0.555E+00
+ Saved as *.bvp
+ 
+bvp : second run : the first bifurcating branch
+ 
+  BR    PT  TY LAB    PAR(1)      INTEGRAL U(1)   MAX U(1)      MAX U(2)   
+   2    20       7  1.660556E+00  1.339256E+01  1.995726E+01  7.447493E+01
+   2    37  EP   8  2.734706E+00  5.196538E+01  7.051952E+01  3.650730E+02
+
+ Total Time    0.975E+00
+ Appended to *.bvp
+
+bvp : third run : compute branch in opposite direction
+ 
+  BR    PT  TY LAB    PAR(1)      INTEGRAL U(1)   MAX U(1)      MAX U(2)   
+   3    20       9  5.522742E-02 -7.233543E+00  0.000000E+00  3.299187E+01
+   3    24  EP  10 -9.555342E-03 -7.254550E+00  0.000000E+00  3.307951E+01
+
+ Total Time    0.923E+00
+ Appended to *.bvp
+ 
+Demo bvp is done
+Cleaning bvp ...
+Cleaning ... done
+Cleaning pp3 ...
+Cleaning ... done
+f77 -O  -c  pp3.f
+f77 -O pp3.o -o pp3.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo pp3 is started
+ 
+pp3 : first run : stationary solutions
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)          U(3)     
+   1     1  EP   1  0.000000E+00  1.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00
+   1    55  BP   2  1.070000E+00  1.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00
+   1   102  EP   3  2.010000E+00  1.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)          U(3)     
+   2    56  EP   4  1.355912E+00  2.004604E+00  1.996688E+00 -1.779799E-01  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)          U(3)     
+   2    34  HB   5  6.662088E-01  5.371271E-01  5.305448E-01  8.383128E-02  0.000000E+00
+   2    72  HB   6  7.537894E-02  1.860004E-01  9.073254E-02  1.623692E-01  0.000000E+00
+   2    75  BP   7  3.632780E-02  1.795020E-01  6.664966E-02  1.666697E-01  0.000000E+00
+   2    78  EP   8 -1.481983E-02  1.758602E-01  3.577111E-02  1.721837E-01  0.000000E+00
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)          U(3)     
+   3     6  EP   9 -1.140617E-02  1.874546E-01  6.666667E-02  1.666667E-01  5.400925E-02
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM         U(1)          U(2)          U(3)     
+   3     5  HB  10  6.293505E-02  1.820044E-01  6.666667E-02  1.666667E-01 -3.005607E-02
+   3    14  HB  11  1.702890E-01  2.348617E-01  6.666667E-02  1.666667E-01 -1.514523E-01
+   3   137  EP  12  1.799923E+00  2.002310E+00  6.666667E-02  1.666667E-01 -1.994248E+00
+
+ Total Time    0.188E+01
+ Saved as *.pp3
+ 
+pp3 : second run : periodic solutions
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)       PERIOD    
+  11    10  PD  13  1.955248E-01  2.639118E-01  1.498585E-01  2.248183E-01 -1.019774E-01  2.097059E+01
+  11    15  EP  14  2.349226E-01  3.086656E-01  2.338904E-01  2.726461E-01 -8.582300E-02  2.389459E+01
+
+ Total Time    0.156E+01
+ Appended to *.pp3
+ 
+pp3 : third run : compute the period-doubling branch
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)       PERIOD    
+  12     6  PD  15  1.975387E-01  2.672832E-01  1.743757E-01  2.423167E-01 -8.957505E-02  4.195859E+01
+  12    15  EP  16  2.338980E-01  3.152849E-01  3.222720E-01  3.376749E-01 -5.604856E-02  4.681559E+01
+
+ Total Time    0.321E+01
+ Appended to *.pp3
+ 
+ 
+pp3 : fourth run : starting data for 2-parameter continuation
+
+ Generating starting data : Restart at EP label below :
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)       PERIOD    
+  13     5  EP  17  1.954927E-01  2.638752E-01  1.497517E-01  2.248288E-01 -1.019006E-01  2.096825E+01
+
+ Total Time    0.261E+01
+ Saved as *.tmp
+ 
+ 
+pp3 : fifth run : 2-parameter period-doubling continuation
+ 
+  BR    PT  TY LAB    PAR(1)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)      PAR(2)     
+  13    15  EP  18  2.451413E-01  2.618644E-01  1.145700E-01  1.982472E-01 -1.295473E-01  9.634995E-02
+
+ Total Time    0.130E+02
+ Saved as *.2p
+ 
+Demo pp3 is done
+Cleaning pp3 ...
+Cleaning ... done
+Cleaning wav ...
+Cleaning ... done
+f77 -O  -c  wav.f
+f77 -O wav.o -o wav.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo wav is started
+ 
+wav : first run : stationary solutions of the ODE
+ 
+  BR    PT  TY LAB    PAR(3)        L2-NORM         U(1)          U(2)     
+   1     1  EP   1  5.392300E+02  1.275827E+02  5.970200E+01  1.127520E+02
+   1    23  LP   2  6.661441E+02  1.818411E+02  4.690850E+01  1.756866E+02
+   1    41  LP   3  6.308909E+02  7.490196E+01  3.233446E+01  6.756321E+01
+   1    47  HB   4  6.622018E+02  3.255909E+01  1.798751E+01  2.713934E+01
+   1    51  EP   5  7.002895E+02  2.173036E+01  8.906359E+00  1.982134E+01
+
+ Total Time    0.301E+00
+ Saved as *.ode
+ 
+wav : second run : stationary solutions of the reduced PDE
+ 
+  BR    PT  TY LAB    PAR(3)        L2-NORM         U(1)          U(2)          U(3)          U(4)     
+   1     1  EP   1  5.392300E+02  1.275827E+02  5.970200E+01  1.127520E+02  0.000000E+00  0.000000E+00
+   1    23  LP   2  6.661441E+02  1.818411E+02  4.690850E+01  1.756866E+02  0.000000E+00  0.000000E+00
+   1    41  LP   3  6.308909E+02  7.490196E+01  3.233446E+01  6.756320E+01  0.000000E+00  0.000000E+00
+   1    44  HB   4  6.355911E+02  5.497355E+01  2.741208E+01  4.765154E+01  0.000000E+00  0.000000E+00
+   1    52  EP   5  7.046886E+02  2.143781E+01  8.037125E+00  1.987421E+01  0.000000E+00  0.000000E+00
+
+ Total Time    0.420E+00
+ Saved as *.wav
+ 
+wav : third run : wave train solutions of fixed wave speed
+ 
+  BR    PT  TY LAB    PAR(3)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)      MAX U(4)       PERIOD    
+   4     5  UZ   6  6.355923E+02  5.520908E+01  2.843940E+01  5.094924E+01  3.027384E-01  9.158779E-01  2.200000E+01
+   4    10  UZ   7  6.361881E+02  5.738205E+01  3.142529E+01  6.072308E+01  2.072238E+00  3.963956E+00  2.200000E+01
+   4    53  UZ   8  6.300000E+02  6.184097E+01  4.997071E+01  7.841734E+01  1.694871E+01  1.880308E+01  1.170067E+01
+   4    58  UZ   9  6.100000E+02  9.350631E+01  5.675796E+01  1.203899E+02  1.607559E+01  2.410571E+01  1.497529E+01
+   4    62  UZ  10  6.049190E+02  1.194360E+02  5.616719E+01  1.470524E+02  1.550743E+01  2.470518E+01  2.200003E+01
+   4    75  EP  11  6.065967E+02  1.644055E+02  5.581313E+01  1.559256E+02  1.332785E+01  2.430393E+01  9.938819E+02
+
+ Total Time    0.197E+02
+ Appended to *.wav
+ 
+wav : fourth run : fixed wave length waves on a ring
+ 
+  BR    PT  TY LAB    PAR(3)        L2-NORM       MAX U(1)      MAX U(2)      MAX U(3)      MAX U(4)      PAR(10)    
+   4    25  EP  12  6.294840E+02  1.053830E+02  5.454031E+01  1.445891E+02  2.357665E+01  3.132856E+01  5.853747E-01
+
+ Total Time    0.546E+01
+ Saved as *.rng
+ 
+wav : fifth run : time evolution computation
+ 
+  BR    PT  TY LAB      TIME        L2-NORM       MAX U(1)      MAX U(2)   
+   4    10      12  8.885364E+00  5.701341E+01  3.267205E+01  6.201031E+01
+   4    20      13  1.159335E+01  5.352047E+01  3.697532E+01  6.534097E+01
+   4    30      14  1.449443E+01  5.743185E+01  4.507673E+01  7.141577E+01
+   4    40      15  1.910712E+01  5.773399E+01  4.961124E+01  7.913466E+01
+   4    50      16  2.742427E+01  5.446137E+01  4.712264E+01  7.065342E+01
+   4    60      17  3.594980E+01  5.237533E+01  4.636823E+01  6.600862E+01
+   4    70      18  5.398740E+01  5.053867E+01  4.401942E+01  5.650545E+01
+   4    80  EP  19  1.147729E+02  5.053720E+01  4.390181E+01  5.598890E+01
+
+ Total Time    0.163E+02
+ Saved as *.tim
+ 
+Demo wav is done
+Cleaning wav ...
+Cleaning ... done
+Cleaning plp ...
+Cleaning ... done
+f77 -O  -c  plp.f
+f77 -O plp.o -o plp.exe /home/doedel/auto/97/lib/*.o
+ 
+Demo plp is started
+ 
+plp : first run : stationary solutions 
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM         U(1)          U(2)     
+   1     1  EP   1  2.021628E+00  1.835431E+02  4.555974E+01  1.777987E+02
+   1    38  HB   2  3.499954E+00  9.407595E+01  2.796470E+01  8.982349E+01
+   1    48  HB   3  4.650458E+00  6.575560E+01  2.236692E+01  6.183462E+01
+   1    53  EP   4  5.750453E+00  5.101291E+01  1.943327E+01  4.716635E+01
+
+ Total Time    0.289E+00
+ Saved as *.plp
+ 
+plp : second run : periodic solutions 
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM       MAX U(1)      MAX U(2)       PERIOD    
+   2    36  LP   5  2.759687E+00  1.201868E+02  5.365529E+01  1.449315E+02  1.000639E+01
+   2    90  LP   6  5.007840E+00  6.027130E+01  3.193633E+01  6.893792E+01  5.676579E+00
+   2   100  EP   7  4.834433E+00  6.267922E+01  2.823784E+01  6.695870E+01  5.838258E+00
+
+ Total Time    0.102E+02
+ Appended to *.plp
+ 
+plp : third run : following Hopf bifurcations 
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM         U(1)          U(2)        PAR(1)     
+   2    25  EP   8  4.705750E+00  6.456078E+01  2.204512E+01  6.068037E+01  1.099090E+02
+
+ Total Time    0.282E+00
+ Saved as *.2p
+ 
+plp : fourth run : following folds (starting data)
+
+ Generating starting data : Restart at EP label below :
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM       MAX U(1)      MAX U(2)      PAR(1)         PERIOD    
+   3     5  EP   8  2.759688E+00  1.201868E+02  5.366679E+01  1.449666E+02  1.100000E+02  1.000639E+01
+
+ Total Time    0.133E+01
+ Saved as *.tmp
+ 
+plp : fifth run : following folds (appended to 2p)
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM       MAX U(1)      MAX U(2)      PAR(1)         PERIOD    
+   3    12  UZ   9  2.986295E+00  1.130661E+02  5.257578E+01  1.359115E+02  1.110000E+02  9.390993E+00
+   3    30  UZ  10  4.722125E+00  6.712669E+01  3.608884E+01  7.776012E+01  1.110000E+02  6.087171E+00
+   3    38  EP  11  5.007840E+00  6.027130E+01  3.193971E+01  6.892015E+01  1.100000E+02  5.676579E+00
+
+ Total Time    0.140E+02
+ Appended to *.2p
+ 
+plp : sixth run : periodic solutions (saved as iso)
+ 
+  BR    PT  TY LAB    PAR(4)        L2-NORM       MAX U(1)      MAX U(2)       PERIOD    
+   3    46  UZ  12  4.000000E+00  8.172597E+01  4.271922E+01  9.751212E+01  6.902144E+00
+   3    52  LP  13  4.722125E+00  6.712669E+01  3.609482E+01  7.773861E+01  6.087171E+00
+   3    64  UZ  14  4.000000E+00  8.197810E+01  3.470502E+01  8.865121E+01  6.947979E+00
+   3    76  EP  15  3.007443E+00  1.123464E+02  5.174845E+01  1.343805E+02  9.326362E+00
+
+ Total Time    0.744E+01
+ Saved as *.iso
+ 
+Demo plp is done
+Cleaning plp ...
+Cleaning ... done

@@ -1,0 +1,46 @@
+#===> cmds.make
+#
+#   Makefile written by Xianjun WANG in March 1994
+#
+#   This Makefile is used under command mode
+#
+#   EQUATION_NAME      :     AUTO-Equation name
+#
+.IGNORE:
+#
+CC    	   = @CC@
+FC    	   = @F77@
+OPT    	   = @OPT_FLAG@
+CFLAGS 	   = @CFLAGS@ $(OPT) -I$(AUTO_DIR)/include
+FFLAGS 	   = @FFLAGS@ $(OPT)
+OBJ        = $(EQUATION_NAME).o
+EXE        = $(EQUATION_NAME).exe
+AUTOLIBS   = $(AUTO_DIR)/lib/*.a
+LIBS       = @LIBS@ -L$(AUTO_DIR)/lib -lauto2000 -lauto_f2c -lm
+RM         = rm -f
+# @rn
+run: $(EXE)
+	@echo "Starting $(EQUATION_NAME) ..."
+	@$(AUTO_COMMAND_PREFIX) ./$(EXE) $(AUTO_COMMAND_ARGS)
+#	@rm -f fort.2 fort.3
+	@echo "$(EQUATION_NAME) ... done"
+#
+$(EXE): $(OBJ) $(AUTOLIBS)
+	@if [ -f $(EQUATION_NAME).c ]; then \
+	  echo $(CC) $(CFLAGS) $(OBJ) -o $@ $(LIBS); \
+	  $(CC) $(CFLAGS) $(OBJ) -o $@ $(LIBS); \
+	elif [ -f $(EQUATION_NAME).f ]; then \
+	  echo $(F77) $(FFLAGS) $(OBJ) -o $@ $(LIBS) -lauto_f; \
+	  $(F77) $(FFLAGS) $(OBJ) -o $@ $(LIBS) -lauto_f; \
+	else \
+	  echo $(EQUATION_NAME).c does not exist.; \
+	fi
+#
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+#
+.f.o:
+	$(FC) $(FFLAGS) -c $<
+#
+# DO NOT ADD ANYTHING AFTER THIS LINE
+#

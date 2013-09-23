@@ -1,0 +1,28 @@
+#!/bin/sh
+NUMBER=$1
+if ( test $# -ge 2 ) then
+	NUMBER=$1.$2
+fi
+if ( test -r r.$NUMBER -a ! -r c.$NUMBER ) then
+	CONSTANTS=r
+	HOMCONT=s
+	SOLUTIONS=q
+else
+	CONSTANTS=c
+	HOMCONT=h
+	SOLUTIONS=s
+fi
+if (test -r $1.dat) then
+cat $1.dat > fort.4
+fi
+#
+cat $CONSTANTS.$NUMBER > fort.2
+cat $HOMCONT.$NUMBER > fort.12
+if ( test $# -ge 3 ) then
+	cat $SOLUTIONS.$3 > fort.3
+elif (test -r $SOLUTIONS.$1) then
+	cat $SOLUTIONS.$1 > fort.3
+else
+	touch fort.3
+fi
+make -f $AUTO_DIR/cmds/cmds.make EQUATION_NAME=$1

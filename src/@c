@@ -1,0 +1,5 @@
+cp ../include/auto.h .
+make autlib$1.o
+make copy
+rm auto.h
+

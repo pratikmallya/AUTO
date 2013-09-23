@@ -1,0 +1,530 @@
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont}.} \label{ch:HomCont}
+%==============================================================================
+%==============================================================================
+\section{ Introduction.} \label{sec:HomCont_Intro}
+{\cal HomCont} is a collection of subroutines for the continuation 
+of homoclinic solutions to ODEs in two or more parameters.
+The accurate detection and multi-parameter continuation of certain
+codimension-two singularities is allowed for, including all known
+cases that involve a unique homoclinic orbit at the singular point.
+Homoclinic connections to hyperbolic and non-hyperbolic equilibria are 
+allowed as are certain heteroclinic orbits. 
+Homoclinic orbits in reversible systems can also be computed.
+The theory behind the methods used is
+explained in \citeasnoun{ChKu:94}, \citeasnoun{BaCh:94},
+\citename{Sa:95} \citeyear{Sa:95,Sa:95a}, \citeasnoun{ChKuSa:95} and
+references therein.  The final cited paper contains a concise
+description of the present version. 
+
+The current implementation of {\cal HomCont} must be considered as experimental,
+and updates are anticipated.
+The {\cal HomCont} subroutines are in the file \filef{ auto/2000/src/autlib5.c}. 
+Expert users wishing to modify the routines may look there.
+Note also that at present, {\cal HomCont} can be run only in 
+\AUTO Command Mode and not with the GUI. 
+
+
+\section{{\cal HomCont} Files and Subroutines.} \label{sec:HomCont_files}
+
+In order to run {\cal HomCont} one must prepare an equations file \filef{ xxx.c}, 
+where \filef{ xxx} is the name of the example, 
+and two constants-files \filef{ c.xxx} and \filef{ h.xxx}.
+The first two of these files are in the standard \AUTO format, 
+whereas the \filef{ h.xxx} file
+contains constants that are specific to homoclinic continuation.
+The choice \parf{ IPS}=9 in \filef{ c.xxx} specifies the problem as
+being homoclinic continuation, in which case \filef{ h.xxx} is required.
+
+The equation-file \filef{ kpr.c} serves as a sample for new equation
+files. It contains the C subroutines 
+\funcf{ func}, \funcf{ stpnt}, \funcf{ pvls}, \funcf{ bcnd}, \funcf{ icnd} 
+and \funcf{ fopt}. The final three are
+dummy subroutines which are never needed for homoclinic continuation.
+Note a minor difference in \funcf{ stpnt} and \funcf{ pvls} with other 
+\AUTO equation-files, in that the common block 
+\parf{ /BLHOM/} is required.
+
+The constants-file \filef{ c.xxx} is identical in format to other
+\AUTO constants-files. Note that the values of the constants
+\parf{ NBC} and \parf{ NINT} are irrelevant, as these are set
+automatically by the choice \parf{ IPS}=9. Also, the choice \parf{ JAC=1}
+is strongly recommended, because the Jacobian is used extensively for
+calculating the linearization at the equilibria and hence for
+evaluating boundary conditions and certain test functions. However,
+note that \parf{ JAC=1} does not necessarily mean that {\cal auto} will
+use the analytically specified Jacobian for continuation.
+
+\section{ {\cal HomCont}-Constants.} \label{sec:HomCont_Constants}
+An example for the additional file \filef{ h.xxx} is listed below:
+\begin{verbatim}
+          1 2 1 1 1    NUNSTAB,NSTAB,IEQUIB,ITWIST,ISTART
+          0            NREV,(/,I,IREV(I)),I=1,NREV)
+          1            NFIXED,(/,I,IFIXED(I)),I=1,NFIXED)
+            13
+          1            NPSI,(/,I,IPSI(I)),I=1,NPSI)
+            9 10 13
+\end{verbatim}
+The constants specified in \filef{ h.xxx} have the following meaning. 
+
+\subsection{\parf{ NUNSTAB}}  \label{sec:NUNSTAB}
+
+Number of unstable eigenvalues of the left-hand equilibrium (the equilibrium 
+approached by the orbit as $t \to -\infty$).
+
+
+\subsection{\parf{ NSTAB}}  \label{sec:NSTAB}
+Number of stable eigenvalues of the right-hand equilibrium (the equilibrium
+approached by the orbit as $t \to +\infty$).
+
+\subsection{\parf{ IEQUIB}}  \label{sec:IEQUIB}
+\begin{itemize}
+\item[-] \parf{ IEQUIB=0}~: 
+Homoclinic orbits to hyperbolic equilibria;  
+the equilibrium is specified explicitly in \funcf{ pvls} and stored in
+\parf{ par[10+I]}, \parf{ I=1,NDIM}.
+\item[-] \parf{ IEQUIB=1}~: 
+Homoclinic orbits to hyperbolic equilibria;  
+the equilibrium is solved for during continuation. Initial values for
+the equilibrium are stored in \parf{ par[10+I]}, \parf{ I=1,NDIM} in \funcf{ stpnt}.
+\item[-] \parf{ IEQUIB=2}~: 
+Homoclinic orbits to a saddle-node; initial values for
+the equilibrium are stored in \parf{ par[10+I]}, \parf{ I=1,NDIM} in \funcf{ stpnt}.
+\item[-] \parf{ IEQUIB=-1}~: 
+Heteroclinic orbits to hyperbolic equilibria;
+the equilibria are specified explicitly in \funcf{ pvls} and stored in
+\parf{ par[10+I]},  
+\parf{ I=1,NDIM} (left-hand equilibrium) and \parf{ par[10+I]}, 
+\parf{ I=NDIM+1,2*NDIM} (right-hand equilibrium). 
+\item[-] \parf{ IEQUIB=-2}~: 
+Heteroclinic orbits to hyperbolic equilibria;
+the equilibria are solved for during continuation. Initial values are
+specified in \funcf{ stpnt} and stored in \parf{ par[10+I]}, \parf{ I=1,NDIM} (left-hand equilibrium), 
+\parf{ par[10+I]}, \parf{ I=NDIM+1,2*NDIM} (right-hand equilibrium).
+\end{itemize}
+
+\subsection{\parf{ ITWIST}}  \label{sec:ITWIST}
+\begin{itemize}
+\item[-] \parf{ ITWIST=0}~: 
+the orientation of the homoclinic orbit is not computed.
+\item[-] \parf{ ITWIST=1}~: 
+the orientation of the homoclinic orbit is computed. For this purpose, the
+adjoint variational equation is solved for the unique bounded
+solution. If \parf{ IRS = 0}, an initial solution to the adjoint equation
+must be specified as well. However, if \parf{ IRS>0} and \parf{ ITWIST} 
+has just been increased from zero, then \AUTO will
+automatically generate the initial solution to the adjoint. 
+In this case, a dummy Newton-step should be performed, see 
+Section~\ref{sec:Starting_strategies} for more details.
+\end{itemize}
+
+\subsection{\parf{ ISTART}}  \label{sec:ISTART}
+\begin{itemize}
+\item[-] \parf{ ISTART=1}~:  
+This option is obsolete in the current version. 
+It may be used as a flag that a solution is to be
+restarted from a previously computed point or
+from numerical data converted into \AUTO format using \commandf{us}.
+In this case \parf{ IRS>0}.
+%If \parf{ IRS=0} then starting data are read from the file 
+%\filef{ fort.4} (copied from \filef{xxx.dat} in the examples).
+%These data must be $t,U$ in multi-column format at each 
+%point with $t$ in the interval $[0,1]$. If \parf{ IRS}$\neq$0$,
+%this value of \parf{ ISTART} should be used to read starting data from
+%a previously-obtained output point from \AUTO.
+\item[-] \parf{ ISTART=2}~: 
+If \parf{ IRS=0}, an explicit solution must be specified in the
+subroutine \funcf{ stpnt} in the usual format. 
+\item[-] \parf{ ISTART=3}~: 
+The ``homotopy'' approach is used for starting, see
+Section~\ref{sec:Starting_strategies}
+for more details. Note that this is not available with the choice 
+\parf{ IEQUIB=2}.
+\item[-] \parf{ ISTART=4}~:
+A phase-shift is performed for homoclinic orbits to let the
+equilibrium (either fixed or non-fixed, depending on IEQUIB)
+correspond to $t=0$ and $t=1$. This is necessary if a periodic
+orbit that is close to a homoclinic orbit is continued into
+a homoclinic orbit.
+\item[-] \parf{ ISTART=-N, $N=1,2,3,\ldots$}~:
+Homoclinic branch switching: this description is for reference only
+and we refer to Chapter~\ref{ch:HomCont_hbs} to see how this can be used
+in actual practice and to \citeasnoun{OlChKr:02} for
+theory and background.
+
+The orbit is split into $N+1$ parts and
+AUTO sees it as an $(N+1)\times$\parf{NDIM}-dimensional object.
+The first part $u_0$ goes from the equilibrium to the point $x_0$ that is 
+furthest from the equilibrium. 
+Then follow $N-1$ shifted copies of the orbit, which travel
+from the point $x_0$ back to the point $x_0$. The last part $U_N$
+goes from the point $x_0$ back to the equilibrium. 
+The derivatives $\dot{x}_0$ with respect to time
+of the point that is furthest from the equilibrium are stored at the 
+parameters \parf{par[NPARX-NDIM...NPARX-1]}.
+
+If \parf{ITWIST=1}, and this was also the case in the preceding run,
+then a copy of the adjoint vector $\Psi$ at $x_0$ is stored at the parameters
+\parf{par[NPARX-NDIM*2...NPARX-NDIM-1]} and Lin's method can be used
+to do homoclinic branch switching. To be more precise, the individual parts
+$u_i$ and $u_{i+1}$ are at distances $\varepsilon_i$ away from each
+other, along the Lin vector $Psi$, at the left- and right-hand end
+points. These gaps $\varepsilon_i$ are at parameters
+\parf{par[19+2*i]}. Moreover, each part (except $u_{N+1}$) ends at
+at a Poincar\'e section which goes through $x_0$ and is perpendicular
+to $\dot{x}_0$.
+
+The times $T_i$ that each part $u_i$ takes are stored as follows: 
+$T_0=$\parf{par[9]}, $T_N=$\parf{par[10]} and $T_i=$\parf{par[18+2*i]}
+for $i=1\ldots N-1$. Through a continuation in problem parameters,
+gaps $\varepsilon_i$, and times $T_i$ 
+it is possible to switch from a $1$-homoclinic to
+an $N$-homoclinic orbit.
+
+If \parf{ITWIST=0}, the adjoint vector is not computed and Lin's
+method is not used. Instead, AUTO produces a gap
+$\varepsilon$=\parf{par[21]} at the right-hand end point $p$ of
+$u_{N+1}$, measuring the distance between the stable manifold of the
+equilibrium and $p$. This technique can also be used to find 2-homoclinic
+orbits, by varying in $\varepsilon$ and $T_1$, similar to the method
+described before, but only if the unstable manifold in
+one-dimensional. Because this method is more limited than the method
+using Lin vectors, we do not recommend it for normal usage.
+
+To switch back to a normal homoclinic orbit, set \parf{ISTART} back to
+a positive value such as 1. Now HomCont has lost all the information
+about the adjoint, so if \parf{ITWIST} is set to 0, HomCont
+does a normal continuation without the adjoint, and
+if \parf{ITWIST} is set to 1, one needs to do a Newton dummy step
+first to recalculate the adhoint.
+\end{itemize}
+
+\subsection{\parf{ NREV, IREV}}  \label{sec:IREV}
+If \parf{ NREV=1} then it is assumed that
+the system is reversible under the transformation 
+$t \to -t$ and $U(i) \to -U(i)$ for all $i$ with 
+\parf{ IREV(i)>0}. Then only half the homoclinic solution is
+solved for with right-hand boundary conditions specifying
+that the solution is symmetric under the reversibility
+(see \citeasnoun{ChSp:93}). The number of free parameters
+is then reduced by one. Otherwise \parf{ IREV=0}.
+
+\subsection{\parf{ NFIXED, IFIXED}}  \label{sec:IFIXED}
+Number and labels of test functions that are held fixed. 
+E.g., with \parf{ NFIXED=1} one can compute a locus in
+one extra parameter of a singularity defined by 
+test function \parf{ PSI(IFIXED(1))=0}.
+
+\subsection{\parf{ NPSI, IPSI}}  \label{sec:IPSI}
+Number and labels of activated test functions for detecting homoclinic
+bifurcations, see Section~\ref{sec:HomCont_Test_functions} 
+for a list. If a test function is activated then the
+corresponding parameter (\parf{ IPSI(I)+19}) 
+must be added to the list of continuation parameters \parf{ NICP,(ICP(I),I=1 NICP)}
+and zero of this parameter added to the list of user-defined
+output points \parf{ NUZR,} \parf{ (/,I,par[I]),I=1, NUZR} in \filef{ c.xxx}.
+
+\section{ Restrictions on {\cal HomCont} Constants.}
+Note that certain combinations of these constants are not allowed
+in the present implementation. In particular,
+\begin{itemize}
+\item[-] 
+The computation of orientation \parf{ ITWIST=1} is not
+implemented for \parf{ IEQUIB<0} (heteroclinic orbits), 
+\parf{ IEQUIB=2} (saddle-node homoclinics),
+\parf{ IREV=1} (reversible systems), \parf{ ISTART=3} (homotopy
+method for starting), or if the equilibrium contains complex
+eigenvalues in its linearization.  
+\item[-] The homotopy method \parf{ ISTART=3} is not fully implemented
+for heteroclinic connections \parf{ IEQUIB<0}, saddle-node homoclinic
+orbits \parf{ IEQUIB=2} or reversible systems \parf{ IREV=1}.
+\item[-] Certain test functions are not valid for certain forms
+of continuation 
+(see Section~\ref{sec:HomCont_Test_functions} below); 
+for example
+\parf{ PSI(13)} and \parf{ PSI(14)} only make sense if 
+\parf{ ITWIST=1} and \parf{ PSI(15)} and \parf{ PSI(16)} only apply
+to \parf{ IEQUIB=2}.
+\end{itemize}
+
+\section{ Restrictions on the Use of \parf{ par}.}
+The parameters \parf{ par[0]} -- \parf{ par[8]} can be used freely by
+the user. The other parameters are used as follows~:
+
+\begin{itemize}
+
+\item[-] \parf{ par[10]}~: 
+The value of \parf{ par[10]} equals the length of the time interval over
+which a homoclinic solution is computed. Also referred to as ``period''.
+This must be specified in \funcf{ stpnt}.
+
+\item[-] \parf{ par[9]}~: 
+If \parf{ ITWIST=1} then \parf{ par[9]} is used internally as a
+dummy parameter so that the adjoint equation is well-posed.
+
+\item[-] \parf{ par[11]-par[19]}~:
+These are used for specifying the 
+equilibria and (if \parf{ ISTART=3}) the artificial parameters of
+the homotopy method (see Section~\ref{sec:Starting_strategies} below).
+
+\item[-] \parf{ par[20]-par[35]}~: 
+These parameters are used for storing the test functions 
+(see Section~\ref{sec:HomCont_Test_functions}).
+\end{itemize}
+
+The output is in an identical format to \AUTO except that
+additional information at each computed point is written 
+in \filef{ fort.9}. This information comprises the eigenvalues of
+the (left-hand) equilibrium, the values of each activated test
+function and, if \parf{ ITWIST=1}, 
+whether the saddle homoclinic loop is orientable
+or not.
+Note that the statement about orientability is only meaningful if the
+leading eigenvalues are not complex and the homoclinic solution is not
+in a flip configuration, that is, none of the test functions 
+$\psi_i$ for $i=11,12,13,14$ is zero (or close to zero), 
+see Section~\ref{sec:HomCont_Test_functions}.
+ Finally, the values of the \parf{ NPSI} activated test functions are written. 
+
+\section{ Test Functions.} \label{sec:HomCont_Test_functions}
+Codimension-two homoclinic orbits are detected along branches of codim
+1 homoclinics by locating zeroes of certain test functions
+$\psi_i$. The test functions that are ``switched on'' during any
+continuation are given by the choice of the labels $i$, and are
+specified by the parameters \parf{ NPSI,(/,I,IPSI(I)),I=1,NPSI)} in \filef{
+h.xxx}.  Here \parf{ NPSI} gives the number of activated test functions
+and \parf{ IPSI(1),$\ldots$,IPSI(NPSI)} give the labels of
+the test functions (numbers between 1 and 16). A zero of
+each labeled test function defines a certain codimension-two 
+homoclinic singularity, specified as follows.
+The notation used for eigenvalues is the same as that in
+\citeasnoun{ChKu:94} or \citeasnoun{ChKuSa:95}. 
+
+\begin{itemize}
+\item[-] $ i=1$: 
+Resonant eigenvalues (neutral saddle); $\mu_1=-\lambda_1$.
+\item[-] $ i=2$: 
+Double real leading stable eigenvalues (saddle to saddle-focus
+transition); $\mu_1=\mu_2$. 
+\item[-] $ i=3$: 
+Double real leading unstable eigenvalues (saddle to saddle-focus
+transition);\\ 
+$\lambda_1=\lambda_2$. 
+\item[-] $ i=4$: 
+Neutral saddle, saddle-focus or bi-focus (includes $ i=1$);
+$\mbox{Re}(\mu_1)  =  - \mbox{Re}(\lambda_1)$. 
+\item[-] $ i=5$: 
+Neutrally-divergent saddle-focus (stable eigenvalues complex);\\
+$\mbox{Re}(\lambda_1) = - \mbox{Re}(\mu_1) - \mbox{Re}(\mu_2)$.
+\item[-] $ i=6$: 
+Neutrally-divergent saddle-focus (unstable eigenvalues complex);\\
+$\mbox{Re}(\mu_1) = - \mbox{Re}(\lambda_1) - \mbox{Re}(\lambda_2)$. 
+\item[-] $ i=7$: 
+Three leading eigenvalues (stable);
+$\mbox{Re}(\lambda_1) = - \mbox{Re}(\mu_1) - \mbox{Re}(\mu_2)$. 
+\item[-] $ i=8$: 
+Three leading eigenvalues (unstable);
+$\mbox{Re}(\mu_1) = - \mbox{Re}(\lambda_1) - \mbox{Re}(\lambda_2)$.
+\item[-] $ i=9$: 
+Local bifurcation (zero eigenvalue or Hopf): 
+number of stable eigenvalues decreases; $\mbox{Re}(\mu_1)=0$.
+\item[-] $ i=10$: 
+Local bifurcation (zero eigenvalue or Hopf): 
+number of unstable eigenvalues decreases; $\mbox{Re}(\lambda_1)=0$.
+\item[-] $ i=11$: 
+Orbit flip with respect to leading stable direction 
+(e.g., 1D unstable manifold).
+\item[-] $ i=12$: 
+Orbit flip with respect to leading unstable direction, 
+(e.g., 1D stable manifold).
+\item[-] $ i=13$: 
+Inclination flip with respect to stable manifold
+(e.g., 1D unstable manifold).
+\item[-] $ i=14$: 
+Inclination flip with respect to unstable manifold
+(e.g., 1D stable manifold).
+\item[-] $ i=15$: 
+Non-central homoclinic to saddle-node (in stable manifold).
+\item[-] $ i=16$: 
+Non-central homoclinic to saddle-node (in unstable manifold).
+\end{itemize}
+
+Expert users may wish to add their own test functions by editing 
+the function \parf{ PSIHO} in \filef{ autlib5.c}.
+
+{\it It is important to remember that, in order to specify activated 
+test functions, it is required to also 
+add the corresponding label $+20$ to the list of continuation
+parameters and a zero of this parameter to the list of user-defined
+output points. Having done this, the corresponding parameters
+are output to the screen and zeros are accurately located.} 
+
+\section{ Starting Strategies.} \label{sec:Starting_strategies}
+There are four possible starting procedures for continuation. 
+
+\begin{itemize}
+
+\item[{\bf(i)}]
+Data can be read from a previously-obtained output point from \AUTO
+ (e.g., from continuation of a periodic orbit up to large period;
+note that if the end-point of the data stored is not close to the
+equilibrium, a phase shift must be performed by setting
+\parf{ISTART=4}). These data can be read from fort.8 (saved to \filef{
+s.xxx}) by making \parf{ IRS} correspond to the label of the data
+point in question.
+
+\item[{\bf(ii)}]
+Data from numerical integration (e.g.,\ computation of a stable
+periodic orbit, or an approximate homoclinic obtained by shooting)  
+can be read in from a data file using the general \AUTO 
+utility \commandf{ us} (see earlier in the manual). 
+The  numerical data should be stored in
+a file  \filef{ xxx.dat}, in multi-column format according to the read statement
+\begin{verbatim}
+       READ(...,*) T(J),(U(I,J),I=1,NDIM)
+\end{verbatim}
+where $T$ runs in the interval $[0,1]$.
+After running \commandf{ us} the restart data is stored in
+the format of a previously computed solution in \filef{ s.dat}.
+When starting from this solution \parf{ IRS} should be set to 1 and 
+the value of \parf{ ISTART} is irrelevant.
+
+\item[{\bf(iii)}]
+By setting \parf{ ISTART=2},  
+an explicit homoclinic solution can be specified in the routine \funcf{ stpnt} in the usual \AUTO format, that is 
+$U=...(T)$ where $T$ is scaled to lie in the
+interval$[0,1]$. 
+
+\item[{\bf(iv)}]
+The choice \parf{ ISTART=3}, allows for
+a homotopy method to be used to approach a homoclinic orbit
+starting from a small approximation to a solution to the 
+linear problem in the unstable manifold \cite{DoFrMo:93}. For
+details of implementation, the reader is referred to 
+Section~5.1.2.\ of \citeasnoun{ChKu:94}, under the simplification
+that we do not solve for the adjoint $u(t)$ here. The basic idea
+is to start with a small solution in the unstable manifold, and perform
+continuation in \parf{ par[10]=}$2T$ and dummy initial-condition 
+parameters $\xi_i$ in order to satisfy the correct right-hand boundary
+conditions, which are defined by zeros of other dummy parameters
+$\omega_i$. More precisely, the left-hand end point is placed in the
+tangent space to the unstable manifold of the saddle and is characterized by
+\parf{ NUNSTAB} coordinates $\xi_i$ satisfying the condition
+$$
+\xi_1^2 + \xi_2^2 + \ldots +\xi_\parf{ NUNSTAB}^2  = \eps_0^2,
+$$
+where $\eps_0$ is a user-defined small number.
+At the right-hand end point, \parf{ NUNSTUB} values $\omega_i$ 
+measure the deviation of this point from the tangent
+space to the stable manifold of the saddle. 
+\par
+Suppose that \parf{ IEQUIB=0,1} and set \parf{ IP=11+IEQUIB*NDIM}. Then
+\par
+\medskip
+\begin{center}
+\begin{tabular}{ll}
+\parf{ par[IP]} & :$\ \ \eps_0$\\
+\parf{ par[IP+i]} &  :$\ \ \xi_i$, \parf{ i=1,2,...,NUNSTAB}\\
+\parf{ par[IP+NUNSTAB+i]} & :$\ \ \omega_i$, \parf{ i=1,2,...,NUNSTAB}
+\end{tabular}
+\end{center}
+\par
+\medskip
+{\it Note that to avoid interference with the test functions 
+(i.e. \parf{ par[20]-par[35]}), one must have \parf{ IP+2*NUNSTAB < 21}.} 
+\par
+If an $\omega_i$ is vanished, it can be frozen while another dummy or system parameter is allowed to
+vary in order to make consequently all $\omega_i=0$. The resulting final solution
+gives the initial homoclinic orbit provided the right-hand end point
+is sufficiently close to the saddle. 
+See Chapter~\ref{ch:HomCont_kpr} for an example, 
+however, we recommend the homotopy method only for ``expert users''.
+\end{itemize}
+
+To compute the orientation of a homoclinic orbit (in order to detect
+inclination-flip bifurcations) it is necessary to compute, in tandem,
+a solution to the modified adjoint variational equation, by setting
+\parf{ ITWIST=1}. In order to obtain starting data for such a
+computation when restarting from a point where just the homoclinic
+is computed, upon increasing \parf{ ITWIST} to 1, \AUTO generates
+trivial data for the adjoint. Because the adjoint equations are
+linear, only a single step of Newton's method is required to
+enable these trivial data to converge to the correct unique bounded
+solution. This can be achieved by making a single continuation step in a
+trivial parameter (i.e. a parameter that does not appear
+in the problem). 
+
+Decreasing \parf{ ITWIST} to 0 automatically deletes the data for the adjoint
+from the continuation problem.
+
+
+\section{ Notes on Running {\cal HomCont} Demos.} \label{sec:HomCont_Tutorial_examples}
+{\cal HomCont} demos are given in the following chapters.
+To copy all files of a demo \filef{ xxx} (for example, \filef{ san}),
+move to a clean directory and type {\it demo('xxx')}.
+Simply typing {\it make} or {\it make all} will then automatically
+execute all runs of the demo.
+%To automatically run a demo in ``step-by-step'' mode,
+%type  {\it make first}, {\it make second}, etc.,
+%to run each separate computation of the demo. 
+At each step, the user is encouraged to plot the data
+saved by using the command {\it plot} (e.g., {\it plot('1')} plots the data
+saved in \filef{ b.1} and \filef{ s.1}).
+
+Of course, in a real application, the runs will not have been prepared
+in advance, and \AUTO-commands must be used.
+Such commands can be found in a table at the end of each chapter.
+A sequence of detailed \AUTO-commands will be given in these tables
+as illustrated in Table~\ref{tbl:HomCont_demos_1} 
+and Table~\ref{tbl:HomCont_demos_2} for two representative runs of 
+{\cal HomCont} demo \filef{ san}.
+
+The user is encouraged to copy the format of one of these demos
+when constructing new examples.
+
+The output of the {\cal HomCont} demos reproduced in  the following chapters
+is somewhat machine dependent, as already noted 
+in Section~\ref{sec:Tutorial_all_runs}.
+In exceptional circumstances, \AUTO may reach its maximum number of
+steps \parf{ NMX} before a certain output point, or the label of
+an output point may change. In such case the user may have
+to make appropriate changes in the \AUTO constants-files.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  {\it ld('san')}                & load the problem defition    \\ 
+  {\it run(c='san.1',h='san.1')} & get the HomCont constants-file and run \AUTO/{\cal HomCont}\\
+  {\it sv('6')}                  & save output-files as \filef{ b.6, s.6, d.6}  \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{ An example of \AUTO-Commands.}
+\label{tbl:HomCont_demos_1}
+\end{center}
+\end{table}
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  {\it run(c='san.9',h='san.9',s='6')} & \parbox[t]{3in}{get the HomCont constants-file and run \AUTO/{\cal HomCont}; restart solution read from \filef{ s.6}\vspace{0.2cm}}\\
+  {\it ap('6')}                        & append output-files to \filef{ b.6, s.6, d.6}  \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{ Another example of \AUTO-Commands.}
+\label{tbl:HomCont_demos_2}
+\end{center}
+\end{table}
+

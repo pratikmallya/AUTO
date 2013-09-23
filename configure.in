@@ -1,0 +1,177 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(demos/ab/ab.c)
+AC_CONFIG_HEADERS(include/config.h)
+AC_PREREQ(2.50)
+
+AC_ARG_WITH(CC,
+[  --with-CC=COMMAND       Choose a C compiler other then the default],
+[CC=$withval],)
+
+AC_ARG_WITH(F77,
+[  --with-F77=COMMAND      Choose a Fortran compiler other then the default (use "no" if you have no Fortran compiler at all)],
+[F77=$withval],)
+
+AC_ARG_WITH(mpi-compiler,
+[  --with-mpi-compiler=COMMAND       Command to use to compile MPI programs (default:  mpicc)],
+[MPI_COMPILER=${withval}],[MPI_COMPILER=mpicc])
+
+AC_ARG_WITH(optimization-flags,
+[  --with-optimization-flags=FLAGS       Choose an optimization flag to give to the compilers (default: -O)],
+[OPT_FLAG=$withval],[OPT_FLAG="-O"])
+
+AC_ARG_WITH(pthreads,
+[  --with-pthreads          Try to use the Pthreads library (default: yes)],
+[pthreads=$withval],[pthreads="yes"])
+
+AC_ARG_WITH(mpi,
+[  --with-mpi              Try to use MPI (default: no)],
+[mpi=$withval],[mpi="no"])
+
+AC_ARG_ENABLE(plaut,
+[  --enable-plaut          Compile the Plaut plotting package (default: yes)],
+[ENABLE_PLAUT=$enableval],ENABLE_PLAUT=yes)
+
+AC_ARG_ENABLE(gui,
+[  --enable-gui          Compile the Motif based GUI package (default: no)],
+[ENABLE_GUI=$enableval],ENABLE_GUI=no)
+
+AC_ARG_ENABLE(tek2ps,
+[  --enable-tek2ps          Compile the Tek2ps conversion utility (default: yes)],
+[ENABLE_TEK2PS=$enableval],ENABLE_TEK2PS=yes)
+
+AC_ARG_ENABLE(user-construct,
+[  --enable-user-construct          Enable the user defined constructor and
+destructor functions (default: no)],
+[ENABLE_USER_CONSTRUCT=$enableval],ENABLE_USER_CONSTRUCT=no)
+ 
+AC_SUBST(OPT_FLAG)
+
+dnl Checks for programs.
+
+CFLAGS=""
+
+if test x$mpi = "xyes"; then
+  # We first check for the MPI compilation script.  If it exists
+  # we try and us it to override the default compiler.
+  AC_PATH_PROG(MPICC,$MPI_COMPILER,"no")
+  if test x$MPICC != "xno"; then
+    MPI="yes"
+    CFLAGS="$CFLAGS -DMPI" 
+    CC=$MPICC
+  fi
+fi
+
+AC_PROG_CC
+
+if test x$ENABLE_USER_CONSTRUCT = "xyes"; then 
+   CFLAGS="$CFLAGS -DAUTO_CONSTRUCT_DESTRUCT";
+fi
+
+if test "$F77" != "no"; then
+  AC_PROG_F77([g77 f77 xlf frt pgf77 fort77 fl32 af77 f90 xlf90 pgf90 epcf90 f95 fort xlf95 ifc efc pgf95 lf95 gfortran g95])
+  AC_F77_WRAPPERS
+else
+  F77="true"
+  FFLAGS=""
+  AC_SUBST(F77)
+  AC_SUBST(FFLAGS)
+fi
+AC_PROG_MAKE_SET
+
+dnl Checks for libraries.
+#Check for the default X stuff
+AC_PATH_XTRA
+
+# We also need Motif.  If we don't find it, X is not useful for us
+# so we set the same no_x variable as the above macro
+#Now we want to check to see is Motif is installed
+AC_CHECK_LIB(Xm,XmCreateMainWindow,X_LIBS="$X_LIBS -lXm -lXt -lX11",
+             no_x=yes,$X_PRE_LIBS $X_LIBS -lXt -lX11 $X_EXTRA_LIBS)
+
+PTHREADS="no"
+if test x$pthreads = "xyes"; then
+  ACX_PTHREAD([
+    LIBS="$PTHREAD_LIBS $LIBS"
+    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+    FFLAGS="$FFLAGS $PTHREAD_CFLAGS"
+    CC="$PTHREAD_CC"
+    PTHREADS="yes"])
+fi
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h)
+
+if test x$pthreads = "xyes"; then
+  AC_CHECK_HEADER(pthread.h,PTHREADS="yes",PTHREADS="no")
+
+  if test x$PTHREADS = "xyes"; then
+    CFLAGS="$CFLAGS -DPTHREADS" 
+  fi
+fi
+
+AC_SUBST(CFLAGS)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+dnl Checks for library functions.
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(gettimeofday)
+
+if test x$ENABLE_PLAUT = xyes; then
+   PLAUT=plaut
+else
+   PLAUT=""
+fi
+AC_SUBST(PLAUT)
+
+if test x$no_x != xyes && test x$ENABLE_GUI = xyes; then
+   GUI=gui
+else
+   GUI=""
+fi
+AC_SUBST(GUI)
+
+if test x$ENABLE_TEK2PS = xyes; then
+   TEK2PS=tek2ps
+else
+   TEK2PS=""
+fi
+AC_SUBST(TEK2PS)
+
+AC_OUTPUT(demos/kpr/Makefile demos/exp/Makefile demos/enz/Makefile demos/wav/Makefile demos/mtn/Makefile demos/ivp/Makefile demos/ezp/Makefile demos/ext/Makefile demos/pp3/Makefile demos/opt/Makefile demos/brf/Makefile demos/dd2/Makefile demos/fhn/Makefile demos/she/Makefile demos/chu/Makefile src/Makefile demos/fsh/Makefile src/libf2c/Makefile demos/pen/Makefile demos/lin/Makefile demos/pd2/Makefile demos/bvp/Makefile Makefile demos/non/Makefile demos/plp/Makefile demos/rev/Makefile demos/lor/Makefile demos/ppp/Makefile demos/pvl/Makefile demos/pp2/Makefile demos/ops/Makefile demos/tor/Makefile demos/nag/Makefile demos/brc/Makefile demos/lrz/Makefile demos/frc/Makefile demos/stw/Makefile demos/cir/Makefile demos/kar/Makefile demos/san/Makefile demos/ab/Makefile demos/spb/Makefile demos/pd1/Makefile demos/abc/Makefile demos/obv/Makefile demos/bru/Makefile demos/tim/Makefile demos/phs/Makefile demos/int/Makefile gui/Makefile plaut/Makefile test/Makefile tek2ps/Makefile cmds/cmds.make cmds/Makefile gui/auto.makefile demos/pyt/Makefile)
+
+if test x$no_x = xyes && test x$ENABLE_GUI = xyes; then
+  echo "***************************************************"
+  echo "It was requested that the GUI front end be compiled"
+  echo "but the proper X libraries (libX and libXt) and/or "
+  echo "Motif libraries (libXm) could not be found.  The   "
+  echo "compilation of the GUI had been disabled.          "
+  echo "***************************************************"
+fi 
+
+if test x$PTHREADS = "xyes" && test x$MPI != "xyes"; then
+  echo "***************************************************"
+  echo "AUTO has been configured with support for Pthreads"   
+  echo "***************************************************"
+fi
+if test x$PTHREADS != "xyes" && test x$MPI = "xyes"; then
+  echo "***************************************************"
+  echo "AUTO has been configured with support for MPI"   
+  echo "***************************************************"
+fi
+if test x$PTHREADS = "xyes" && test x$MPI = "xyes"; then
+  echo "***************************************************"
+  echo "AUTO has been configured with support for" 
+  echo "Pthreads and MPI"   
+  echo "***************************************************"
+fi
+
+if test $F77 = "true"; then
+  echo "***************************************************"
+  echo "You have choosen not to use a Fortran compiler."
+  echo "Some utilities will not be compiled!"
+  echo "***************************************************"
+fi

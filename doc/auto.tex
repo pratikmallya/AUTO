@@ -1,0 +1,168 @@
+
+\documentclass[12pt]{report}
+
+\usepackage{epsf}
+\usepackage{graphicx}
+\usepackage{include/harvard}
+\usepackage{alltt}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{moreverb}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\floatstyle{plain}
+\restylefloat{table}
+\restylefloat{figure}
+\pagestyle{plain}
+\topmargin=-45pt
+\textwidth=6.85in
+\textheight=9in
+\evensidemargin=-15pt
+\oddsidemargin=-15pt
+%
+\input{macros}
+%
+\begin{document}
+\bibliographystyle{include/agsm} 
+%
+\title{
+\LARGE \AUTOc :\\ 
+\Large CONTINUATION AND BIFURCATION SOFTWARE \\
+\Large FOR ORDINARY DIFFERENTIAL EQUATIONS\\ 
+\Large (with HomCont)\\
+\author{
+\large Eusebius J. Doedel \footnote{On leave from Concordia University, Montreal, Canada}\\
+\large California Institute of Technology\\
+\large Pasadena, California USA
+\and 
+\large Randy C. Paffenroth\\
+\large California Institute of Technology\\
+\large Pasadena, California USA
+\and 
+\large Alan R. Champneys\\
+\large University of Bristol\\
+\large United Kingdom
+\and
+\large Thomas F. Fairgrieve\\
+\large Ryerson Polytechnic University\\
+\large Toronto, Canada
+\and 
+\large Yuri A. Kuznetsov\\
+\large Universiteit Utrecht \\
+\large The Netherlands
+\and
+\large Bart E. Oldeman\\
+\large University of Bristol\\
+\large United Kingdom
+\and
+\large Bj\"orn Sandstede\\
+\large Ohio State University \\
+\large Columbus, Ohio USA
+\and
+\large Xianjun Wang\\
+\large Concordia University\\
+\large Montreal, Canada
+}}
+\date{\today}
+\maketitle
+\tableofcontents
+%
+%
+\newpage
+~
+\vskip.50truein
+\subsection*{Preface}
+This is a guide to the software package \AUTO
+for continuation and bifurcation problems in ordinary differential 
+equations.
+Earlier versions of \AUTO were described in 
+\citename{Do:81} \citeyear{Do:81},
+\citename{DoKe:86} \citeyear{DoKe:86},
+\citename{DoWa:95a} \citeyear{DoWa:95a},
+\citename{WaDo:95b} \citeyear{WaDo:95b}.
+For a description of the basic algorithms see
+\citename{DoKeKe:91a} \citeyear{DoKeKe:91a},
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+This version of \AUTO incorporates the {\cal HomCont} algorithms of
+\citename{ChKu:94} \citeyear{ChKu:94},
+\citename{ChKuSa:95} \citeyear{ChKuSa:95}
+for the bifurcation analysis of homoclinic orbits.
+The graphical user interface was written by
+\citename{XJW:94} \citeyear{XJW:94}.
+The Floquet multiplier algorithms were written by
+\citename{Fa:94} \citeyear{Fa:94},
+\citename{FaJe:91} \citeyear{FaJe:91}.
+
+\vskip1.00truein
+\subsection*{Acknowledgments}
+The first author is much indebted to H.~B.~Keller 
+of the California Institute of Technology for his inspiration,
+encouragement and support.
+He is also thankful to \AUTO users and research collaborators who have 
+directly or indirectly contributed to its development,
+in particular, 
+Jean Pierre Kern\'evez, UTC, Compi\`egne, France;
+Don Aronson, University of Minnesota, Minneapolis; and 
+Hans Othmer, University of Utah.
+Material in this document related to the computation of connecting orbits
+was developed with Mark Friedman, University of Alabama, Huntsville.
+Also acknowledged is the work of Nguyen Thanh Long,
+Concordia University, Montreal, on the graphics program {\cal PLAUT} and the 
+pendula animation program.
+An earlier graphical user interface for \AUTO on SGI machines was written by 
+\citename{TaKe:89} \citeyear{TaKe:89}.
+Special thanks are due to Sheila Shull, California Institute of Technology,
+for her cheerful assistance in the distribution of \AUTO over a long period
+of time.
+Over the years, the development of \AUTO has been supported by
+various agencies through the California Institute of Technology.
+Work on this updated version was supported by a general research
+grant from NSERC (Canada).
+
+The development of {\cal HomCont} has much benefitted from  various pieces 
+of help and advice from, among others, 
+W.-J. Beyn, Universit\"{a}t Bielefeld,
+M.~J. Friedman, University of Alabama,
+A. Rucklidge, University of Cambridge, 
+M. Koper, University of Utrecht and 
+C.~J. Budd, University of Bristol. 
+Financial support for collaboration was received from the U.K.\
+Engineering and Physical Science Research Council and the Nuffield Foundation.
+
+\include{installing}
+\include{capability_overview}
+\include{how_to_run}
+\include{clui}
+\include{constants}
+\include{notes_on_auto}
+\include{demo_tutorial}
+\include{demo_fixed_points}
+\include{demo_periodic_solutions}
+\include{demo_bvp}
+\include{demo_parabolic_pde}
+\include{demo_optimization}
+\include{demo_connecting_orbits}
+\include{demo_misc}
+\include{homcont}
+\include{demo_homcont_san}
+\include{demo_homcont_mtn}
+\include{demo_homcont_kpr}
+\include{demo_homcont_cir}
+\include{demo_homcont_she}
+\include{demo_homcont_rev}
+\include{demo_homcont_hbs}
+
+% Appenddicies
+\appendix
+\include{old_clui}
+\include{plaut}
+\include{gui_old}
+
+%==============================================================================
+%==============================================================================
+
+
+\bibliography{include/auto} \label{sec:bibliography}
+
+
+\end{document}

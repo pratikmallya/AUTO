@@ -1,0 +1,370 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ \AUTO Demos : Parabolic PDEs.} \label{ch:Demos_PDE}
+%==============================================================================
+%==============================================================================
+
+\newpage
+%==============================================================================
+%DEMO=pd1======================================================================
+%==============================================================================
+\section{ pd1 : Stationary States (1D Problem).} \label{sec:Demos_pd1}
+This demo uses Euler's method to locate a stationary solution of
+a nonlinear parabolic PDE, followed by continuation of this stationary
+state in a free problem parameter. The equation is
+ $$ {\partial u \over \partial t} 
+  = D~{\partial^2 u \over \partial x^2} ~+~  p_1~ u ~( 1-u) , $$
+on the space interval $[0,L]$, where $L=$~\parf{ PAR(11)}~$=10$ is fixed throughout,
+as is the diffusion constant $D=$~\parf{ PAR(15)}~$=0.1$.
+The boundary conditions are $u(0) = u(L) = 0$ for all time.
+
+In the first run the continuation parameter is the independent time variable,
+namely \parf{ PAR(14)}, while $p_1=1$ is fixed.
+The \AUTO-constants \parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX} then control the step size
+in space-time, here consisting of \parf{ PAR(14)} and  $u(x)$.
+Initial data are $u(x)=\sin(\pi x/L)$ at time zero.
+Note that in the subroutine \funcf{ stpnt} the initial data must be scaled to 
+the unit interval, and that the scaled derivative must also be provided; 
+see the equations-file \filef{ pv1.c}.
+In the second run the continuation parameter is $p_1$.
+
+Euler time integration is only first order accurate, so that
+the time step must be sufficiently small to ensure correct results.
+Indeed, this option has been added only as a convenience, and should 
+generally be used only to locate stationary states.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pd1} & create an empty work directory \\ 
+  \commandf{ cd pd1} & change directory \\
+  \commandf{ demo('pd1') } & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='pd1.1') } & time integration towards stationary state \\ 
+  \commandf{ sv('1') } & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pd1.2',s='1')} & \parbox[t]{3in}{continuation of stationary states; read restart data from \filef{ s.1}. constants changed : \parf{ IPS, IRS, ICP}, etc.\vspace{0.2cm}} \\ 
+  \commandf{ sv('2') } & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pd1}.}
+\label{tbl:demo_pd1}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=pd2======================================================================
+%==============================================================================
+\section{ pd2 : Stationary States (2D Problem).} \label{sec:Demos_pd2}
+This demo uses Euler's method to locate a stationary solution of
+a nonlinear parabolic PDE, followed by continuation of this stationary
+state in a free problem parameter. The equations are
+\begin{equation} \begin{array}{cl}
+  {\partial u_1 / \partial t} &= D_1~{\partial^2 u_1 / \partial x^2}
+  ~+~  p_1~ u ~( 1-u) ~-~ u_1 u_2 , \\
+  {\partial u_2 / \partial t} 
+  &= D_2~{\partial^2 u_2 / \partial x^2} ~-~ u_2 ~+~ u_1 u_2 , \\
+\end{array} \end{equation}
+on the space interval $[0,L]$, where $L=$~\parf{ PAR(11)}~$=1$ is fixed throughout,
+as are the diffusion constants $D_1=$~\parf{ PAR(15)}~$=1$ and $D_2=$~\parf{ PAR(16)}~$=1$.
+The boundary conditions are $u_1(0) = u_1(L) = 0$ and $u_2(0) = u_2(L) = 1$,
+for all time.
+
+In the first run the continuation parameter is the independent time variable,
+namely \parf{ PAR(14)}, while $p_1=12$ is fixed.
+The \AUTO-constants \parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX} then control the step size
+in space-time, here consisting of \parf{ PAR(14)} and $(u_1(x),u_2(x))$.
+Initial data at time zero are $u_1(x)=\sin(\pi x/L)$ and $u_2(x)=1$.
+Note that in the subroutine \funcf{ stpnt} the initial data must be scaled to 
+the unit interval, and that the scaled derivatives must also be provided; 
+see the equations-file \filef{ pv2.c}.
+In the second run the continuation parameter is $p_1$.
+A branch point is located during this run.
+
+Euler time integration is only first order accurate, so that
+the time step must be sufficiently small to ensure correct results.
+Indeed, this option has been added only as a convenience, and should 
+generally be used only to locate stationary states.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir pd2} & create an empty work directory \\ 
+  \commandf{ cd pd2} & change directory \\
+  \commandf{ demo('pd2') } & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='pd2.1') } & time integration towards stationary state \\ 
+  \commandf{ sv('1') } & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='pd2.2',s='1')} & \parbox[t]{3in}{continuation of stationary states; read restart data from \filef{ s.1}.  constants changed : \parf{ IPS, IRS, ICP}, etc. \vspace{0.2cm}}\\ 
+  \commandf{ sv('2') } & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ pd2}.}
+\label{tbl:demo_pd2}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=wav======================================================================
+%==============================================================================
+\section{ wav : Periodic Waves.} \label{sec:Demos_wav}
+This demo illustrates the computation of various periodic wave solutions
+to a system of coupled parabolic partial differential equations
+on the spatial interval $[0,1]$.
+The equations, that model an enzyme catalyzed reaction 
+(\citename{DoKe:86a} \citeyear{DoKe:86a}) are~:
+\begin{equation} \begin{array}{cl}
+ {\partial u_1 / \partial t}
+  &=
+  ~{\partial^{2} u_1 / \partial x^{2}}
+  -p_1 \bigl[p_4 R(u_1,u_2) - (p_2 - u_1) \bigr] ,\\
+ {\partial u_2 / \partial t}
+  &=
+  \beta {\partial^{2} u_2 / \partial x^{2}}
+  -p_1 \bigl[p_4 R(u_1,u_2) - p_7 (p_3 - u_2) \bigr].\\
+\end{array} \end{equation}
+All equation parameters, except $p_3$, are fixed throughout.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir wav} & create an empty work directory \\ 
+  \commandf{ cd wav} & change directory \\
+  \commandf{ demo('wav')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='wav.1') } & 1st run; stationary solutions of the system without diffusion \\ 
+  \commandf{ sv('ode') } & save output-files as \filef{ b.ode, s.ode, d.ode} \\ 
+\hline
+%==============================================================================
+  \commandf{ cp c.wav.2 c.wav} & constants changed : \parf{ IPS} \\ 
+  \commandf{ run(c='wav.2',s='wav') } & \parbox[t]{3in}{2nd run; detect bifurcations to wave train solutions.  Constants changed : \parf{ IPS} \vspace{0.2cm}}\\ 
+  \commandf{ sv('wav') } & save output-files as \filef{ b.wav, s.wav, d.wav} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='wav.3',s='wav') } & \parbox[t]{3in}{3rd run; wave train solutions of fixed wave speed.  Constants changed : \parf{ IRS, IPS, NUZR, ILP} \vspace{0.2cm}}\\ 
+  \commandf{ ap('wav') } & append output-files to \filef{ b.wav, s.wav, d.wav} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='wav.4',s='wav') } & \parbox[t]{3in}{4th run; wave train solutions of fixed wave length.  Constants changed : \parf{ IRS, IPS, NMX, ICP, NUZR} \vspace{0.2cm}}\\ 
+  \commandf{ sv('rng') } & save output-files as \filef{ b.rng, s.rng, d.rng} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='wav.5',s='wav') } & \parbox[t]{3in}{5th run; time evolution computation.  Constants changed : \parf{ IPS, NMX, NPR, ICP} \vspace{0.2cm}}\\ 
+  \commandf{ sv('tim') } & save output-files as \filef{ b.tim, s.tim, d.tim} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ wav}.}
+\label{tbl:demo_wav}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=brc======================================================================
+%==============================================================================
+\section{ brc : Chebyshev Collocation in Space.} \label{sec:Demos_brc}
+This demo illustrates the computation of stationary solutions and periodic
+solutions to systems of parabolic PDEs in one space variable,
+using Chebyshev collocation in space.
+More precisely, the approximate solution is assumed of the form
+$u(x,t) = \sum_{k=0}^{n+1} u_k(t) \ell_k(x)$.
+Here $u_k(t)$ corresponds to $u(x_k,t)$ at the Chebyshev points
+$\bigl\{ x_k \bigr\}_{k=1}^{n}$ with respect to the interval $[0,1]$.
+The polynomials $\bigl\{ \ell_k(x) \bigr\}_{k=0}^{n+1}$ are the Lagrange
+interpolating coefficients with respect to points 
+$\bigl\{ x_k \bigr\}_{k=0}^{n+1}$, where $x_0=0$ and $x_{n+1}=1$.
+The number of Chebyshev points in $[0,1]$,
+as well as the number of equations in the PDE system,
+can be set by the user in the file \filef{ brc.inc}.
+
+As an illustrative application we consider the Brusselator
+(\citename{HoKnKu:87} \citeyear{HoKnKu:87})
+\begin{equation} \begin{array}{cl}
+  u_t &= {D_x / L^2} u_{xx} + u^2v - (B+1)u + A,  \\
+  v_t &= {D_y / L^2} v_{xx} - u^2v + Bu,  \\
+\end{array} \end{equation}
+with boundary conditions $u(0,t)=u(1,t)=A$
+and $v(0,t)=v(1,t)=B/A$.
+
+Note that, given the non-adaptive spatial discretization,
+the computational procedure here is not appropriate for
+PDEs with solutions that rapidly vary in space, and care must
+be taken to recognize spurious solutions and bifurcations.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir brc} & create an empty work directory \\ 
+  \commandf{ cd brc} & change directory \\
+  \commandf{ demo('brc')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='brc.1') } & compute the stationary solution branch with Hopf bifurcations \\ 
+  \commandf{ sv('brc') } & save output-files as \filef{ b.brc, s.brc, d.brc} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='brc.2',s='brc') } & \parbox[t]{3in}{compute a branch of periodic solutions from the first Hopf point.  Constants changed : \parf{ IRS, IPS} \vspace{0.2cm}}\\ 
+  \commandf{ ap('brc') } & append the output-files to \filef{ b.brc, s.brc, d.brc} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='brc.3',s='brc') } & \parbox[t]{3in}{compute a solution branch from a secondary periodic bifurcation.  Constants changed : \parf{ IRS, ISW} \vspace{0.2cm}}\\ 
+  \commandf{ ap('brc') } & append the output-files to \filef{ b.brc, s.brc, d.brc} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ brc}.}
+\label{tbl:demo_brc}
+\end{center}
+\end{table}
+
+
+\newpage
+%==============================================================================
+%DEMO=brf======================================================================
+%==============================================================================
+\section{ brf : Finite Differences in Space.} \label{sec:Demos_brf}
+This demo illustrates the computation of stationary solutions and periodic
+solutions to systems of parabolic PDEs in one space variable.
+A fourth order accurate finite difference approximation is used to
+approximate the second order space derivatives. 
+This reduces the PDE to an autonomous ODE of fixed dimension
+which \AUTO is capable of treating.
+The spatial mesh is uniform; the number of mesh intervals,
+as well as the number of equations in the PDE system,
+can be set by the user in the file \filef{ brf.inc}.
+
+As an illustrative application we consider the Brusselator
+(\citename{HoKnKu:87} \citeyear{HoKnKu:87})
+\begin{equation} \begin{array}{cl}
+  u_t &= {D_x / L^2} u_{xx} + u^2v - (B+1)u + A,  \\
+  v_t &= {D_y / L^2} v_{xx} - u^2v + Bu,  \\
+\end{array} \end{equation}
+with boundary conditions $u(0,t)=u(1,t)=A$
+and $v(0,t)=v(1,t)=B/A$.
+
+Note that, given the non-adaptive spatial discretization,
+the computational procedure here is not appropriate for
+PDEs with solutions that rapidly vary in space, and care must
+be taken to recognize spurious solutions and bifurcations.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir brf} & create an empty work directory \\ 
+  \commandf{ cd brf} & change directory \\
+  \commandf{ demo('brf') } & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='brf.1') } & compute the stationary solution branch with Hopf bifurcations \\ 
+  \commandf{ sv('brf') } & save output-files as \filef{ b.brf, s.brf, d.brf} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='brf.2',s='brf') } & \parbox[t]{3in}{compute a branch of periodic solutions from the first Hopf point.  Constants changed : \parf{ IRS, IPS}  \vspace{0.2cm}}\\ 
+  \commandf{ ap('brf') } & append the output-files to \filef{ b.brf, s.brf, d.brf} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='brf.3',s='brf') } & \parbox[t]{3in}{compute a solution branch from a secondary periodic bifurcation.  Constants changed : \parf{ IRS, ISW} \vspace{0.2cm}}\\ 
+  \commandf{ ap('brf') } & append the output-files to \filef{ b.brf, s.brf, d.brf} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ brf}.}
+\label{tbl:demo_brf}
+\end{center}
+\end{table}
+
+\newpage
+%==============================================================================
+%DEMO=bru======================================================================
+%==============================================================================
+\section{ bru : Euler Time Integration (the Brusselator).} \label{sec:Demos_bru}
+This demo illustrates the use of Euler's method for time integration
+of a nonlinear parabolic PDE.
+The example is the Brusselator
+(\citename{HoKnKu:87} \citeyear{HoKnKu:87}), given by
+\begin{equation} \begin{array}{cl}
+  u_t &= {D_x / L^2} u_{xx} + u^2v - (B+1)u + A,  \\
+  v_t &= {D_y / L^2} v_{xx} - u^2v + Bu,  \\
+\end{array} \end{equation}
+with boundary conditions $u(0,t)=u(1,t)=A$
+and $v(0,t)=v(1,t)=B/A$. All parameters are given fixed values
+for which a stable periodic solution is known to exist.
+
+The continuation parameter is the independent time variable,
+namely \parf{ PAR(14)}.
+The \AUTO-constants \parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX}
+then control the step size
+in space-time, here consisting of \parf{ PAR(14)} and $(u(x),v(x))$.
+Initial data at time zero are 
+$u(x)=A - 0.5 \sin(\pi x)$ and 
+$v(x)=B/A + 0.7 \sin(\pi x)$.
+Note that in the subroutine \funcf{ stpnt} the space derivatives of $u$ and $v$
+must also be provided; 
+see the equations-file \filef{ bru.c}.
+
+Euler time integration is only first order accurate, so that
+the time step must be sufficiently small to ensure correct results.
+This option has been added only as a convenience, and should 
+generally be used only to locate stationary states.
+Indeed, in the case of the asymptotic periodic state of this demo,
+the number of required steps is very large and use of a better time 
+integrator is advisable.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir bru} & create an empty work directory \\ 
+  \commandf{ cd bru} & change directory \\
+  \commandf{ demo('bru') } & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='bru.1') } & time integration \\ 
+  \commandf{ sv('bru') } & save output-files as \filef{ b.bru, s.bru, d.bru} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Commands for running demo \filef{ bru}.}
+\label{tbl:demo_bru}
+\end{center}
+\end{table}
+
+

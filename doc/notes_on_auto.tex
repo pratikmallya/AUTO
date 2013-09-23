@@ -1,0 +1,125 @@
+%==============================================================================
+%==============================================================================
+\chapter{ Notes on Using \AUTO.}  \label{ch:Notes_on_Using_AUTO}
+%==============================================================================
+%==============================================================================
+\section{ Restrictions on the Use of \parf{ PAR}.} \label{sec:Restrictions_on_PAR}
+The array \parf{ PAR} in the user-supplied subroutines is available
+for equation parameters that the user wants to vary at some point
+in the computations.
+In any particular computation the free parameter(s) must be designated
+in \parf{ ICP}; see Section~\ref{sec:Free_parameters}.
+The following restrictions apply~:
+
+\begin{itemize}
+\item[-]
+  The maximum number of parameters, \parf{ NPARX} in \filef{ auto/2000/src/auto\_c.h},
+  has pre-defined value \parf{ NPARX}=36.  \parf{ NPARX} should not normally be increased
+  and it should never be decreased.
+  Any increase of \parf{ NPARX} must be followed by recompilation of \AUTO.
+\item[-]
+  Generally one should only use \parf{ PAR(1)-PAR(9)} for equation parameters,
+  as \AUTO may need the other components internally.  
+\end{itemize}
+
+\section{ Efficiency.} \label{sec:Efficiency}
+In \AUTO, efficiency has at times been sacrificed for generality of programming.
+This applies in particular to computations in which \AUTO generates
+an extended system, for example, computations with \parf{ ISW}=2.
+However, the user has significant control over computational efficiency,
+in particular through judicious choice of the \AUTO-constants  
+\parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX}, and, for ODEs, \parf{ NTST} and \parf{ NCOL}.
+Initial experimentation normally suggests appropriate values.
+
+Slowly varying solutions to ODEs can often 
+be computed with remarkably small values of \parf{ NTST} and \parf{ NCOL}, 
+for example, \parf{ NTST}=5,  \parf{ NCOL}=2.
+Generally, however, it is recommended to set \parf{ NCOL}=4,
+and then to use the ``smallest'' value of \parf{ NTST} that maintains convergence.
+
+The choice of the pseudo-arclength stepsize parameters
+\parf{ DS}, \parf{ DSMIN}, and \parf{ DSMAX}
+is highly problem dependent.
+Generally, \parf{ DSMIN} should not be taken too small,
+in order to prevent excessive step refinement in case of non-convergence.
+It should also not be too large, in order to avoid instant non-convergence.
+\parf{ DSMAX} should be sufficiently large, in order to reduce computation time
+and amount of output data.
+On the other hand, it should be sufficiently small, in order to prevent
+stepping over bifurcations without detecting them.
+For a given equation, appropriate values of these constants 
+can normally be found after some initial experimentation.
+
+The constants \parf{ ITNW}, \parf{ NWTN}, \parf{ THL}, \parf{ EPSU}, \parf{ EPSL}, \parf{ EPSS} 
+also affect efficiency.
+Understanding their significance is therefore useful; 
+see Section~\ref{sec:Tolerances} and Section~\ref{sec:step_size}.
+Finally, it is recommended that initial computations be done with 
+\parf{ ILP=0}; no fold detection;
+and \parf{ ISP}=1; no bifurcation detection for ODEs.
+ 
+\section{ Correctness of Results.} \label{sec:Correctness}
+\AUTO-computed solutions to ODEs are almost always structurally correct,
+because the mesh adaption strategy, if \parf{ IAD}$>$0, safeguards to some extent
+against spurious solutions.
+If these do occur, possibly near infinite-period orbits,
+the unusual appearance of the solution branch typically serves as a warning.
+Repeating the computation with increased \parf{ NTST} is then recommended.
+
+\section{ Bifurcation Points and Folds.} \label{sec:Bifurcations}
+It is recommended that the detection of folds 
+and bifurcation points be initially disabled.
+For example, if an equation has a ``vertical'' solution branch
+then \AUTO may try to locate one fold after another.
+
+Generally, degenerate bifurcations cannot be detected.
+Furthermore, bifurcations that are close to each other may not
+be noticed when the pseudo-arclength step size is not sufficiently small.
+Hopf bifurcation points may go unnoticed if no clear crossing of
+the imaginary axis takes place. This may happen when there are other
+real or complex eigenvalues near the imaginary axis and when 
+the pseudo-arclength step is large compared to the rate
+of change of the critical eigenvalue pair.
+A typical  case is a Hopf bifurcation close to a fold.
+Similarly, Hopf bifurcations may go undetected if switching from
+real to complex conjugate, followed by crossing of the imaginary
+axis, occurs rapidly with respect to the pseudo-arclength step size.
+Secondary periodic bifurcations may not be detected for similar reasons.
+In case of doubt, carefully inspect the contents of the diagnostics file
+\filef{ fort.9}.
+ 
+\section{ Floquet Multipliers.} \label{sec:Floquet_multipliers}
+
+\AUTO extracts an approximation to the linearized Poincar\'e map from 
+the Jacobian of the linearized collocation system that arises in Newton's method.
+This procedure is very efficient; the map is computed at negligible extra cost.
+The linear equations solver of \AUTO is described in 
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+The actual Floquet multiplier solver was written by
+\citename{Fa:94} \citeyear{Fa:94}.
+For a detailed description of the algorithm see 
+\citename{FaJe:91} \citeyear{FaJe:91}.
+
+For periodic solutions, the exact linearized Poincar\'e map always has 
+a multiplier $z=1$.
+A good accuracy check is to inspect this 
+multiplier in the diagnostics output-file \filef{ fort.9}.
+If this multiplier becomes inaccurate then the automatic detection 
+of potential secondary periodic bifurcations (if \parf{ ISP}=2) is discontinued 
+and a warning is printed in \filef{ fort.9}.
+It is strongly recommended that the contents of this file be habitually inspected,
+in particular to verify whether solutions labeled as BP or TR 
+(cf.~Table~\ref{tbl:Solution_Types}) have indeed  been correctly classified.
+ 
+\section{ Memory Requirements.} \label{sec:Memory_requirements}
+Pre-defined maximum values of certain \AUTO-constants
+are in \filef{ auto/2000/src/auto\_c.h}; 
+see also Section~\ref{sec:Restrictions}. 
+These maxima affect the run-time memory requirements
+and should not be set to unnecessarily large values.
+If an application only solves algebraic systems and if \parf{ NDIM} is ``large''
+then memory requirements can be much reduced by setting each of
+\parf{ NTSTX}, \parf{ NCOLX}, \parf{ NBCX}, \parf{ NINTX}, 
+equal to $1$ in \filef{ auto/2000/src/auto\_c.h},
+followed by recompilation of the \AUTO libraries.
+

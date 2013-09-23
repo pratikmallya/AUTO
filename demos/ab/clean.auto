@@ -1,0 +1,4 @@
+delete('ab')
+delete('2p')
+clean()
+

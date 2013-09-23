@@ -1,0 +1,208 @@
+%==============================================================================
+%==============================================================================
+\chapter{ Overview of Capabilities.} \label{ch:Overview}
+%==============================================================================
+%==============================================================================
+\section{ Summary.} \label{sec:Summary}
+\AUTO can do a limited bifurcation analysis of algebraic systems
+\begin{equation} \label{1} 
+  f( u , p ) = 0 ,  \qquad  f(\cdot,\cdot) , u \in \Rn,
+\end{equation}
+and of systems of ordinary differential equation (ODEs) of the form
+\begin{equation} \label{2} 
+ u'(t) = f\bigl( u(t) , p \bigr) , 
+  \qquad  f(\cdot,\cdot) , u(\cdot) \in \Rn,
+\end{equation}
+Here $p$ denotes one or more free parameters.
+
+It can also do certain stationary solution and wave calculations for the 
+partial differential equation (PDE)
+\begin{equation} \label{3} 
+  u_t = D u_{xx} + f( u , p ), 
+  \qquad  f(\cdot,\cdot) , u(\cdot) \in \Rn,
+\end{equation}
+where $D$ denotes a diagonal matrix of diffusion constants.
+The basic algorithms used in the package,
+as well as related algorithms, can be found in 
+\citename{HBK:77} \citeyear{HBK:77},
+\citename{HBK:86} \citeyear{HBK:86},
+\citename{DoKeKe:91a} \citeyear{DoKeKe:91a},
+\citename{DoKeKe:91b} \citeyear{DoKeKe:91b}.
+
+Below, the basic capabilities of \AUTO are specified in more detail.
+Some representative demos are also indicated.
+ 
+\section{ Algebraic Systems.} \label{sec:algebraic_systems}
+Specifically, for (\ref{1}) the program can~:~
+ 
+\begin{itemize}
+\item[-]
+  Compute solution branches.\\  (Demo \filef{ ab}; Run~1.) 
+\item[-]
+  Locate branch points and automatically compute
+  bifurcating branches. \\ (Demo \filef{ pp2}; Run~1.)
+\item[-]
+  Locate Hopf bifurcation points and continue these in two
+  parameters. \\ (Demo \filef{ ab}; Runs~1 and 5.)
+\item[-]
+  Locate folds (limit points) and continue these 
+  in two parameters. \\(Demo \filef{ ab}; Runs~1,3,4.)
+\item[-]
+  Do each of the above for fixed points
+  of the discrete dynamical system 
+  $u^{(k+1)}= f( u^{(k)}, p )$ \\ (Demo \filef{ dd2}.)
+\item[-]
+  Find extrema of an objective function along solution branches
+  and successively continue such extrema in more parameters.
+  \\ (Demo \filef{ opt}.)
+\end{itemize}
+
+
+\section{ Ordinary Differential Equations.} \label{sec:ODEs}
+For the ODE (\ref{2}) the program can~:~
+ 
+\begin{itemize}
+\item[-]
+  Compute branches of stable and unstable periodic
+  solutions and
+  compute the Floquet multipliers, that determine stability, along
+  these branches.
+  Starting data for the computation of periodic orbits are
+  generated automatically at Hopf bifurcation points. \\
+  (Demo \filef{ ab}; Run~2.)
+\item[-]
+  Locate folds, branch points, period doubling bifurcations,
+  and bifurcations to tori, along branches of periodic solutions. 
+  Branch switching is possible at branch points and at period 
+  doubling bifurcations.  \\
+  (Demos \filef{ tor}, \filef{ lor}.)
+\item[-]  Continue folds and period-doubling bifurcations, 
+  in two parameters. \\ (Demos \filef{ plp}, \filef{ pp3}.)
+  The continuation of orbits of fixed period is also
+  possible. This is the simplest way to compute curves of
+  homoclinic orbits, if the period is sufficiently large.
+  \\ (Demo \filef{ pp2}.)
+\item[-]  Do each of the above for {\it rotations}, i.e., when some of the
+  solution components are periodic modulo a phase gain of a
+  multiple of $2 \pi$. \\
+  (Demo \filef{ pen}.)
+\item[-]  Follow curves of homoclinic orbits and detect and continue
+  various codimension-2 bifurcations, using the {\cal HomCont} algorithms of 
+  \citename{ChKu:94} \citeyear{ChKu:94},
+  \citename{ChKuSa:95} \citeyear{ChKuSa:95}.\\
+  (Demos  \filef{ san}, \filef{ mnt}, \filef{ kpr}, \filef{ cir},
+  \filef{ she}, \filef{ rev}.)
+\item[-]  Locate extrema of an integral objective functional along a branch 
+  of periodic solutions and successively continue such extrema 
+  in more parameters. \\
+  (Demo \filef{ ops}.)
+\item[-]
+  Compute curves of solutions to (\ref{2}) on $[0,1]$, subject to general
+  nonlinear boundary and integral conditions.
+  The boundary conditions need not be separated, i.e., they may
+  involve both $u(0)$ and $u(1)$ simultaneously.
+  The side conditions may also depend on parameters.
+  The number of boundary conditions plus the number of integral
+  conditions need not equal the dimension of the ODE, 
+  provided there is a corresponding number of additional
+  parameter variables. \\
+  (Demos \filef{ exp}, \filef{ int}.)
+\item[-]
+  Determine folds and branch points along
+  solution branches to the above boundary value problem.
+  Branch switching is possible at branch points.
+  Curves of folds can be computed in two parameters.\\
+  (Demos \filef{ bvp}, \filef{ int}.)
+\end{itemize}
+ 
+
+
+\section{ Parabolic PDEs.} \label{sec:Parabolic_PDEs}
+For (\ref{3}) the program can~:~
+ 
+\begin{itemize}
+\item[-]
+  Trace out branches of spatially homogeneous solutions.
+  This amounts to a bifurcation analysis of the algebraic
+  system (\ref{1}). However, \AUTO uses a related system instead,
+  in order to enable the detection of bifurcations to wave train
+  solutions of given wave speed. More precisely, bifurcations
+  to wave trains are detected as Hopf bifurcations along fixed
+  point branches of the related ODE
+  \begin{equation} \label{4} \begin{array}{cl}
+  & u'(z) = v(z) ,\\
+  & v'(z) =-D^{-1}  \bigl[ c~v(z) + f\bigl( u(z) , p \bigr) \bigr], \\
+  \end{array} \end{equation}
+  where $z = x - ct$ , with the wave speed $c$ specified by the user.\\
+  (Demo \filef{ wav}; Run~2.) 
+\item[-]
+  Trace out branches of periodic wave solutions to (\ref{3}) that emanate
+  from a Hopf bifurcation point of Equation~\ref{4}.
+  The wave speed $c$ is  fixed along such a branch, but
+  the wave length $L$, i.e., the period of periodic solutions 
+  to (\ref{4}),
+  will normally vary. If the wave length $L$ becomes large,
+  i.e., if a homoclinic orbit of Equation~\ref{4} is approached,
+  then the wave tends to a solitary wave solution of (\ref{3}). \\
+  (Demo \filef{ wav}; Run~3.) 
+\item[-]
+  Trace out branches of waves of fixed wave length $L$ in two parameters. 
+  The wave speed $c$ may be chosen as one of these parameters.
+  If $L$ is large then such a continuation gives a branch
+  of approximate solitary wave solutions to (\ref{3}).\\
+  (Demo \filef{ wav}; Run~4.) 
+\item[-]
+  Do time evolution calculations for (\ref{3}), given periodic
+  initial data on the interval $[0,L]$.
+  The initial data must be specified on $[0,1]$ and
+  $L$ must be set separately because of internal scaling.
+  The initial data may be given analytically or
+  obtained from a previous computation of wave trains, solitary
+  waves, or from a previous evolution calculation.
+  Conversely, if an evolution calculation results in a
+  stationary wave then this wave can be used as starting data
+  for a wave continuation calculation.\\
+  (Demo \filef{ wav}; Run~5.)
+\item[-]
+  Do time evolution calculations for (\ref{3}) subject to user-specified
+  boundary conditions.
+  As above, the initial data must be specified on $[0,1]$ and the space
+  interval length $L$ must be specified separately.
+  Time evolution computations of (\ref{3}) are adaptive in space and
+  in time. Discretization in time is not very accurate~: only
+  implicit Euler. Indeed, time integration of (\ref{3}) has only been
+  included as a convenience and it is not very efficient.
+  (Demos \filef{ pd1}, \filef{ pd2}.)
+\item[-]
+  Compute curves of stationary solutions to (\ref{3}) subject to user-specified
+  boundary conditions.
+  The initial data may be given analytically, obtained from a previous 
+  stationary solution computation, or from a time evolution calculation.\\
+  (Demos \filef{ pd1}, \filef{ pd2}.)
+\end{itemize}
+ 
+In connection with periodic waves,
+note that (\ref{4}) is just a special case of (\ref{2}) and
+that its fixed point analysis is a special case of (\ref{1}).
+One advantage of the built-in capacity of \AUTO to deal with
+problem (\ref{3}) is that the user need only specify $f$, $D$, and $c$.
+Another advantage is the compatibility of output data for
+restart purposes. This allows switching back and forth between
+evolution calculations and wave computations.
+
+\section{ Discretization.} \label{sec:Discretization}
+  \AUTO discretizes ODE boundary value problems
+  (which includes periodic solutions) by the method of orthogonal 
+  collocation using piecewise polynomials with 2-7 collocation points 
+  per mesh interval (\citename{dBSw:73} \citeyear{dBSw:73}).
+  The mesh automatically adapts to the solution to equidistribute
+  the local discretization error (\citename{RuCr:78} \citeyear{RuCr:78}).
+  The number of mesh intervals and the number of collocation points
+  remain constant during any given run, although they may be changed 
+  at restart points.
+  The implementation is \AUTO-specific. In particular, the choice of
+  local polynomial basis
+  and the algorithm for solving the linearized collocation systems
+  were specifically designed for use in numerical bifurcation analysis.
+  
+ 

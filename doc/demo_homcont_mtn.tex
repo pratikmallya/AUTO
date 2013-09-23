@@ -1,0 +1,292 @@
+
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont} Demo : mtn.} \label{ch:HomCont_mtn}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=mtn======================================================================
+%==============================================================================
+\section{ A Predator-Prey Model with Immigration.}
+Consider the following system of two equations \cite{Sc:95}
+\begin{equation} \label{sn.1} \begin{array}{rcl}
+\dot{X} & = & RX\left(1-{\ds \frac{X}{K}}\right) - 
+{\ds \frac{A_1XY}{B_1+X}} + D_0K \\
+\dot{Y} & = & E_1 {\ds \frac{A_1XY}{B_1+X}} - D_1Y - 
+{\ds\frac{A_2ZY^2}{B_2^2+Y^2}}.
+\end{array} \end{equation}
+\begin{figure}[b]
+\epsfysize 10.0cm
+\centerline{\epsffile{include/mtn1.ps}}
+\caption{Parametric portrait of the predator-prey system }
+\label{SNF.1}
+\end{figure}
+The values of all parameters except $(K,Z)$ are set as follows~:
+$$
+R=0.5,\ A_1=0.4,\ B_1=0.6,\ D_0=0.01,\ E_1=0.6,\ A_2=1.0,\ B_2=0.5,\ D_1=0.15.
+$$
+\par
+\noindent
+The parametric portrait of the system (\ref{sn.1}) on the
+$(Z,K)$-plane is presented in Figure \ref{SNF.1}. It contains fold
+($t_{1,2}$) and Hopf ($H$) bifurcation curves, as well as a homoclinic
+bifurcation curve $P$. The fold curves meet at a cusp singular point
+$C$, while the Hopf and the homoclinic curves originate at a
+Bogdanov-Takens point $BT$. Only the homoclinic curve $P$ will be 
+considered here, the other bifurcation curves can be computed using
+{\tt AUTO} or,
+for example, {\cal locbif} \cite{KhKuLeNi:93}.
+
+\section{Continuation of Central Saddle-Node Homoclinics.}
+Local bifurcation analysis shows that at $K=6.0,\ Z=0.06729762\ldots$,
+the system has a saddle-node equilibrium 
+$$
+(X^0,Y^0) = (5.738626\ldots,0.5108401\ldots),
+$$
+with one zero and one negative eigenvalue. Direct simulations reveal a
+homoclinic 
+orbit to this saddle-node, departing and returning along its central
+direction (i.e., tangent to the null-vector).
+\par
+Starting from this solution, stored in the file {\tt mtn.dat}, we
+continue the saddle-node central homoclinic orbit 
+with respect to the parameters $K$ and $Z$ by copying the
+demo and running it
+\begin{center}
+{\it @dm mtn}\\
+{\it make first}
+\end{center}
+The file {\tt mtn.c} contains approximate
+parameter values
+$$
+K={\tt PAR(1)}=6.0,\ Z={\tt PAR(2)}=0.06729762,
+$$
+as well as the coordinates of the saddle-node
+$$
+X^0={\tt PAR(12)}=5.738626,\ Y^0={\tt PAR(13)}=0.5108401,
+$$
+and the length of the truncated time-interval
+$$
+T_0={\tt PAR(11)} = 1046.178 \: .
+$$
+Since a homoclinic orbit to a saddle-node is being followed, we have also
+made the choices
+$$
+{\tt IEQUIB = 2 \quad NUNSTAB =0 \quad NSTAB = 1   }
+$$
+in {\tt h.mtn.1}. The two test-functions, $\psi_{15}$ and $\psi_{16}$, 
+to detect non-central saddle-node homoclinic
+orbits are also activated, which must be specified in three ways. 
+Firstly, in {\tt h.mtn.1}, {\tt NPSI} is
+set to 2 and the active test functions {\tt IPSI(I),I=1,2}
+are chosen as 15 and 16. This sets up the monitoring of these
+test functions. Secondly, in {\tt c.mtn.1} user-defined functions
+({\tt NUZR=2}) are set up to look for zeros of the parameters
+corresponding to these test functions. Recall that the
+parameters to be zeroed are always the test functions plus 20.
+Finally, these parameters are included in the list of continuation
+parameters ({\tt NICP,(ICP(I),I=1 NICP)}).
+
+Among the output there is a line 
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)    ...     PAR(2)        PAR(35)       PAR(36)    
+   1    27  UZ   5  6.10437E+00 ...   6.932475E-02 -6.782898E-07  8.203437E-02
+\end{verbatim}
+indicating that a zero of the test function {\tt IPSI(1)=15} 
+This means that at
+$$
+D_1=(K^1,Z^1)=(6.6104\ldots, 0.069325\ldots)
+$$
+the homoclinic orbit to the saddle-node becomes {\it non-central}, namely,
+it returns to the equilibrium along the stable eigenvector, forming a
+non-smooth loop. The output is saved in {\tt b.1}, {\tt s.1} and {\tt d.1}. 
+Repeating computations in the opposite direction along the curve, 
+{\tt IRS=1, DS=-0.01} in {\tt c.mtn.2}, 
+\begin{center}
+{\it make second}
+\end{center}
+one obtains 
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(35)       PAR(36)  
+   1    34  UZ   9  5.180323E+00 ...  6.385506E-02  3.349720E-09  9.361957E-02
+\end{verbatim}
+which means another non-central saddle-node homoclinic bifurcation occurs
+at
+$$
+D_2=(K^2,Z^2)=(5.1803\ldots,0.063855\ldots).
+$$
+Note that these data were obtained using a smaller value of {\tt NTST} than
+the original computation (compare {\tt c.mtn.1} with {\tt c.mtn.2}). The
+high original value of {\tt NTST} was only necessary for the first few steps
+because the original solution is specified on a uniform mesh. 
+
+\section{Switching between Saddle-Node and Saddle Homoclinic Orbits.}
+Now we can switch to continuation of saddle homoclinic orbits at the
+located codim 2 points $D_1$ and $D_2$. 
+\begin{center}
+{\it make third}
+\end{center}
+starts from $D_1$. Note that now 
+\begin{center}
+{\tt 
+NUNSTAB = 1 \quad IEQUIB = 1}  
+\end{center}
+has been specified in {\tt h.mtn.3}. Also, test functions $\psi_9$
+and $\psi_{10}$ have been activated in order
+to monitor for non-hyperbolic equilibria along the homoclinic locus. 
+We get the following output
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(29)       PAR(30)    
+   1    10      11  7.114523E+00 ...  7.081751E-02 -4.649861E-01  3.183429E-03
+   1    20      12  9.176810E+00 ...  7.678731E-02 -4.684912E-01  1.609294E-02
+   1    30      13  1.210834E+01 ...  8.543468E-02 -4.718871E-01  3.069638E-02
+   1    40  EP  14  1.503788E+01 ...  9.428036E-02 -4.743794E-01  4.144558E-02
+\end{verbatim}
+The fact that {\tt PAR(29)} and {\tt PAR(30)} do not change sign indicates 
+that there are no further non-hyperbolic equilibria
+along this branch. Note that restarting in the opposite direction with {\tt IRS=11,
+DS=-0.02} 
+\begin{center}
+{\it make fourth}
+\end{center}
+will detect the same codim 2 point $D_1$ but now as a zero
+of the test-function $\psi_{10}$
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(29)       PAR(30)
+  1    10  UZ  15  6.610459E+00  ...  6.932482E-02 -4.636603E-01  1.725013E-09    
+\end{verbatim}
+Note that the values of {\tt PAR(1)} and {\tt PAR(2)} differ from that at label {\tt 4} 
+only in the sixth significant figure. 
+
+Actually, the program runs further and
+eventually computes the point $D_2$ and the whole lower branch of $P$
+emanating from it, however, the solutions between $D_1$ and $D_2$
+should be considered as spurious\footnote{\label{ft1} The program actually
+computes the saddle-saddle heteroclinic orbit bifurcating from the
+non-central saddle-node homoclinic at the point $D_1$, see
+\citeasnoun[Fig. 2]{ChKuSa:95}, and continues it to the one emanating from
+$D_2$.}, therefore we do not save these data.
+The reliable way to compute the lower branch of $P$ is to restart computation
+of saddle homoclinic orbits in the other direction from the point $D_2$
+\begin{center}
+{\it make fifth}
+\end{center}
+This gives the lower branch of $P$ approaching the BT point
+(see Figure \ref{SNF.1})
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)     ...   PAR(2)        PAR(29)       PAR(30)    
+   1    10      15  4.966429E+00 ... 6.298418E-02 -4.382426E-01  4.946824E-03
+   1    20      16  4.925379E+00 ... 7.961214E-02 -3.399102E-01  3.288447E-02
+   1    30      17  7.092267E+00 ... 1.587114E-01 -1.692842E-01  3.876291E-02
+   1    40  EP  18  1.101819E+01 ... 2.809825E-01 -3.482651E-02  2.104384E-02
+\end{verbatim}
+The data are appended to the stored results in {\tt b.1}, {\tt s.1} and
+{\tt d.1}. One could now display all data using the \AUTO
+command {\it @p 1} to reproduce the curve $P$ shown in Figure
+\ref{SNF.1}.
+\par
+\begin{figure}[p]
+\epsfysize 10.0cm
+\centerline{\epsffile{include/mtn2.ps}}
+\caption{Approximation by a large-period cycle}
+\label{SNF.2}
+\end{figure}
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/mtn3.ps}}
+\caption{Projection onto the ($K,D_0$)-plane of the 
+three-parameter curve of non-central  saddle-node homoclinic orbit}
+\label{SNF.3}
+\end{figure}
+%
+It is worthwhile to compare the homoclinic curves computed above with
+a curve $T_0=const$ along which the system has a limit cycle of constant large
+period $T_0=1046.178$, which can easily be computed using \AUTO or
+{\cal locbif}. Such a curve is plotted in Figure \ref{SNF.2}. 
+It obviously approximates well the saddle homoclinic loci of $P$, but 
+demonstrates much bigger
+deviation from the saddle-node homoclinic segment $D_1D_2$. This happens
+because the period of the limit cycle grows to infinity while approaching both
+types of homoclinic orbit, but with {\it different asymptotics}: 
+as $-\ln\|\alpha-\alpha^*\|$, in the saddle homoclinic case, and 
+as $\|\alpha-\alpha^*\|^{-1}$ in the saddle-node case. 
+
+\section{Three-Parameter Continuation.}
+Finally, we can follow the curve of non-central saddle-node homoclinic
+orbits in three parameters. The extra continuation parameter is
+$D_0$={\tt PAR(3)}.  To achieve this we restart at label {\tt 4},
+corresponding to the codim 2 point $D_1$. We return to continuation of
+saddle-node homoclinics, {\tt NUNSTAB=0},{\tt IEQUIB=2}, but append the
+defining equation $\psi_{15}=0$ to the continuation problem
+(via {\tt NFIXED=1}, {\tt IFIXED(1)=15}). The new
+continuation problem is specified in {\tt c.mtn.6} and {\tt h.mtn.6}.
+\begin{center}
+{\it make sixth}
+\end{center}
+Notice that we set {\tt ILP=1} and choose {\tt PAR(3)} as the first 
+continuation parameter so that \AUTO can detect limit points 
+with respect to this parameter. We also make a user-defined function
+({\tt NUZR=1})
+to detect intersections with the plane $D_0=0.01$.
+We get among other output
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(3)        L2-NORM    ...    PAR(1)        PAR(2)
+   1    22  LP  19  1.081212E-02  5.325894E+00 ...  5.673631E+00  6.608184E-02
+   1    31  UZ  20  1.000000E-02  4.819681E+00 ...  5.180317E+00  6.385503E-02
+\end{verbatim}
+the first line of which represents the $D_0$ value at which 
+the homoclinic curve $P$ has a tangency with the branch $t_2$ 
+of fold bifurcations. Beyond this value of $D_0$,
+$P$ consists entirely of saddle homoclinic orbits. The data at label {\tt 20} 
+reproduce the coordinates of the point $D_2$. The results of this
+computation and a similar one starting from $D_1$ in the opposite direction
+(with {\tt DS=-0.01}) are displayed in Figure \ref{SNF.3}.
+%
+
+\newpage
+\section{ Detailed \AUTO-Commands.}
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  {\it ! mkdir mtn} & create an empty work directory \\ 
+  {\it cd mtn} & change directory \\
+  {\it demo('mtn')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  {\it us('mtn')} & use the starting data in {\tt mtn.dat} to create {\tt s.dat} \\ 
+  {\it run(c='mtn.1',h='mtn.1',s='dat')} &  continue saddle-node homoclinic orbit\\
+  {\it sv('1') } & save output-files as {\tt b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  {\it run(c='mtn.2',h='mtn.2',s='1')} & continue in opposite direction; restart from {\tt s.1} \\ 
+  {\it ap('1') } & append output-files to {\tt b.1, s.1, d.1} \\ 
+\hline
+%=============================================================================
+  {\it run(c='mtn.3',h='mtn.3',s='1')} & switch to saddle homoclinic orbit  ; restart from {\tt s.1} \\ 
+  {\it ap('1') } & append output-files to {\tt b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  {\it run(c='mtn.4',h='mtn.4',s='1')} & continue in reverse direction; restart from {\tt s.1} \\ 
+  {\it sv('4') } & save output-files as {\tt b.4, s.4, d.4} \\ 
+\hline
+%=============================================================================
+  {\it run(c='mtn.5',h='mtn.5',s='1')} & other saddle homoclinic orbit branch; restart from {\tt s.1} \\
+  {\it ap('1') } & append output-files to {\tt b., s.1, d.1} \\ 
+\hline
+%==============================================================================
+  {\it run(c='mtn.6',h='mtn.6',s='1')} & 3-parameter non-central saddle-node homoclinic. \\ 
+  {\it sv('6') } & save output-files as {\tt b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo {\tt mtn}.}
+\label{tbl:demo_mtn_1}
+\end{center}
+\end{table}
+
+

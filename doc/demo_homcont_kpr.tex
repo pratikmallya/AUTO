@@ -1,0 +1,450 @@
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont} Demo : kpr.} \label{ch:HomCont_kpr}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=kpr======================================================================
+%==============================================================================
+\section{ Koper's Extended Van der Pol Model.}
+%
+The equation-file \filef{ kpr.c} contains the equations
+\begin{equation} \label{ko} \begin{array}{rcl}
+\dot{x} & = & \eps_1^{-1}\:(k\: y - x^3 +3\:x - \lambda) \\
+\dot{y} & = & x - 2\: y + z \\
+\dot{z} & = & \eps_2(y-z), 
+\end{array} \end{equation}
+with $\eps_1 =0.1$ and $\eps_2=1$ \cite{Ko:95}.
+
+To copy across the demo \filef{ kpr} and compile we type
+\begin{center}
+\commandf{ @dm kpr} \\
+\end{center}
+
+\section{The Primary Branch of Homoclinics.}
+First, we locate a homoclinic orbit using 
+the homotopy method. The file \filef{ kpr.c} 
+already contains 
+approximate parameter values for a homoclinic orbit, 
+namely $\lambda=$\parf{ PAR(1)=-1.851185}, $k=$\parf{ PAR(2)=-0.15}. 
+The files \filef{ c.kpr.1} and \filef{ h.kpr.1} specify the appropriate
+constants for continuation in $2T$\parf{ =PAR(11)} (also referred
+to as \parf{ PERIOD}) and the dummy parameter $\omega_1$=\parf{ PAR(17)}
+starting
+from a small solution in the local unstable manifold; 
+\begin{center}
+\commandf{ make first}
+\end{center}
+Among the output there is the line
+\begin{verbatim}
+     BR    PT  TY LAB    PERIOD        L2-NORM     ...    PAR(17)    ...
+      1    29  UZ   2  1.900184E+01  1.693817E+00  ...  4.433433E-09 ... 
+\end{verbatim}
+which indicates that a zero of the artificial parameter $\omega_1$
+has been located. This means that the right-hand end point of the solution
+belongs to the plane that is tangent to the stable manifold at the saddle. 
+The output is stored in files \filef{ b.1, s.1, d.1}. 
+Upon plotting the data at label \parf{ 2} (see Figure \ref{kf.1a})
+it can be noted that although the right-hand projection boundary
+condition is satisfied, the solution is still quite away from the
+equilibrium. 
+
+The right-hand endpoint can be made to approach the
+equilibrium by performing a further continuation in $T$ with the
+right-hand projection condition satisfied (\parf{ PAR(17)} fixed) but
+with $\lambda$ allowed to vary. 
+%
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr1.ps}}
+\caption{Projection on the $(x,y)$-plane of solutions 
+of the boundary value 
+problem with $2T=19.08778$.}
+\label{kf.1a}
+\end{figure}
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr2.ps}}
+\caption{Projection on the $(x,y)$-plane of solutions of the 
+boundary value problem with $2T = 60.0$.}
+\label{kf.1b}
+\end{figure}
+%
+\begin{center}
+\commandf{ make second}
+\end{center}
+the output at label \parf{ 4}, stored in \filef{ kpr.2},
+\begin{verbatim}
+   BR   PT TY   LAB    PERIOD       L2-NORM     ...    PAR(1)     ...
+   1    35  UZ   4  6.000000E+01  1.672806E+00  ... -1.851185E+00 ...
+\end{verbatim}
+provides a good approximation to a homoclinic solution (see Figure
+\ref{kf.1b}). 
+
+The second stage to obtain a starting solution 
+is to add a solution to the modified adjoint
+variational equation. This is achieved by setting both 
+\parf{ ITWIST} and \parf{ ISTART} to 1 (in \filef{ h.kpr.3}), which generates
+a trivial guess for the adjoint equations. Because the adjoint
+equations are linear, only a single
+Newton step (by continuation in a trivial parameter) 
+is required to provide a solution.
+Rather than choose a parameter that might be used internally
+by \AUTO, in \filef{ c.kpr.3} we take the continuation parameter
+to be \parf{ PAR(11)}, which is not quite a trivial parameter
+but whose affect upon the solution is mild.
+\begin{center}
+\commandf{ make third}
+\end{center}
+The output at the second point (label \parf{ 6}) 
+contains the converged homoclinic
+solution (variables (\parf{ U(1), U(2), U(3)}) and the adjoint (\parf{
+U(4), U(5), U(6)})). We now have a starting solution 
+and are ready to perform two-parameter continuation.
+
+The fourth run
+\begin{center}
+\commandf{ make fourth}
+\end{center}
+continues the homoclinic orbit in \parf{ PAR(1)} and \parf{ PAR(2)}. 
+%
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr4.ps}}
+\caption{Projection on the $(x,y)$-plane of solutions $\phi(t)$
+at \parf{ 1} ($\lambda=-1.825470, k=-0.1760749$) and
+\parf{ 2} ($\lambda=-1.686154, k=-0.3183548$).}
+\label{kf.2a}
+\end{figure}
+\begin{figure}[p]
+\epsfysize 8.0cm
+\centerline{\epsffile{include/kpr5.ps}}
+\caption{Three-dimensional blow-up of the solution curves
+ $\phi(t)$ 
+at labels \parf{ 1} (dotted) and \parf{ 2} (solid line) from Figure 3.8.}
+\label{kf.2b}
+\end{figure}
+%
+Note that several other parameters appear in
+the output. \parf{ PAR(10)} is a dummy parameter
+that should be zero when the adjoint is being computed correctly;
+\parf{ PAR(29)}, \parf{ PAR(30)}, \parf{ PAR(33)} correspond to the
+test functions $\psi_9$,$\psi_{10}$ and $\psi_{13}$. 
+That these test functions were activated is specified
+in three places in \filef{ c.kpr.4} and \filef{ h.kpr.4} 
+as described in Section~\ref{sec:HomCont_Test_functions}.  
+
+Note that at the end-point of
+the branch (reached when after \parf{ NMX=50} steps) \parf{ PAR(29)} is
+approximately zero which corresponds to a zero of $\psi_9$, a 
+non-central saddle-node homoclinic orbit. We shall return to the computation of
+this codimension-two point later. Before reaching this point,
+among the output we find two zeroes of \parf{ PAR(33)}
+(test function $\psi_{13}$) which gives the accurate
+location of two inclination-flip bifurcations,
+\begin{verbatim}
+ BR  PT  TY LAB    PAR(1)     ...     PAR(2)        PAR(10)   ...    PAR(33)  
+  1   6  UZ  10 -1.801662E+00 ... -2.002660E-01 -7.255434E-07 ... -1.425714E-04
+  1  12  UZ  11 -1.568756E+00 ... -4.395468E-01 -2.156353E-07 ...  4.514073E-07
+\end{verbatim}
+That the test function really does have a regular zero at this point can
+be checked from the data saved in \filef{ b.3}, plotting \parf{ PAR(33)} as
+a function of \parf{ PAR(1)} or \parf{ PAR(2)}. 
+Figure \ref{kf.2a} presents solutions $\phi(t)$ of the modified adjoint 
+variational equation (for details see \citeasnoun{ChKuSa:95})
+at parameter values on the homoclinic 
+branch before and after the first detected inclination flip. 
+Note that these solutions were obtained by choosing a smaller
+step \parf{ DS} and more output (smaller \parf{ NPR}) in
+\filef{ c.kpr.4}.
+A blow-up of the region close to the origin of this 
+figure is shown in Figure \ref{kf.2b}.
+It illustrates the flip of the solutions of the adjoint equation while
+moving through the bifurcation point. Note that the data in this
+figure were plotted after first performing an additional
+continuation of the solutions with respect to \parf{ PAR(11)}. 
+
+Continuing in the other direction 
+\begin{center}
+\commandf{ make fifth}
+\end{center}
+we approach a Bogdanov-Takens point
+\begin{verbatim}  
+ BR    PT  TY LAB    PAR(1)     ...    PAR(10)    ...    PAR(33)    
+  1    50  EP  13 -1.938276E+00 ... -7.523344E+00 ...  6.310810E+01
+\end{verbatim}
+\begin{figure}[t]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr6.ps}}
+\caption{Computed homoclinic orbits approaching the BT point}
+\label{kp.6}
+\end{figure}
+Note that the numerical approximation has ceased to become reliable, since 
+\parf{ PAR(10)} has now become large. 
+Phase portraits of homoclinic orbits between the BT point and the first
+inclination flip 
+are depicted in Figure \ref{kp.6}. Note how the computed homoclinic orbits
+approaching the BT point have their endpoints well away from the equilibrium.
+To follow the homoclinic orbit to 
+the BT point with more precision, we would need to first perform continuation 
+in $T$ (\parf{ PAR(11)}) to obtain a more accurate homoclinic solution.
+
+
+\section{More Accuracy and Saddle-Node Homoclinic Orbits.}
+Continuation in $T$ 
+in order to obtain an approximation of the homoclinic orbit over a
+longer interval is necessary for parameter values near a non-hyperbolic
+equilibrium (either a saddle-node or BT) where the convergence
+to the equilibrium is slower. 
+First, we start from the original homoclinic orbit computed
+via the homotopy method, label \parf{ 4}, which is well away from
+the non-hyperbolic equilibrium.
+Also, we shall no longer be interested in
+in inclination flips so we set \parf{ ITWIST=0} in \filef{ c.kpr.6},
+and in order to compute up to \parf{ PAR(11)=1000}, we set up a
+user-defined function for this. Running \AUTO with \parf{ PAR(11)} and 
+\parf{ PAR(2)} as free parameters
+\begin{center}
+\commandf{ make sixth}
+\end{center}
+we obtain among the output
+\begin{verbatim}
+  BR    PT  TY LAB     PERIOD       L2-NORM    ...    PAR(2)     
+   1    35  UZ   6  1.000000E+03  1.661910E+00 ... -1.500000E-01
+\end{verbatim}
+
+We can now repeat the computation of the branch of saddle homoclinic
+orbits in \parf{ PAR(1)} and \parf{ PAR(2)} from this point with
+the test functions $\psi_9$ and $\psi_{10}$ for non-central
+saddle-node homoclinic orbits activated 
+\begin{center}
+\commandf{ make seventh}
+\end{center}
+The saddle-node point is now detected at 
+\begin{verbatim} 
+  BR    PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(29)       PAR(30)
+   1    30  UZ   8  1.765003E-01 ... -2.405345E+00  2.743361E-06  2.309317E+01
+\end{verbatim}
+which is stored in \filef{ s.7}.
+That \parf{ PAR(29)} ($\psi_9$) is zeroed shows that this
+is a non-central saddle-node connecting the centre manifold to the strong stable
+manifold. Note that all output beyond this point, although a well-posed
+solution to the boundary-value problem, is spurious in that it no longer
+represents a homoclinic orbit to a saddle equilibrium (see
+\citeasnoun{ChKuSa:95}). If we had chosen
+to, we could continue in the other direction in order to
+approach the BT point more accurately by reversing the sign of
+\parf{ DS} in \filef{ c.kpr.7}.
+ 
+The files \filef{ c.kpr.9} and \filef{ h.kpr.9} contain the constants necessary 
+for switching to continuation of the central saddle-node homoclinic curve 
+in two parameters starting from the non-central saddle-node homoclinic orbit
+stored as label \parf{ 8} in \filef{ s.7}.
+\begin{center}
+\commandf{ make eighth}
+\end{center}
+In this run we have activated the test functions for saddle to saddle-node
+transition points along curves of saddle homoclinic orbits ($\psi_{15}$ and 
+$\psi_{16}$). Among the output we find
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(1)     ...    PAR(2)        PAR(35)       PAR(36)    
+   1    38  UZ  13  1.765274E-01 ... -2.405284E+00  9.705426E-03 -5.464784E-07
+\end{verbatim}
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr7.ps}}
+\caption{Two non-central saddle-node homoclinic orbits, \parf{ 1} and \parf{ 3};
+and, \parf{ 2}, a central saddle-node homoclinic orbit between
+these two points \label{kf.7}}
+\end{figure}
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr8.ps}}
+\caption{The big homoclinic orbit approaching a figure-of-eight}
+\label{kp.8}
+\end{figure}
+%
+which corresponds to the branch of homoclinic orbits leaving
+the locus of saddle-nodes in a second non-central saddle-node
+homoclinic bifurcation (a zero of $\psi_{16}$). 
+
+Note that the parameter values do not vary much between the
+two codimension-two non-central saddle-node points (labels \parf{ 8} and \parf{ 13}).
+However, Figure \ref{kf.7} shows clearly that between the two
+codimension-two points 
+the homoclinic orbit
+rotates between the two components of the 1D stable manifold, i.e.\
+between the two boundaries of the center-stable manifold of the saddle
+node. The overall effect of this process is the transformation of a
+nearby ``small'' saddle homoclinic orbit to a ``big'' saddle
+homoclinic orbit (i.e.\ with two extra turning points in phase space).  
+
+Finally, we can switch to continuation of the big saddle homoclinic orbit 
+from the new codim 2 point at label \parf{ 13}. 
+\begin{center}
+\commandf{ make ninth}
+\end{center}
+Note that \AUTO takes a large number of steps near the line  
+\parf{ PAR(1)=0}, while \parf{ PAR(2)} approaches $-2.189\ldots$  
+(which is why we chose such a large value \parf{ NMX=500} in \filef{ c.kpr.9}). This
+particular computation ends at 
+\begin{verbatim}  
+  BR    PT  TY LAB    PAR(1)        L2-NORM    ...    PAR(2)   
+   1   500  EP  24 -1.218988E-05  2.181205E-01 ... -2.189666E+00
+\end{verbatim}
+By plotting phase portraits of orbits approaching this end point (see Figure
+\ref{kp.8}) we see a ``canard-like'' like transformation of the big homoclinic
+orbit to a pair of homoclinic orbits in a figure-of-eight configuration.
+That we get a figure-of-eight is not a surprise because \parf{ PAR(1)=0}
+corresponds to a symmetry in the differential equations \cite{Ko:94};
+note also that the equilibrium, stored as (\parf{ PAR(12), PAR(13), PAR(14)}) in
+\filef{ d.9}, approaches the origin as we approach the figure-of-eight homoclinic.
+
+\section{Three-Parameter Continuation.}
+We now consider curves in three parameters of each of
+the codimension-two points encountered in this model, by
+freeing the parameter $\eps=$ \parf{ PAR(3)}.
+First we continue the first inclination flip stored at label
+\parf{ 7} in \filef{ s.3}
+\begin{center}
+\it make tenth
+\end{center}
+Note that \parf{ ITWIST=1} in \filef{ h.kpr.10}, so that the adjoint is also
+continued, and there is one fixed condition \parf{ IFIXED(1)=13} so that
+test function $\psi_{13}$ has been frozen.
+Among the output there is a codimension-three point (zero of $\psi_9$)
+where the neutrally twisted homoclinic orbit collides with the saddle-node
+curve
+\begin{verbatim}
+ BR  PT  TY LAB    PAR(1)     ...   PAR(2)        PAR(3)        PAR(29)    ...     
+  1  28  UZ  14  1.282702E-01 ... -2.519325E+00 5.744770E-01 -4.347113E-09 ...
+\end{verbatim}
+The other detected inclination flip (at label \parf{ 8} in \filef{ s.3}) is continued
+similarly
+\begin{center}
+\it make eleventh
+\end{center}
+giving among its output another codim 3 saddle-node inclination-flip point
+\begin{verbatim} 
+ BR  PT  TY LAB    PAR(1)     ...   PAR(2)        PAR(3)        PAR(29)    ...  
+  1  27  UZ  14  1.535420E-01 ... -2.458100E+00 1.171705E+00 -1.933188E-07 ... 
+\end{verbatim}
+Output beyond both of these codim 3 points is spurious and both computations end in
+an \parf{ MX} point (no convergence).
+
+To continue the non-central saddle-node homoclinic orbits it is
+necessary to work on the data without the solution $\phi(t)$. We
+restart from the data saved at \parf{ LAB=8} and \parf{ LAB=13} in
+\filef{ s.7} and \filef{ s.8} respectively. We could continue these codim 2 points in two
+ways, either by appending the defining condition $\psi_{16} =0$ to
+the continuation of saddle-node homoclinic orbits (with \parf{ IEQUIB=2},
+etc.), or by appending $\psi_{9} =0$ to the continuation 
+of a saddle homoclinic orbit (with \parf{ IEQUIB=1}. 
+The first approach is used in the example \filef{ mtn},  
+for contrast we shall adopt the second approach here.
+\begin{figure}[p]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/kpr10.ps}}
+\caption{Projection onto the \parf{ (PAR(3),PAR(2))}-plane of the non-central
+saddle-node homoclinic orbit curves (labeled \parf{ 1} and \parf{ 2}) and the 
+inclination-flip curves (labeled \parf{ 3} and \parf{ 4})}.
+\label{kp.10}
+\end{figure}
+%
+\begin{center}
+\commandf{ make twelfth}\\
+\commandf{ make thirteenth}
+\end{center}
+The projection onto the $(\eps,k)$-plane of all four of these
+codimension-two curves is given in Figure \ref{kp.10}. 
+The intersection of the inclination-flip lines with one of the
+non-central saddle-node homoclinic lines is apparent. Note that the two
+non-central saddle-node homoclinic orbit curves are almost overlaid, but
+that as in Figure \ref{kf.7} the orbits look quite distinct in phase space.
+
+\section{ Detailed \AUTO-Commands.}
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir kpr} & create an empty work directory \\ 
+  \commandf{ cd kpr} & change directory \\
+  \commandf{ demo('kpr')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.1',h='kpr.1')} &  continuation in the time-length parameter \parf{ PAR(11)} \\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.2',h='kpr.2',s='1')} & locate the homoclinic orbit; restart from \filef{ s.1} \\ 
+  \commandf{ sv('2')} & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='kpr.3',h='kpr.3',s='2')} & generate adjoint variables  ; restart from \filef{ s.2} \\ 
+  \commandf{ sv('3')} & save output-files as \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.4',h='kpr.4',s='3')} & continue the homoclinic orbit; restart from \filef{ s.3} \\ 
+  \commandf{ ap('3')} & append output-files to \filef{ b.3, s.3, d.3} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='kpr.5',h='kpr.5',s='3')} & continue in reverse direction; restart from \filef{ s.3} \\
+  \commandf{ ap('3')} & append output-files to \filef{ b.3, s.3, d.3} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.6',h='kpr.6',s='2')} & increase the period; restart from \filef{ s.2} \\ 
+  \commandf{ sv('6')} & save output-files as \filef{ b.6, s.6, d.6} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{ kpr}.}
+\label{tbl:demo_kpr_1}
+\end{center}
+\end{table}
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.7',h='kpr.7',s='6')} & recompute the branch of homoclinic orbits; restart from \filef{ s.6} \\ 
+  \commandf{ sv('7')} & save output-files as \filef{ b.7, s.7, d.7} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.8',h='kpr.8',s='7')} & continue central saddle-node homoclinics; restart from \filef{ s.7} \\ 
+  \commandf{ sv('8')} & save output-files as \filef{ b.8, s.8, d.8} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.9',h='kpr.9',s='8')} & continue homoclinics from codim-2 point; restart from \filef{ s.8} \\ 
+  \commandf{ sv('9')} & save output-files as \filef{ b.9, s.9, d.9} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.10',h='kpr.10',s='3')} & 3-parameter curve of inclination-flips; restart from \filef{ s.3} \\ 
+  \commandf{ sv('10')} & save output-files as \filef{ b.10, s.10, d.10} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.11',h='kpr.11',s='3')} & another curve of inclination-flips; restart from \filef{ s.3} \\ 
+  \commandf{ sv('11')} & save output-files as \filef{ b.11, s.11, d.11} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.12',h='kpr.12',s='7')} & continue non-central saddle-node homoclinics; restart from \filef{ s.7} \\ 
+  \commandf{ sv('12')} & save output-files as \filef{ b.12, s.12, d.12} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='kpr.13',h='kpr.13',s='8')} & continue non-central saddle-node homoclinics; restart from \filef{ s.8} \\ 
+  \commandf{ ap('12')} & append output-files to \filef{ b.12, s.12, d.12} \\ 
+\hline
+%==============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{ kpr}.}
+\label{tbl:demo_kpr_2}
+\end{center}
+\end{table}
+

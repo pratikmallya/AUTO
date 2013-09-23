@@ -1,0 +1,18 @@
+#!/bin/sh
+if ( test -r r.$NUMBER -a ! -r c.$NUMBER ) then
+	CONSTANTS=r
+else
+	CONSTANTS=c
+fi
+echo " "
+echo "Starting conversion of $1.dat : "
+echo "(Required files : $1.c, $CONSTANTS.$1, $1.dat)"
+echo " "
+cc -I${AUTO_DIR}/include ${AUTO_DIR}/src/fcon.c $1.c -o fcon -L${AUTO_DIR}/lib -lauto_f2c -lm
+cp $CONSTANTS.$1   fort.2
+cp $1.dat fort.3
+./fcon
+mv fort.8 s.dat
+rm fcon* fort.2 fort.3
+echo " "
+echo "Conversion done : converted file saved as s.dat"

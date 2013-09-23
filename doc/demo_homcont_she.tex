@@ -1,0 +1,135 @@
+
+
+%==============================================================================
+%==============================================================================
+\chapter{ {\cal HomCont} Demo : she.} \label{ch:HomCont_she}
+%==============================================================================
+%==============================================================================
+
+%==============================================================================
+%DEMO=she======================================================================
+%==============================================================================
+\section{ A Heteroclinic Example.}
+The following system of five equations \citeasnoun{RuMa:95}
+\begin{equation} \label{sh1} \begin{array}{rcl}
+\dot{x} & = & \mu \, x + x\, y - z\, u, \\
+\dot{y} & = & -y - x^2, \\
+\dot{z} & = & (4\sigma\, x\, u + 4\sigma\, \mu\, z -9\sigma\, z 
++ 4 x\, u + 4\mu\, z) / 4(1+\sigma)  \\
+\dot{u} & = & - \sigma u / 4 - \sigma Q v / 4\pi^2
++ 3(1 + \sigma) x z / 4\sigma \\
+\dot{v} & = & \zeta u / 4  - \zeta v / 4
+\end{array} 
+\end{equation}
+has been used to describe shearing instabilities in fluid convection.
+The equations possess a rich structure of local and global bifurcations.
+Here we shall reproduce a single curve in the $(\sigma,\mu)$-plane
+of codimension-one heteroclinic orbits connecting a non-trivial 
+equilibrium to the origin for $Q=0$ and $\zeta=4$. The defining
+problem is contained in equation-file 
+\filef{ she.c}\footnote{The last parameter used to store the equilibria (\parf{ PAR(21)}) is
+overlaped here with the first test-function. In this example, it is harmless since the test functions are 
+irrelevant for heteroclinic continuation.}, and starting data for the orbit at 
+$(\sigma,\mu)=(0.5,0.163875)$ are stored in \filef{ she.dat},
+with a truncation interval of \parf{ PAR(11)=85.07}.
+
+We begin by computing towards $\mu=0$ with the option \parf{ IEQUIB=-2}
+which means that both equilibria are solved for as part of
+the continuation process.
+\begin{center}
+\commandf{ @dm she} \\
+\commandf{ make first}
+\end{center} 
+This yields the output
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(3)        L2-NORM    ...    PAR(1)     
+   1     5       2  4.528332E-01  3.726787E-01 ...  1.364973E-01
+   1    10       3  3.943370E-01  3.303798E-01 ...  1.044119E-01
+   1    15       4  3.358942E-01  2.873213E-01 ...  7.515570E-02
+   1    20       5  2.772726E-01  2.433403E-01 ...  4.952636E-02
+   1    25       6  2.181955E-01  1.981358E-01 ...  2.845849E-02
+   1    30  EP   7  1.581633E-01  1.512340E-01 ...  1.292975E-02
+\end{verbatim}
+Alternatively, for this problem there exists an analytic expression for
+the two equilibria. This is specified in the subroutine \funcf{pvls} of
+\filef{ she.c}. Re-running with \parf{ IEQUIB=-1}
+\begin{center}
+\it make second
+\end{center} 
+we obtain the output
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(3)        L2-NORM    ...    PAR(1)     
+   1     5       2  4.432015E-01  3.657716E-01 ...  1.310559E-01
+   1    10       3  3.723085E-01  3.142439E-01 ...  9.300982E-02
+   1    15       4  3.008842E-01  2.611556E-01 ...  5.933966E-02
+   1    20       5  2.286652E-01  2.062194E-01 ...  3.179939E-02
+   1    25       6  1.555409E-01  1.491652E-01 ...  1.239897E-02
+   1    30  EP   7  8.107462E-02  9.143108E-02 ...  2.386616E-03
+\end{verbatim}
+This output is similar to that above, but note that it is obtained slightly
+more efficiently because the extra parameters \parf{ PAR(12-21)} representing the
+coordinates of the equilibria are no longer
+part of the continuation problem. Also note that \AUTO has chosen to take
+slightly larger steps along the branch. Finally, we can continue in the opposite
+direction along the branch from the original starting point (again with \parf{ IEQUIB=-1}).
+\begin{center}
+\it make third
+\end{center}
+%
+\begin{figure}[b]
+\epsfysize 9.0cm
+\centerline{\epsffile{include/she1.ps}}
+\caption{Projections into $(x,y,z)$-space of the family of heteroclinic
+orbits.}
+\label{Fshear}
+\end{figure}
+%
+\begin{verbatim}
+  BR    PT  TY LAB    PAR(3)        L2-NORM    ...    PAR(1)     
+   1     5       8  4.997590E-01  4.060153E-01 ...  1.637322E-01
+   1    10       9  5.705299E-01  4.551872E-01 ...  2.065264E-01
+   1    15      10  6.416439E-01  5.031844E-01 ...  2.507829E-01
+   1    20      11  7.133301E-01  5.500668E-01 ...  2.959336E-01
+   1    25      12  7.857688E-01  5.958712E-01 ...  3.415492E-01
+   1    30      13  8.590970E-01  6.406182E-01 ...  3.872997E-01
+   1    35  EP  14  9.334159E-01  6.843173E-01 ...  4.329270E-01
+\end{verbatim}
+The results of both computations are presented in Figure \ref{Fshear}, 
+from which we see that the orbit shrinks to zero as
+\parf{ PAR(1)=}$\mu \to 0$.
+
+\newpage   
+\section{ Detailed \AUTO-Commands.}
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+  \AUTO-COMMAND  & ACTION \\
+\hline
+%==============================================================================
+  \commandf{ ! mkdir she} & create an empty work directory \\ 
+  \commandf{ cd she} & change directory \\
+  \commandf{ demo('she')} & copy the demo files to the work directory \\
+\hline
+%==============================================================================
+  \commandf{ us('she')} & use the starting data in \filef{ she.dat} to create \filef{ s.dat} \\ 
+  \commandf{ run(c='she.1',h='she.1',s='dat')} &  continue heteroclinic orbit; restart from \filef{ s.dat}\\ 
+  \commandf{ sv('1')} & save output-files as \filef{ b.1, s.1, d.1} \\ 
+\hline
+%==============================================================================
+  \commandf{ run(c='she.2',h='she.2',s='dat')} &  repeat with \parf{IEQUIB=-1} \\ 
+  \commandf{ sv('2')} & save output-files as \filef{ b.2, s.2, d.2} \\ 
+\hline
+%=============================================================================
+  \commandf{ run(c='she.3',h='she.3',s='2')} & continue in reverse direction ; restart from \filef{ s.2} \\ 
+  \commandf{ ap('2')} & append output-files to \filef{ b.2, s.2, d.2} \\ 
+\hline
+%=============================================================================
+\end{tabular}
+\caption{Detailed \AUTO-Commands for running demo \filef{ she}.}
+\label{tbl:demo_she_1}
+\end{center}
+\end{table}
+
+
+

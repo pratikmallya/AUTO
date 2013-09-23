@@ -1,0 +1,11 @@
+#!/bin/sh
+if ( test $# -eq 1 ) then
+	if ( test -r s.$1 ) then
+		SOLUTIONS=s
+	else
+		SOLUTIONS=q
+	fi
+        $AUTO_DIR/pendula/p3_0 $SOLUTIONS.$1
+else
+       $AUTO_DIR/pendula/p3_0 fort.8 
+fi

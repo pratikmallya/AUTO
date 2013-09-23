@@ -1,0 +1,17 @@
+# This script shows how the tutorial from the AUTO2000 manual    
+# can be implemented in the new command line user interface.      
+
+# We begin by changing to a work directory
+cd ~
+# We now create a sub directory in which to run AUTO2000
+! mkdir ab
+# Go into the newly created test directory
+cd ab
+# Copy the ab demo into the current directory.  This command
+# also loads in the problem definition file ab.c and the
+# constants file c.ab.  Basically, the 'dm' command is
+# the concatenation of the 'copyDemo' command and the
+# 'ld' command
+dm("ab")
+
+
