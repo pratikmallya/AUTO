@@ -1,3 +1,15 @@
+AUTO 2000
+=========
+
+BEGIN NOTE: 
+This is a checkout of the AUTO code available via SVN from http://sourceforge.net/projects/auto-07p/ .
+I claim no authorship, implicitly or explicitly. That page explicitly mentions that the code is available
+under both a BSD and GPL v2 license; I do not know what that means. The only reason I'm hosting the code
+here is to make it available via git and github, both for my research and for the greater good. 
+The code itself is unlikely to change much over time, 
+so it should be a faithful representation; I'll update it infrequently when requested.
+END NOTE
+
 For installation instructions see the AUTO 2000 manual, which can be
 found in the 'doc' subdirectory of all of the source code
 distributions below or downloaded as an independent PostScript file.
